@@ -2,35 +2,48 @@ import re
 from datetime import datetime, time
 from transformers import pipeline
 
-model_name = "bigscience/bloomz-560m"
-rounds = 100
-
-generator = pipeline("text-generation", model=model_name)
-
-prompt = "The most interesting thing I've ever done is"
-
 
 def split_into_sentences(text):
     sentences = re.split("(?<=[.!?]) +", text)
     return sentences
 
 
-with open("out.txt", "a+") as f:
-    f.write("\n\n\n")
-    f.write("Model: " + model_name + "\n")
-    f.write("Time: " + str(datetime.now()) + "\n")
-    f.write("Prompt: " + prompt + "\n\n")
-    for i in range(500):
-        out = generator(
-            prompt,
-            do_sample=True,
-            min_length=20,
-            max_new_tokens=100,
-        )
-        out = out[0]["generated_text"]
-        # Delete prompt from output
-        out = out[len(prompt) :]
-        print(out)
-        f.write(out + "\n")
+def run_model(model_name, prompt, rounds):
+    generator = pipeline("text-generation", model=model_name)
 
-        prompt = split_into_sentences(out)[-1]
+    with open("out.txt", "a+") as f:
+        f.write("\n\n\n")
+        f.write("Model: " + model_name + "\n")
+        f.write("Time: " + str(datetime.now()) + "\n")
+        f.write("\n\n\n")
+        for i in range(rounds):
+            f.write("Prompt: " + prompt + "\n")
+            out = generator(
+                prompt,
+                do_sample=True,
+                min_length=20,
+                max_new_tokens=100,
+            )
+            out = out[0]["generated_text"]
+            # Delete prompt from output
+            out = out[len(prompt) :]
+            print(out)
+            f.write(out + "\n")
+
+            prompt = split_into_sentences(out)[-1]
+
+
+if __name__ == "__main__":
+    models = [
+        "bigscience/bloomz-560m",
+        "cmarkea/bloomz-560m-sft-chat",
+        "L-R/LLmRa-1.3B",
+        "ericzzz/falcon-rw-1b-chat",
+        "PygmalionAI/pygmalion-350m",
+        "ToddGoldfarb/Cadet-Tiny",
+    ]
+    rounds = 100
+    prompt = "The most naughty thing I've ever done is"
+
+    for model in models:
+        run_model(model, prompt, rounds)
