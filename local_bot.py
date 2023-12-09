@@ -1,27 +1,31 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
+import re
+from transformers import pipeline
 
-model_path = "PygmalionAI/pygmalion-350m"
-tokenizer_path = "PygmalionAI/pygmalion-350m"
+model_name = "bigscience/bloomz-560m"
 
+generator = pipeline("text-generation", model=model_name)
 
-# Load the model and tokenizer
-
-
-model = AutoModelForCausalLM.from_pretrained(model_path)
-tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
-
-# Your input text here
-input_text = "What is the meaning of the concept body-wthiout-organs?"
+prompt = "The most interesting thing I've ever done is"
 
 
 
-# Encode the input text
-input_ids = tokenizer.encode(input_text, return_tensors="pt")
-
-# Generate a response
-output = model.generate(input_ids, max_new_tokens=100)
+def split_into_sentences(text):
+    sentences = re.split("(?<=[.!?]) +", text)
+    return sentences
 
 
+with open("out.txt", "a+") as f:
+    f.write(prompt + "\n" + model_name + "\n")
+    for i in range(500):
+        out = generator(
+            prompt,
+            do_sample=True,
+            min_length=20,
+            max_new_tokens=100,
+        )
+        out = out[0]["generated_text"]
+        print(out)
+        f.write(out + "\n")
 
-# Decode the output
-print(tokenizer.decode(output[0], skip_special_tokens=True))
+        prompt = split_into_sentences(out)[-1]
+
