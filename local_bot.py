@@ -1,11 +1,27 @@
 import re
+import nltk
 from datetime import datetime, time
 from transformers import pipeline
 
 
-def split_into_sentences(text):
-    sentences = re.split("(?<=[.!?]) +", text)
-    return sentences
+def get_last_sentence(text):
+    # Ensure NLTK sentence tokenizer is downloaded
+    try:
+        nltk.data.find("tokenizers/punkt")
+    except LookupError:
+        nltk.download("punkt")
+
+    # Tokenize the text into sentences
+    sentences = nltk.tokenize.sent_tokenize(text)
+
+    # Iterate backwards through the sentences
+    for sentence in reversed(sentences):
+        # Check if the sentence meets the condition (e.g., has a certain length)
+        if len(sentence) > 10:  # Adjust this condition as needed
+            return sentence
+
+    # If no sentence meets the condition, return None
+    return "On. Somehow on. Till nohow on."
 
 
 def run_model(model_name, prompt, rounds):
@@ -32,7 +48,7 @@ def run_model(model_name, prompt, rounds):
             print(out)
             f.write(out + "\n")
 
-            prompt = split_into_sentences(out)[-1]
+            prompt = get_last_sentence(out)
 
 
 if __name__ == "__main__":
