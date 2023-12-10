@@ -17,21 +17,24 @@ def run_model(model_name, prompt, rounds):
 
 
 def _do_run_and_get_next_prompt(f, generator, prompt):
-    f.write("Prompt: " + prompt + "\n")
-    out = generator(
-        prompt,
-        do_sample=True,
-        min_length=20,
-        max_new_tokens=100,
-    )
-    out = out[0]["generated_text"]
-    if out.startswith(prompt):
-        print("Prompt: " + prompt)
-        out = out[len(prompt) :]
-    print(out)
-    f.write(out + "\n")
-
-    return _get_last_sentence(out)
+    try:
+        f.write("Prompt: " + prompt + "\n")
+        out = generator(
+            prompt,
+            do_sample=True,
+            min_length=20,
+            max_new_tokens=100,
+        )
+        out = out[0]["generated_text"]
+        if out.startswith(prompt):
+            print("Prompt: " + prompt)
+            out = out[len(prompt) :]
+        print(out)
+        f.write(out + "\n")
+        return _get_last_sentence(out)
+    except Exception as e:
+        print(e)
+        return "But never so failed. Worse failed. With care never worse failed."
 
 
 def _get_last_sentence(text):
@@ -58,10 +61,10 @@ def _get_last_sentence(text):
 
 if __name__ == "__main__":
     models = [
-        # "KoboldAI/OPT-350M-Erebus",
-        "PygmalionAI/pygmalion-350m",
-        "bigscience/bloomz-560m",
-        "cmarkea/bloomz-560m-sft-chat",
+        "KoboldAI/OPT-350M-Erebus",
+        # "PygmalionAI/pygmalion-350m",
+        # "bigscience/bloomz-560m",
+        # "cmarkea/bloomz-560m-sft-chat",
         "L-R/LLmRa-1.3B",
         "ericzzz/falcon-rw-1b-chat",
     ]
