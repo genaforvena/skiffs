@@ -37,15 +37,15 @@ def run_model(model_name, prompt, rounds):
 
 if __name__ == "__main__":
     models = [
+        "ToddGoldfarb/Cadet-Tiny",
+        "KoboldAI/OPT-350M-Erebus",
+        "PygmalionAI/pygmalion-350m",
         "bigscience/bloomz-560m",
         "cmarkea/bloomz-560m-sft-chat",
         "L-R/LLmRa-1.3B",
         "ericzzz/falcon-rw-1b-chat",
-        "PygmalionAI/pygmalion-350m",
-        "ToddGoldfarb/Cadet-Tiny",
-        "KoboldAI/OPT-350M-Erebus",
     ]
-    rounds = 100
+    rounds = 300
     prompt = "The most naughty thing I've ever done is"
 
     for model in models:
