@@ -26,7 +26,9 @@ def run_model(model_name, prompt, rounds):
             )
             out = out[0]["generated_text"]
             # Delete prompt from output
-            out = out[len(prompt) :]
+            if prompt in out:
+                print("Prompt: " + prompt)
+                out = out[len(prompt) :]
             print(out)
             f.write(out + "\n")
 
@@ -41,6 +43,7 @@ if __name__ == "__main__":
         "ericzzz/falcon-rw-1b-chat",
         "PygmalionAI/pygmalion-350m",
         "ToddGoldfarb/Cadet-Tiny",
+        "KoboldAI/OPT-350M-Erebus",
     ]
     rounds = 100
     prompt = "The most naughty thing I've ever done is"
