@@ -2,19 +2,12 @@ import models_to_consider
 from text_utils import get_last_sentence
 from runner import run_model
 
-def _do_run_and_get_next_prompt(f, generator, prompt):
+def _do_run_and_get_next_prompt(f, prev_prompt, model_out):
     try:
-        f.write("Prompt: " + prompt + "\n")
-        out = generator(
-            prompt,
-            do_sample=True,
-            min_length=20,
-            max_new_tokens=100,
-        )
-        out = out[0]["generated_text"]
-        if out.startswith(prompt):
-            print("Prompt: " + prompt)
-            out = out[len(prompt) :]
+        out = model_out
+        if model_out.startswith(prev_prompt):
+            print("Prompt: " + prev_prompt)
+            out = out[len(prev_prompt) :]
         print(out)
         f.write(out + "\n")
         return get_last_sentence(out)

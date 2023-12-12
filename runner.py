@@ -17,7 +17,16 @@ def run_model(model_name, init_prompt, rounds, prompt_get_func=_simple_next_prmp
         f.write("Time: " + str(datetime.now()) + "\n")
         f.write("\n\n\n")
         for _ in range(rounds):
-            prompt = prompt_get_func(f, generator, prompt)
+            f.write("Prompt: " + prompt + "\n")
+            out = generator(
+                prompt,
+                do_sample=True,
+                min_length=40,
+                max_new_tokens=100,
+            )
+            out = out[0]["generated_text"]
+            print("Generated: " + out)
+            prompt = prompt_get_func(f, prompt, out)
         f.write("\n\n\n")
 
 
