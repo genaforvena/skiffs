@@ -1,6 +1,6 @@
-models = [
+generative_models = [
     # "KoboldAI/OPT-350M-Erebus",
-    "PygmalionAI/pygmalion-350m",
+    #"PygmalionAI/pygmalion-350m",
     # "bigscience/bloomz-560m",
     # "cmarkea/bloomz-560m-sft-chat",
     # "L-R/LLmRa-1.3B",
@@ -15,3 +15,6 @@ models = [
     "facebook/opt-350m",
  ]
 
+summarization_models = [
+    "sshleifer/distilbart-cnn-12-6"
+]

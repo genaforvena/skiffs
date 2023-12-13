@@ -1,6 +1,6 @@
 import models_to_consider
 from text_utils import get_last_sentence
-from runner import run_model
+from text_continuator import generate_continuation
 
 def _do_run_and_get_next_prompt(f, prev_prompt, model_out):
     try:
@@ -20,5 +20,5 @@ if __name__ == "__main__":
     rounds = 100
     prompt = "Say for be said. Missaid. From now say for missaid."
 
-    for model in models_to_consider.models:
-        run_model(model, prompt, rounds, _do_run_and_get_next_prompt)
+    for model in models_to_consider.generative_models:
+        generate_continuation(model, prompt, rounds, _do_run_and_get_next_prompt)

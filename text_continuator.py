@@ -1,15 +1,10 @@
 import models_to_consider
 from datetime import datetime
 from transformers import pipeline
-
-def _simple_next_prmpt(f, generator, prompt):
-    f.write("Prompt: " + prompt + "\n")
-    f.write("Generated: " + generator(prompt)[0]["generated_text"] + "\n")
-    f.write("\n\n\n")
-    return prompt
+from text_utils import get_last_sentence
 
 
-def run_model(model_name, init_prompt, rounds, prompt_get_func=_simple_next_prmpt):
+def generate_continuation(model_name, init_prompt, rounds):
     generator = pipeline("text-generation", model=model_name)
     prompt = init_prompt
     with open("out.txt", "a+") as f:
@@ -17,6 +12,8 @@ def run_model(model_name, init_prompt, rounds, prompt_get_func=_simple_next_prmp
         f.write("Time: " + str(datetime.now()) + "\n")
         f.write("\n\n\n")
         for _ in range(rounds):
+            if prompt is None:
+                continue
             f.write("Prompt: " + prompt + "\n")
             out = generator(
                 prompt,
@@ -26,7 +23,8 @@ def run_model(model_name, init_prompt, rounds, prompt_get_func=_simple_next_prmp
             )
             out = out[0]["generated_text"]
             print("Generated: " + out)
-            prompt = prompt_get_func(f, prompt, out)
+            prompt = get_last_sentence(out)
+
         f.write("\n\n\n")
 
 
@@ -35,5 +33,5 @@ if __name__ == "__main__":
     rounds = 100
     prompt = "Say for be said. Missaid. From now say for missaid."
 
-    for model in models_to_consider.models:
-        run_model(model, prompt, rounds)
+    for model in models_to_consider.generative_models:
+        generate_continuation(model, prompt, rounds)
