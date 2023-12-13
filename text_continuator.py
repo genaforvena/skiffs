@@ -26,8 +26,7 @@ def generate_continuation(model_name, init_prompt, rounds):
             prompt = get_last_sentence(out)
 
         f.write("\n\n\n")
-
-
+        return prompt
 
 if __name__ == "__main__":
     rounds = 100
