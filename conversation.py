@@ -9,4 +9,4 @@ if __name__ == "__main__":
     for _ in range(conversation_rounds):
         model_to_speak = random.choice(models_to_consider.generative_models)
         print("Model: " + model_to_speak + " says:\n")
-        last_models_reply = text_continuator.generate_continuation(random.choice(models_to_consider.generative_models), last_models_reply, conversation_rounds)
+        last_models_reply = text_continuator.generate_continuation(random.choice(models_to_consider.generative_models), last_models_reply, each_model_rounds)
