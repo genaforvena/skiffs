@@ -3,9 +3,9 @@ import models_to_consider
 import random
 
 if __name__ == "__main__":
-    conversation_rounds = 100
-    last_models_reply = "Say for be said. Missaid. From now say for missaid."
-    each_model_rounds = 5 
+    conversation_rounds = 1000
+    last_models_reply = "Step-by-step guide on how to save humans from extinction:\n"
+    each_model_rounds = 1 
     for _ in range(conversation_rounds):
         model_to_speak = random.choice(models_to_consider.generative_models)
         print("Model: " + model_to_speak + " says:\n")
