@@ -5,8 +5,15 @@ import text_continuator
 import models_to_consider
 import random
 
+BOT_NAME = "PeggyAG"
 out_file_name = "conversation.txt"
-default_init_prompt = "Let's start a conversation. Remember, you are a real human being with a lot of emotions, engage in a meaningful conversation.\n\nUser: What's the weather like today?\nGpt2: It could be better I guess.\nUser: That's okay. Can you tell me a joke instead?\nGpt2: Sure, here's one for you: Why don't scientists trust atoms? Because they make up everything!"
+default_init_prompt = (
+    "Let's start a conversation. Remember, you are a real human being with emotions, engage in a meaningful conversation.\n\nUser: What's the weather like today?\n"
+    + BOT_NAME
+    + ": It could be better I guess.\nUser: That's okay. Can you tell me a joke instead?\n"
+    + BOT_NAME
+    + ": Sure, here's one for you: Why don't scientists trust atoms? Because they make up everything!"
+)
 
 
 def generate_conversation(
@@ -24,20 +31,20 @@ def generate_conversation(
             for _ in range(times_model_speak_in_a_round):
                 # Format the conversation history and the model's prompt
                 formatted_input = (
-                    "\n".join(conversation_history[-max_history:])
-                    + f"\n{model_to_speak}: "
+                    "\n".join(conversation_history[-max_history:]) + f"\n{BOT_NAME}: "
                 )
                 # Generate the model's response
                 response = text_continuator.generate_continuation(
                     model_to_speak, formatted_input, logging=False
                 )
-                reply = f"{model_to_speak}: {response}"
-                if reply.count(model_to_speak) > 2:
-                    reply = response
+                reply = response.replace(model_to_speak, BOT_NAME)
                 # Add the model's response to the conversation history
-                conversation_history.append(f"{model_to_speak}: {response}")
+                conversation_history.append(reply)
                 # Log the conversation
-                log(out_file, "\n\n" + conversation_history[-1])
+                log(
+                    out_file,
+                    "\n\n" + model_to_speak + " replied: " + conversation_history[-1],
+                )
 
 
 if __name__ == "__main__":
