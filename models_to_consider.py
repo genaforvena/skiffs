@@ -8,13 +8,12 @@ generative_models = [
     # "deepseek-ai/deepseek-coder-1.3b-instruct",
     "gpt2",
     # "distilgpt2",
-    "gpt-neo-125m",
     # "facebook/opt-1.3b",
     # "HuggingFaceM4/tiny-random-LlamaForCausalLM",
     # "EleutherAI/gpt-neo-125m",
     "facebook/opt-125M",
     # "facebook/opt-350m",
-    # "microsoft/phi-1"
+    # "microsoft/phi-1",
 ]
 
 summarization_models = ["sshleifer/distilbart-cnn-12-6"]
