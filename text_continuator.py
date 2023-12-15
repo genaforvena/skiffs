@@ -5,6 +5,10 @@ from text_utils import get_last_sentence
 from util import log
 
 
+def get_model_max_input_length(model_name):
+    return pipeline("text-generation", model=model_name).model.config.max_length
+
+
 def generate_continuation(
     model_name, init_prompt, rounds=1, min_length=10, max_new_tokens=100, logging=True
 ):

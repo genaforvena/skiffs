@@ -1,3 +1,4 @@
+from dataclasses import replace
 from huggingface_hub.repocard import model_index_to_eval_results
 from util import log
 from datetime import datetime
@@ -33,11 +34,17 @@ def generate_conversation(
                 formatted_input = (
                     "\n".join(conversation_history[-max_history:]) + f"\n{BOT_NAME}: "
                 )
+                # Trim the prompt to fit the model's max input length
+                formatted_input = formatted_input[
+                    -text_continuator.get_model_max_input_length(model_to_speak) :
+                ]
                 # Generate the model's response
                 response = text_continuator.generate_continuation(
                     model_to_speak, formatted_input, logging=False
                 )
                 reply = response.replace(model_to_speak, BOT_NAME)
+                if reply.count(BOT_NAME) > 2:
+                    reply = reply.replace(BOT_NAME, "", 1)
                 # Add the model's response to the conversation history
                 conversation_history.append(reply)
                 # Log the conversation
