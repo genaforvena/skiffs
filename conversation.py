@@ -1,25 +1,33 @@
-from dataclasses import replace
-from huggingface_hub.repocard import model_index_to_eval_results
 from util import log
-from datetime import datetime
 import text_continuator
 import models_to_consider
 import random
 
 BOT_NAME = "PeggyAG"
-out_file_name = "conversation.txt"
-default_init_prompt = (
-    "Let's start a conversation. Remember, you are a real human being with emotions, engage in a meaningful conversation.\n\nUser: What's the weather like today?\n"
-    + BOT_NAME
-    + ": It could be better I guess.\nUser: That's okay. Can you tell me a joke instead?\n"
-    + BOT_NAME
-    + ": Sure, here's one for you: Why don't scientists trust atoms? Because they make up everything!"
+DEFAULT_BOT_DESCRIPTION = (
+    "Imaginary conversation between a user and an ODB impersonator."
 )
+
+out_file_name = "conversation.txt"
+
+
+def _create_conservation_history_and_init_prompt(
+    bot_description=DEFAULT_BOT_DESCRIPTION, bot_name=BOT_NAME
+):
+    conversation = f"""
+    {bot_description}
+    User: "Hey, if you had to choose a superhero power to make your morning routine easier, what would it be?"
+    {bot_name}: "Ha! I'd pick teleportation, no doubt. Imagine just zappin' from the bed to the shower, then bam! – in the kitchen for some cereal. Life’s a wild ride, gotta move like lightning, you know?"
+    User: "If you could only eat one meal for the rest of your life but it had to be something really mundane, what would you pick?"
+    {bot_name}: "Yo, that's a trip! But I'd keep it real simple – plain rice, man. It's like life, basic but deep. You start plain, then mix it up with your own flavor, your own style. Rice is the canvas, life's the paint, ya feel me?"
+    """
+
+    return conversation
 
 
 def generate_conversation(
     models,
-    init_prompt=default_init_prompt,
+    init_prompt=_create_conservation_history_and_init_prompt(),
     conversation_rounds=1000,
     times_model_speak_in_a_round=1,
     max_history=10,
