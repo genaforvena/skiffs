@@ -5,13 +5,15 @@ from text_utils import get_last_sentence
 from util import log
 
 
-def generate_continuation(model_name, init_prompt, rounds, min_length = 10, max_new_tokens=100):
+def generate_continuation(
+    model_name, init_prompt, rounds=1, min_length=10, max_new_tokens=100, logging=True
+):
     generator = pipeline("text-generation", model=model_name)
     prompt = init_prompt
     with open("out.txt", "a+") as f:
-        log(f, "Model: " + model_name + "\n")
-        log(f, "Time: " + str(datetime.now()) + "\n")
-        log(f, "\n\n\n")
+        if logging:
+            log(f, "Model: " + model_name + "\n")
+            log(f, "Time: " + str(datetime.now()) + "\n")
         for _ in range(rounds):
             if prompt is None:
                 continue
@@ -23,10 +25,12 @@ def generate_continuation(model_name, init_prompt, rounds, min_length = 10, max_
                 max_new_tokens=max_new_tokens,
             )
             out = out[0]["generated_text"]
-            log(f, "Generated: " + out)
+            if logging:
+                log(f, "Generated: " + out)
             prompt = get_last_sentence(out)
 
         return prompt
+
 
 if __name__ == "__main__":
     rounds = 100
