@@ -1,19 +1,31 @@
 conversation_models = [
     "EleutherAI/gpt-neo-125M",
     "microsoft/DialoGPT-small",
-    "microsoft/DialoGPT-medium",
-    "microsoft/DialoGPT-large",
     "gpt2",
-    "facebook/blenderbot-400M-distill",
+    "gpt-neo-125m",
 ]
 
 object_detectors = ["microsoft/table-transformer-structure-recognition-v1.1-all"]
 
-info_extractors = ["microsoft/layoutlm-base-uncased"]
+info_exttractors = ["microsoft/layoutlm-base-uncased"]
 
 sql_interpreters = ["microsoft/tapex-large-sql-execution"]
 
 image_to_text_converters = ["microsoft/git-base-vatex"]
+
+text_classiriers = [
+    "distilbert-base-uncased-finetuned-sst-2-english",
+    "roberta-large-mnli",
+]
+
+text_transforers = ["sentence-transformers/all-mpnet-base-v2"]
+
+text_comparators = ["sentence-transformers/all-mpnet-base-v2", "clips/mfaq"]
+
+question_answerers = [
+    "deepset/roberta-base-squad2",
+    "google/tapas-base-finetuned-wtq",  # this one might be sql interpreter. not sure
+]
 
 text_continuators = [
     # "KoboldAI/OPT-350M-Erebus",
@@ -33,7 +45,7 @@ text_continuators = [
     # "microsoft/phi-1",
 ]
 
-summarization_models = ["sshleifer/distilbart-cnn-12-6"]
+summarization_models = ["sshleifer/distilbart-cnn-12-6", "facebook/bart-large-cnn"]
 
 code_generation_models = [
     "gpt2",

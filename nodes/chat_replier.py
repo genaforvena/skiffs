@@ -17,7 +17,7 @@ def get_model_min_input_length(model_name):
 
 def generate_reply(
     persona: Persona,
-    conversation_history: str,
+    conversation_history: list[str],
     min_length=get_model_min_input_length(DEFAULT_MODEL_NAME),
     max_new_tokens=get_model_max_input_length(DEFAULT_MODEL_NAME),
 ):
