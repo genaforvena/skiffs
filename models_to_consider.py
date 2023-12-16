@@ -1,6 +1,8 @@
 conversation_models = [
     "EleutherAI/gpt-neo-125M",
     "microsoft/DialoGPT-small",
+    "microsoft/DialoGPT-medium",
+    "microsoft/DialoGPT-large",
     "gpt2",
     "facebook/blenderbot-400M-distill",
 ]
