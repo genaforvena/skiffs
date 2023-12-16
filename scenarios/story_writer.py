@@ -20,5 +20,5 @@ if __name__ == "__main__":
     rounds = 100
     prompt = "Say for be said. Missaid. From now say for missaid."
 
-    for model in models_to_consider.generative_models:
+    for model in models_to_consider.text_continuators:
         generate_continuation(model, prompt, rounds, _do_run_and_get_next_prompt)

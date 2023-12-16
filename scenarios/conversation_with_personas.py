@@ -62,4 +62,4 @@ def generate_conversation(
 
 
 if __name__ == "__main__":
-    generate_conversation(models_to_consider.generative_models)
+    generate_conversation(models_to_consider.text_continuators)

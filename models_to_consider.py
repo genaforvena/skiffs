@@ -1,4 +1,4 @@
-generative_models = [
+text_continuators = [
     # "KoboldAI/OPT-350M-Erebus",
     # "PygmalionAI/pygmalion-350m",
     # "bigscience/bloomz-560m",
