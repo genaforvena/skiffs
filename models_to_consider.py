@@ -1,3 +1,18 @@
+conversation_models = [
+    "EleutherAI/gpt-neo-125M",
+    "microsoft/DialoGPT-small",
+    "gpt2",
+    "gpt-neo-125m",
+]
+
+object_detectors = ["microsoft/table-transformer-structure-recognition-v1.1-all"]
+
+info_extractors = ["microsoft/layoutlm-base-uncased"]
+
+sql_interpreters = ["microsoft/tapex-large-sql-execution"]
+
+image_to_text_converters = ["microsoft/git-base-vatex"]
+
 text_continuators = [
     # "KoboldAI/OPT-350M-Erebus",
     # "PygmalionAI/pygmalion-350m",
