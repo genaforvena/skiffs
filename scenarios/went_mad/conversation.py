@@ -1,5 +1,8 @@
+# This scenario is completely wrong as it uses text-cont\inuators to generate a conversation
+# The proper way to do this is to use a conversation model to generate a conversation
+# I'm keeping it just out of perverse pleasure I get from reading hallucinating machines.
 from util import log
-import text_continuator
+from nodes import text_continuator
 import models_to_consider
 import random
 
