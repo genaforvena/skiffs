@@ -2,7 +2,7 @@ conversation_models = [
     "EleutherAI/gpt-neo-125M",
     "microsoft/DialoGPT-small",
     "gpt2",
-    "gpt-neo-125m",
+    "facebook/blenderbot-400M-distill",
 ]
 
 object_detectors = ["microsoft/table-transformer-structure-recognition-v1.1-all"]
