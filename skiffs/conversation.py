@@ -1,6 +1,7 @@
 from transformers import pipeline
 from typing import List, Callable
 from datetime import datetime
+from models import models_to_consider
 from util.util import log
 import random
 
@@ -20,7 +21,7 @@ class Persona:
         self.model_name = model_name
         self.instructions = instructions
         self.past_memories = past_memories
-        self._pipeline = pipeline("conversational", model_name, instructions)
+        self._pipeline = pipeline("conversational", model=model_name)
 
     def reply_to(self, conversation: List[str]) -> str:
         return self._pipeline(conversation)[0]["generated_text"]
@@ -48,10 +49,8 @@ def _trim_conversation_if_needed(conversation: List[str]) -> list[str]:
 
 
 if __name__ == "__main__":
-    from models import models_to_consider
-
     participants = [
-        Persona(model_name=model_name, name=f"{model_name}{random.randint(1, 100)}")
+        Persona(model_name=model_name, name=model_name)
         for model_name in models_to_consider.conversation_models
     ]
 
