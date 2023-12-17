@@ -1,12 +1,17 @@
-from transformers import pipeline
+from transformers import pipeline, Conversation
 from typing import List, Callable
 from datetime import datetime
 from models import models_to_consider
-from util.util import log
 import random
 
 
 output_file = "conversation.log"
+
+
+def log(file_name: str, message: str) -> None:
+    with open(file_name, "a") as f:
+        f.write(message + "\n")
+        print(message)
 
 
 class Persona:
@@ -24,9 +29,13 @@ class Persona:
         self._pipeline = pipeline("conversational", model=model_name)
 
     def reply_to(self, conversation: List[str]) -> str:
-        out = self._pipeline(conversation)
-        print(out)
-        return out[0]["generated_text"]
+        # Convert the conversation list to a Conversation object
+        convo = Conversation("\n".join(conversation))
+        out = self._pipeline(convo)
+        # The output will be a Conversation object, you can get the new reply with:
+        new_reply = out.generated_responses[-1]
+        print(new_reply)
+        return new_reply
 
 
 def talk(
