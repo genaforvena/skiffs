@@ -1,5 +1,3 @@
-import models_to_consider
-from datetime import datetime
 from transformers import pipeline
 from nodes.personas.persona import Persona
 from util import log
