@@ -24,7 +24,9 @@ class Persona:
         self._pipeline = pipeline("conversational", model=model_name)
 
     def reply_to(self, conversation: List[str]) -> str:
-        return self._pipeline(conversation)[0]["generated_text"]
+        out = self._pipeline(conversation)
+        print(out)
+        return out[0]["generated_text"]
 
 
 def talk(
@@ -54,4 +56,7 @@ if __name__ == "__main__":
         for model_name in models_to_consider.conversation_models
     ]
 
-    talk(participants=participants)
+    talk(
+        participants=participants,
+        conversation=["Never told a truth in your life? Can't start now!"],
+    )

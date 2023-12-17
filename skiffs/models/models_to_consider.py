@@ -1,8 +1,8 @@
 conversation_models = [
-    "EleutherAI/gpt-neo-125M",
+    # "EleutherAI/gpt-neo-125M",
     "microsoft/DialoGPT-small",
     "gpt2",
-    "gpt-neo-125m",
+    # "gpt-neo-125m",
 ]
 
 object_detectors = ["microsoft/table-transformer-structure-recognition-v1.1-all"]
