@@ -123,7 +123,7 @@ def talk(
                     os.path.dirname(__file__),
                     "..",
                     "resources",
-                    "beckett_triology.txt",
+                    "beckett_trilogy.txt",
                 )
             )
         # Determine the role based on the last message in the conversation object```

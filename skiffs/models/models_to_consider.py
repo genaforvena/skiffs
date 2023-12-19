@@ -1,9 +1,9 @@
 conversation_models = [
     # "EleutherAI/gpt-neo-125M",
     # "microsoft/DialoGPT-small",
-    # "microsoft/DialoGPT-medium",
+    "microsoft/DialoGPT-medium",
     # "facebook/blenderbot-400M-distill",
-    # "microsoft/DialoGPT-large",
+    "microsoft/DialoGPT-large",
     # "facebook/blenderbot_small-90M",
     # "ToddGoldfarb/Cadet-Tiny",
     # "mywateriswet/ShuanBot",
