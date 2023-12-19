@@ -4,6 +4,7 @@ from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 from models import models_to_consider
 from util.text_utils import read_random_line
+from util.text_utils import get_sentences
 import random
 import os
 import re
@@ -43,7 +44,7 @@ class Persona:
         self.tokenizer = None
         self.model = None
 
-    def generate_reply(self, conversation: Conversation) -> str:
+    def generate_reply(self, conversation: Conversation) -> str | None:
         def _setup_generator() -> None:
             self.tokenizer = AutoTokenizer.from_pretrained(
                 self.model_name, use_fast=True, padding_side="left"
@@ -78,7 +79,11 @@ class Persona:
             output_sequences[:, inputs.shape[-1] :][0], skip_special_tokens=True
         )
         _teardown_generator()
-        return response
+        response_words = response.split(" ")
+        if len(response_words) >= 1:
+            return response + "?"
+        else:
+            return None
 
 
 def log(talker: Persona, reply: Dict[str, str]) -> None:
@@ -116,7 +121,7 @@ def talk(
         conversation_obj = _create_conresation_obj(conversation_history)
         talker = _select_speaker(participants)
         talker_message = talker.generate_reply(conversation_obj)
-        if talker_message == "":
+        if talker_message is None:
             log(talker, {"role": "assistant", "content": "NO RESPONSE"})
             talker_message = read_random_line(
                 os.path.join(
