@@ -109,7 +109,7 @@ def _select_speaker(participants: list[Persona]) -> Persona:
 def talk(
     participants: list[Persona],
     conversation_history: list[dict[str, str]],
-    conversation_rounds: int = 100,
+    conversation_rounds: int = default_max_conversation_length,
     _select_speaker: Callable[[list[Persona]], Persona] = _select_speaker,
 ) -> None:
     for i in range(conversation_rounds):
