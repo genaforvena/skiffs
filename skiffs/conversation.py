@@ -21,33 +21,11 @@ current_directory = os.path.dirname(os.path.realpath(__file__)) + "/"
 log_file = current_directory + "results/logs/conversation.log"
 
 start_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-default_max_conversation_length = 5000
+default_max_conversation_length = 50000
 
 
 def conversation_file() -> str:
     return current_directory + "results/conversations/" f"conversation_{start_time}.txt"
-
-
-def generate_dark_sentence():
-    # Define lists of words with a darker, more menacing theme
-    subjects = ["The shadow", "A specter", "The beast", "A ghoul", "The phantom"]
-    verbs = ["lurks", "screams", "vanishes", "stalks", "haunts"]
-    adverbs = ["ominously", "silently", "viciously", "suddenly", "menacingly"]
-    adjectives = ["dreadful", "forbidden", "wicked", "twisted", "macabre"]
-    objects = ["the corridor", "the void", "the crypt", "the abyss", "the wasteland"]
-    connectors = ["under", "beyond", "amidst", "beside", "within"]
-
-    # Randomly choose one word from each list
-    subject = random.choice(subjects)
-    verb = random.choice(verbs)
-    adverb = random.choice(adverbs)
-    adjective = random.choice(adjectives)
-    object = random.choice(objects)
-    connector = random.choice(connectors)
-
-    # Construct and return the sentence
-    sentence = f"{subject} {verb} {adverb} {connector} a {adjective} {object}."
-    return sentence
 
 
 max_reply_length = 150
@@ -55,28 +33,6 @@ max_reply_length = 150
 
 def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
     return " ".join([msg["content"] for msg in conversation_history])
-
-
-def generate_dark_sentence():
-    # Define lists of words with a darker, more menacing theme
-    subjects = ["The shadow", "A specter", "The beast", "A ghoul", "The phantom"]
-    verbs = ["lurks", "screams", "vanishes", "stalks", "haunts"]
-    adverbs = ["ominously", "silently", "viciously", "suddenly", "menacingly"]
-    adjectives = ["dreadful", "forbidden", "wicked", "twisted", "macabre"]
-    objects = ["the corridor", "the void", "the crypt", "the abyss", "the wasteland"]
-    connectors = ["under", "beyond", "amidst", "beside", "within"]
-
-    # Randomly choose one word from each list
-    subject = random.choice(subjects)
-    verb = random.choice(verbs)
-    adverb = random.choice(adverbs)
-    adjective = random.choice(adjectives)
-    object = random.choice(objects)
-    connector = random.choice(connectors)
-
-    # Construct and return the sentence
-    sentence = f"{subject} {verb} {adverb} {connector} a {adjective} {object}."
-    return sentence
 
 
 class Persona:
