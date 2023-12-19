@@ -1,10 +1,9 @@
 from typing import Callable, Dict, List
-from numpy import ma
-from torch import selu
 from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 from models import models_to_consider
 import random
+import re
 
 default_conversation_starter = [
     {"role": "user", "content": "Was john coltrane saint and beoynd good and evil?"},
@@ -15,6 +14,7 @@ default_conversation_starter = [
 ]
 
 output_file = "conversation.log"
+max_reply_length = 150
 
 
 def log(output_file: str, message: str) -> None:
@@ -37,19 +37,19 @@ class Persona:
         )
         self.model = AutoModelForCausalLM.from_pretrained(model_name)
 
-    def generate_reply(self, conversation_history: List[Dict[str, str]]) -> str:
-        # Join the conversation history into a single string
-        conversation_str = _create_conversation_string(conversation_history)
-
+    def generate_reply(self, conversation: Conversation) -> str:
         # Tokenize the conversation string
         inputs = self.tokenizer.encode(
-            conversation_str, return_tensors="pt", max_length=1024, truncation=True
+            conversation.new_user_input,
+            return_tensors="pt",
+            max_length=max_reply_length,
+            truncation=True,
         )
 
         # Generate response
         output_sequences = self.model.generate(
             input_ids=inputs,
-            max_length=1024,
+            max_length=max_reply_length,
             pad_token_id=self.tokenizer.eos_token_id,
             do_sample=True,
             top_p=0.95,
@@ -74,16 +74,8 @@ def talk(
     _select_speaker: Callable[[list[Persona]], Persona] = _select_speaker,
     output_file: str = output_file,
 ) -> None:
-    # Convert the conversation history list to a Conversation object
-    conversation_obj = Conversation()
-    for msg in conversation_history:
-        if msg["role"] == "user":
-            conversation_obj.add_user_input(msg["content"])
-        else:
-            conversation_obj.mark_processed()  # Mark the last assistant message as processed
-            conversation_obj.append_response(msg["content"])
-
     for i in range(conversation_rounds):
+        conversation_obj = _create_conresation_obj(conversation_history)
         talker = _select_speaker(participants)
         talker_message = talker.generate_reply(conversation_obj)
         # Determine the role based on the last message in the conversation object
@@ -95,7 +87,10 @@ def talk(
 
         # Log the message
         log_message = (
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " " + str(new_message)
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            + talker.model_name
+            + " "
+            + str(new_message)
         )
         log(output_file, log_message)
 
@@ -107,23 +102,38 @@ def talk(
             conversation_obj.append_response(talker_message)
 
         # Trim the conversation if needed
-        conversation_history = _trim_conversation_if_needed(conversation_history)
 
 
-def _trim_conversation_if_needed(
+def _create_conresation_obj(
     conversation: List[Dict[str, str]], max_length: int = 300
-) -> List[Dict[str, str]]:
-    conversation_str = _create_conversation_string(conversation)
-    while len(conversation_str) > max_length:
-        conversation.pop(0)
-        conversation_str = _create_conversation_string(conversation)
-        if len(conversation) < 2:
-            break
+) -> Conversation:
+    # Helper function to get the first sentence
+    def get_first_sentence(text: str) -> str:
+        # This will match the first sentence ending with a period, question mark, or exclamation point
+        match = re.match(r"([^.!?]*[.!?])", text)
+        return match.group(0) if match else text
+
+    # Create a single string from the conversation
+    conversation_str = " ".join(msg["content"] for msg in conversation)
+
+    # Check if the conversation string exceeds the max length
     if len(conversation_str) > max_length:
+        # Keep only the last two items
         conversation = conversation[-2:]
-        for msg in conversation:
-            msg["content"] = msg["content"][: max_length // 2]
-    return conversation
+        # Retain only the first sentence of each of the last two items
+        for i in range(len(conversation)):
+            conversation[i]["content"] = get_first_sentence(conversation[i]["content"])
+
+    # Convert the conversation history list to a Conversation object
+    conversation_obj = Conversation()
+    for msg in conversation:
+        if msg["role"] == "user":
+            conversation_obj.add_user_input(msg["content"])
+        else:
+            conversation_obj.mark_processed()  # Mark the last assistant message as processed
+            conversation_obj.append_response(msg["content"])
+
+    return conversation_obj
 
 
 if __name__ == "__main__":
