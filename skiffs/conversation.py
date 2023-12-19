@@ -1,4 +1,5 @@
 from typing import Callable, Dict, List
+from torch import ne
 from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 from models import models_to_consider
@@ -13,14 +14,14 @@ default_conversation_starter = [
     },
 ]
 
-output_file = "conversation.log"
+log_file = "conversation.log"
+
+
+def conversation_file() -> str:
+    return f"conversation_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
+
+
 max_reply_length = 150
-
-
-def log(output_file: str, message: str) -> None:
-    with open(output_file, "a") as f:
-        f.write(message + "\n")
-        print(message)
 
 
 def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
@@ -63,6 +64,27 @@ class Persona:
         return response
 
 
+def log(talker: Persona, reply: Dict[str, str]) -> None:
+    log_message = (
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        + talker.model_name
+        + " "
+        + str(reply)
+    )
+    with open(log_file, "a") as f:
+        f.write(log_message + "\n")
+        print(log_message)
+    conversation_entry = (
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        + " "
+        + talker.model_name
+        + ": "
+        + str(reply["content"])
+    )
+    with open(conversation_file(), "a") as f:
+        f.write(conversation_entry + "\n")
+
+
 def _select_speaker(participants: list[Persona]) -> Persona:
     return random.choice(participants)
 
@@ -72,7 +94,6 @@ def talk(
     conversation_history: list[dict[str, str]],
     conversation_rounds: int = 100,
     _select_speaker: Callable[[list[Persona]], Persona] = _select_speaker,
-    output_file: str = output_file,
 ) -> None:
     for i in range(conversation_rounds):
         conversation_obj = _create_conresation_obj(conversation_history)
@@ -87,14 +108,7 @@ def talk(
             new_message
         )  # Append the new message to the history
 
-        # Log the message
-        log_message = (
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            + talker.model_name
-            + " "
-            + str(new_message)
-        )
-        log(output_file, log_message)
+        log(talker, new_message)
 
         # Update the conversation object with the new message
         if role == "user":
