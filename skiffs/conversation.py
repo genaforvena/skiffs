@@ -4,6 +4,7 @@ from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 from models import models_to_consider
 import random
+import os
 import re
 
 default_conversation_starter = [
@@ -14,11 +15,14 @@ default_conversation_starter = [
     },
 ]
 
-log_file = "conversation.log"
+current_directory = os.path.dirname(os.path.realpath(__file__)) + "/"
+log_file = current_directory + "results/logs/conversation.log"
+
+start_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
 def conversation_file() -> str:
-    return f"conversation_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
+    return current_directory + "results/conversations/" f"conversation_{start_time}.txt"
 
 
 max_reply_length = 150
@@ -71,7 +75,7 @@ def log(talker: Persona, reply: Dict[str, str]) -> None:
         + " "
         + str(reply)
     )
-    with open(log_file, "a") as f:
+    with open(log_file, "a+") as f:
         f.write(log_message + "\n")
         print(log_message)
     conversation_entry = (
@@ -81,7 +85,7 @@ def log(talker: Persona, reply: Dict[str, str]) -> None:
         + ": "
         + str(reply["content"])
     )
-    with open(conversation_file(), "a") as f:
+    with open(conversation_file(), "w+") as f:
         f.write(conversation_entry + "\n")
 
 
