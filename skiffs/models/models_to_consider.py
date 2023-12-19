@@ -10,7 +10,7 @@ conversation_models = [
     "PygmalionAI/pygmalion-350m",
     "satvikag/chatbot",
     # "zenham/wail_m_e4_16h_2k",
-    "tinkoff-ai/ruDialoGPT-medium",
+    # "tinkoff-ai/ruDialoGPT-medium",
     "gpt2",
     # "gpt-neo-125m",
 ]

@@ -91,7 +91,7 @@ def log(talker: Persona, reply: Dict[str, str]) -> None:
         print(log_message)
     conversation_entry = (
         datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        + " "
+        + "\n"
         + talker.model_name
         + ": "
         + str(reply["content"])
