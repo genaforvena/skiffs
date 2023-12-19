@@ -108,12 +108,8 @@ def talk(
 
 
 def _trim_conversation_if_needed(
-    conversation: List[Dict[str, str]], tokenizer: AutoTokenizer, max_length: int = 1000
+    conversation: List[Dict[str, str]], tokenizer: AutoTokenizer, max_length: int = 300
 ) -> List[Dict[str, str]]:
-    # Ensure the last message is from the user
-    if conversation and conversation[-1]["role"] != "user":
-        conversation.pop()
-
     # Create a single string from the conversation
     conversation_str = " ".join(msg["content"] for msg in conversation)
     # Tokenize the string and check its length
