@@ -3,9 +3,11 @@ from torch import ne
 from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 from models import models_to_consider
+from util.text_utils import read_random_line
 import random
 import os
 import re
+
 
 default_conversation_starter = [
     {"role": "user", "content": "Was john coltrane saint and beoynd good and evil?"},
@@ -159,9 +161,17 @@ def talk(
         talker = _select_speaker(participants)
         talker_message = talker.generate_reply(conversation_obj)
         if talker_message == "":
-            log(talker, {"role": "assistant", "content": "I don't know"})
-            talker_message = generate_dark_sentence()
-        # Determine the role based on the last message in the conversation object
+            log(talker, {"role": "assistant", "content": "NO RESPONSE"})
+            talker_message = read_random_line(
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "..",
+                    "..",
+                    "resources",
+                    "beckett_trilogy.txt",
+                )
+            )
+        # Determine the role based on the last message in the conversation object```
         role = "user" if i % 2 == 0 else "assistant"
         new_message = {"role": role, "content": talker_message}
         conversation_history.append(

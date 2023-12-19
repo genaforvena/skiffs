@@ -1,7 +1,16 @@
 import nltk
 import re
+import random
+import os
 
 SUMMARIZE_CHUNK_SIZE = 300
+
+
+def read_random_line(path):
+    path = os.path.abspath(path)
+    with open(path, "r") as f:
+        lines = f.readlines()
+        return random.choice(lines)
 
 
 def get_last_sentence(text):
@@ -34,15 +43,17 @@ def get_sentences(text):
 def clean_and_cut(path, chunk_size=SUMMARIZE_CHUNK_SIZE):
     with open(path, "r") as f:
         txt = f.read()
-        txt = re.sub(r'[A-Z]+', '', txt)
-        txt = re.sub(r'\b\d+\b', '', txt)
-        txt = re.sub(r'\[\d+\]', '', txt)  # Removes citation-like numbers e.g., [1], [2], etc.
-        txt = re.sub(r'_{2,}', '', txt)    # Removes lines of underscores
-        txt = re.sub(r'\*{2,}', '', txt)   # Removes lines of asterisks
+        txt = re.sub(r"[A-Z]+", "", txt)
+        txt = re.sub(r"\b\d+\b", "", txt)
+        txt = re.sub(
+            r"\[\d+\]", "", txt
+        )  # Removes citation-like numbers e.g., [1], [2], etc.
+        txt = re.sub(r"_{2,}", "", txt)  # Removes lines of underscores
+        txt = re.sub(r"\*{2,}", "", txt)  # Removes lines of asterisks
 
         chunks = []
         while len(txt) > chunk_size:
-            end = txt.rfind('.', 0, chunk_size)
+            end = txt.rfind(".", 0, chunk_size)
             if end == -1:
                 end = chunk_size
             else:
@@ -53,4 +64,3 @@ def clean_and_cut(path, chunk_size=SUMMARIZE_CHUNK_SIZE):
                 chunks.append(txt)
 
         return chunks
-
