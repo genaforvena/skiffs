@@ -26,11 +26,55 @@ def conversation_file() -> str:
     return current_directory + "results/conversations/" f"conversation_{start_time}.txt"
 
 
+def generate_dark_sentence():
+    # Define lists of words with a darker, more menacing theme
+    subjects = ["The shadow", "A specter", "The beast", "A ghoul", "The phantom"]
+    verbs = ["lurks", "screams", "vanishes", "stalks", "haunts"]
+    adverbs = ["ominously", "silently", "viciously", "suddenly", "menacingly"]
+    adjectives = ["dreadful", "forbidden", "wicked", "twisted", "macabre"]
+    objects = ["the corridor", "the void", "the crypt", "the abyss", "the wasteland"]
+    connectors = ["under", "beyond", "amidst", "beside", "within"]
+
+    # Randomly choose one word from each list
+    subject = random.choice(subjects)
+    verb = random.choice(verbs)
+    adverb = random.choice(adverbs)
+    adjective = random.choice(adjectives)
+    object = random.choice(objects)
+    connector = random.choice(connectors)
+
+    # Construct and return the sentence
+    sentence = f"{subject} {verb} {adverb} {connector} a {adjective} {object}."
+    return sentence
+
+
 max_reply_length = 150
 
 
 def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
     return " ".join([msg["content"] for msg in conversation_history])
+
+
+def generate_dark_sentence():
+    # Define lists of words with a darker, more menacing theme
+    subjects = ["The shadow", "A specter", "The beast", "A ghoul", "The phantom"]
+    verbs = ["lurks", "screams", "vanishes", "stalks", "haunts"]
+    adverbs = ["ominously", "silently", "viciously", "suddenly", "menacingly"]
+    adjectives = ["dreadful", "forbidden", "wicked", "twisted", "macabre"]
+    objects = ["the corridor", "the void", "the crypt", "the abyss", "the wasteland"]
+    connectors = ["under", "beyond", "amidst", "beside", "within"]
+
+    # Randomly choose one word from each list
+    subject = random.choice(subjects)
+    verb = random.choice(verbs)
+    adverb = random.choice(adverbs)
+    adjective = random.choice(adjectives)
+    object = random.choice(objects)
+    connector = random.choice(connectors)
+
+    # Construct and return the sentence
+    sentence = f"{subject} {verb} {adverb} {connector} a {adjective} {object}."
+    return sentence
 
 
 class Persona:
@@ -115,7 +159,8 @@ def talk(
         talker = _select_speaker(participants)
         talker_message = talker.generate_reply(conversation_obj)
         if talker_message == "":
-            talker_message = "I have a premnoition that this conversation is going nowhere. Let's try another topic!"
+            log(talker, {"role": "assistant", "content": "I don't know"})
+            talker_message = generate_dark_sentence()
         # Determine the role based on the last message in the conversation object
         role = "user" if i % 2 == 0 else "assistant"
         new_message = {"role": role, "content": talker_message}
