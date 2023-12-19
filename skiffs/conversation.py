@@ -96,7 +96,7 @@ def log(talker: Persona, reply: Dict[str, str]) -> None:
         + ": "
         + str(reply["content"])
     )
-    with open(conversation_file(), "w+") as f:
+    with open(conversation_file(), "a+") as f:
         f.write(conversation_entry + "\n")
 
 
