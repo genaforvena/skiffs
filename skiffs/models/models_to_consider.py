@@ -9,7 +9,7 @@ conversation_models = [
     "mywateriswet/ShuanBot",
     "PygmalionAI/pygmalion-350m",
     "satvikag/chatbot",
-    "zenham/wail_m_e4_16h_2k",
+    # "zenham/wail_m_e4_16h_2k",
     "tinkoff-ai/ruDialoGPT-medium",
     "gpt2",
     # "gpt-neo-125m",
