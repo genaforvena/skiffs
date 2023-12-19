@@ -38,12 +38,21 @@ class Persona:
         self.name = name
         self.model_name = model_name
         self.instructions = instructions
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            model_name, use_fast=True, padding_side="left"
-        )
-        self.model = AutoModelForCausalLM.from_pretrained(model_name)
+        self.tokenizer = None
+        self.model = None
 
     def generate_reply(self, conversation: Conversation) -> str:
+        def _setup_generator() -> None:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.model_name, use_fast=True, padding_side="left"
+            )
+            self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
+
+        def _teardown_generator() -> None:
+            self.tokenizer = None
+            self.model = None
+
+        _setup_generator()
         # Tokenize the conversation string
         inputs = self.tokenizer.encode(
             conversation.new_user_input,
@@ -66,6 +75,7 @@ class Persona:
         response = self.tokenizer.decode(
             output_sequences[:, inputs.shape[-1] :][0], skip_special_tokens=True
         )
+        _teardown_generator()
         return response
 
 
