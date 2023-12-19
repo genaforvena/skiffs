@@ -1,4 +1,5 @@
 from typing import Callable, Dict, List
+from numpy import ma
 from torch import selu
 from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
@@ -22,6 +23,10 @@ def log(output_file: str, message: str) -> None:
         print(message)
 
 
+def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
+    return " ".join([msg["content"] for msg in conversation_history])
+
+
 class Persona:
     def __init__(self, model_name: str, name: str, instructions: str = "") -> None:
         self.name = name
@@ -34,7 +39,7 @@ class Persona:
 
     def generate_reply(self, conversation_history: List[Dict[str, str]]) -> str:
         # Join the conversation history into a single string
-        conversation_str = " ".join([msg["content"] for msg in conversation_history])
+        conversation_str = _create_conversation_string(conversation_history)
 
         # Tokenize the conversation string
         inputs = self.tokenizer.encode(
@@ -102,45 +107,22 @@ def talk(
             conversation_obj.append_response(talker_message)
 
         # Trim the conversation if needed
-        conversation_history = _trim_conversation_if_needed(
-            conversation_history, talker.tokenizer
-        )
+        conversation_history = _trim_conversation_if_needed(conversation_history)
 
 
 def _trim_conversation_if_needed(
-    conversation: List[Dict[str, str]], tokenizer: AutoTokenizer, max_length: int = 300
+    conversation: List[Dict[str, str]], max_length: int = 300
 ) -> List[Dict[str, str]]:
-    # Create a single string from the conversation
-    conversation_str = " ".join(msg["content"] for msg in conversation)
-    # Tokenize the string and check its length
-    input_ids = tokenizer.encode(conversation_str, add_special_tokens=True)
-
-    # If the length is too long, trim the conversation
-    while len(input_ids) > max_length and len(conversation) > 1:
-        # Remove messages from the start until we have 2 messages left
-        conversation = conversation[-2:]
-        conversation_str = " ".join(msg["content"] for msg in conversation)
-        input_ids = tokenizer.encode(conversation_str, add_special_tokens=True)
-
-        # If two messages are still too long, keep only the last user message
-        if len(input_ids) > max_length and conversation[0]["role"] == "assistant":
-            conversation = conversation[-1:]
-            conversation_str = " ".join(msg["content"] for msg in conversation)
-            input_ids = tokenizer.encode(conversation_str, add_special_tokens=True)
-
-        # If one user message is too long, truncate it to fit the limit
-        if len(input_ids) > max_length:
-            # Truncate the tokens to the max_length, ensuring the last token is complete
-            truncated_ids = input_ids[:max_length]
-            # Decode tokens back to text
-            truncated_text = tokenizer.decode(
-                truncated_ids,
-                skip_special_tokens=True,
-                clean_up_tokenization_spaces=False,
-            )
-            conversation = [{"role": "user", "content": truncated_text}]
+    conversation_str = _create_conversation_string(conversation)
+    while len(conversation_str) > max_length:
+        conversation.pop(0)
+        conversation_str = _create_conversation_string(conversation)
+        if len(conversation) < 2:
             break
-
+    if len(conversation_str) > max_length:
+        conversation = conversation[-2:]
+        for msg in conversation:
+            msg["content"] = msg["content"][: max_length // 2]
     return conversation
 
 
