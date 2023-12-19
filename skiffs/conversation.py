@@ -1,4 +1,5 @@
 from typing import Callable, Dict, List
+from numpy import pad
 from torch import ne
 from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
@@ -46,8 +47,14 @@ class Persona:
 
     def generate_reply(self, conversation: Conversation) -> str | None:
         def _setup_generator() -> None:
+            # God please forgive me for this
+            if "dialo" in self.model_name:
+                # TODO: Seems to be a good idea to be able provide different tokenizers and models to different personas
+                padding = "right"  # DialoGPT performs better with padding on the right according to the docs
+            else:
+                padding = "left"
             self.tokenizer = AutoTokenizer.from_pretrained(
-                self.model_name, use_fast=True, padding_side="left"
+                self.model_name, use_fast=False, padding_side=padding
             )
             self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
 
