@@ -78,6 +78,8 @@ def talk(
         conversation_obj = _create_conresation_obj(conversation_history)
         talker = _select_speaker(participants)
         talker_message = talker.generate_reply(conversation_obj)
+        if talker_message == "":
+            talker_message = "I have a premnoition that this conversation is going nowhere. Let's try another topic!"
         # Determine the role based on the last message in the conversation object
         role = "user" if i % 2 == 0 else "assistant"
         new_message = {"role": role, "content": talker_message}
@@ -100,8 +102,6 @@ def talk(
         else:
             conversation_obj.mark_processed()  # Mark the last assistant message as processed
             conversation_obj.append_response(talker_message)
-
-        # Trim the conversation if needed
 
 
 def _create_conresation_obj(
