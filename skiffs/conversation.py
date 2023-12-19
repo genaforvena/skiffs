@@ -19,6 +19,7 @@ current_directory = os.path.dirname(os.path.realpath(__file__)) + "/"
 log_file = current_directory + "results/logs/conversation.log"
 
 start_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+default_max_conversation_length = 5000
 
 
 def conversation_file() -> str:
@@ -123,7 +124,8 @@ def talk(
 
 
 def _create_conresation_obj(
-    conversation: List[Dict[str, str]], max_length: int = 300
+    conversation: List[Dict[str, str]],
+    max_length: int = default_max_conversation_length,
 ) -> Conversation:
     # Helper function to get the first sentence
     def get_first_sentence(text: str) -> str:
