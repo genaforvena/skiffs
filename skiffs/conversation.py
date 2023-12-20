@@ -5,7 +5,6 @@ from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 from models import models_to_consider
 from util.text_utils import read_random_line
-from util.text_utils import get_sentences
 import random
 import os
 import re
@@ -16,10 +15,44 @@ def enough_words_in_reply(reply: str) -> bool:
 
 
 default_conversation_starter = [
-    {"role": "user", "content": "Was john coltrane saint and beoynd good and evil?"},
+    {"role": "user", "content": "Do clouds ever feel lonely in the vast sky?"},
     {
         "role": "assistant",
-        "content": "you're so right! ole is the purest bliss there is!",
+        "content": "Perhaps they do, drifting along like solitary ships on an endless ocean of blue.",
+    },
+    {"role": "user", "content": "Is the moon a secret keeper of the night's whispers?"},
+    {
+        "role": "assistant",
+        "content": "Indeed, it listens to the hushed tales of stars and the silent songs of the nocturnal world.",
+    },
+    {
+        "role": "user",
+        "content": "Can a melody paint the colors of a sunset in our minds?",
+    },
+    {
+        "role": "assistant",
+        "content": "Absolutely, each note a brushstroke of hues, crafting a visual symphony in our imagination.",
+    },
+    {"role": "user", "content": "Are shadows the earth's way of holding memories?"},
+    {
+        "role": "assistant",
+        "content": "In a way, yes. Each shadow is a fleeting imprint, a gentle reminder of moments past.",
+    },
+    {
+        "role": "user",
+        "content": "Do trees whisper secrets to each other through their roots?",
+    },
+    {
+        "role": "assistant",
+        "content": "They do, sharing tales and wisdom in a language older than words, in the rustling language of leaves and earth.",
+    },
+    {
+        "role": "user",
+        "content": "Is the wind a messenger carrying stories from around the world?",
+    },
+    {
+        "role": "assistant",
+        "content": "It is indeed, a tireless traveler telling tales of distant lands, carrying whispers and scents from afar.",
     },
 ]
 
@@ -34,7 +67,8 @@ def conversation_file() -> str:
     return current_directory + "results/conversations/" f"conversation_{start_time}.txt"
 
 
-max_reply_length = 150
+# TODO: Find a way to dynamically determine the max token limit from tokenizer config
+max_model_token_limit = 1024
 
 
 def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
@@ -42,12 +76,19 @@ def _create_conversation_string(conversation_history: list[dict[str, str]]) -> s
 
 
 class Persona:
-    def __init__(self, model_name: str, name: str, instructions: str = "") -> None:
+    def __init__(
+        self,
+        model_name: str,
+        name: str,
+        instructions: str = "",
+        max_token_limit: int = max_model_token_limit,
+    ) -> None:
         self.name = name
         self.model_name = model_name
         self.instructions = instructions
         self.tokenizer = None
         self.model = None
+        self.max_token_limit = max_token_limit
 
     def generate_reply(self, conversation: Conversation) -> str:
         def _setup_generator() -> None:
@@ -70,14 +111,19 @@ class Persona:
         inputs = self.tokenizer.encode(
             conversation.new_user_input,
             return_tensors="pt",
-            max_length=max_reply_length,
+            max_length=max_model_token_limit,
             truncation=True,
         )
 
+        # Determine a dynamic max_length for the output based on the input length
+        input_length = inputs.size(1)
+        output_max_length = min(
+            input_length + 50, self.max_token_limit
+        )  # Example formula
         # Generate response
         output_sequences = self.model.generate(
             input_ids=inputs,
-            max_length=max_reply_length,
+            max_length=output_max_length,
             pad_token_id=self.tokenizer.eos_token_id,
             do_sample=True,
             top_p=0.95,

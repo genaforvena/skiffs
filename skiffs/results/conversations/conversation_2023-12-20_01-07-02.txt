@@ -16,3 +16,167 @@ tinkoff-ai/ruDialoGPT-medium:  An
 tinkoff-ai/ruDialoGPT-medium: 58.07
 2023-12-20 01:08:37
 tinkoff-ai/ruDialoGPT-medium:  15: 43 AM NO. 154976 File: 1527
+2023-12-20 01:09:02
+microsoft/DialoGPT-large: 53.
+2023-12-20 01:09:18
+microsoft/DialoGPT-large: 4
+2023-12-20 01:09:25
+microsoft/DialoGPT-large: 19,19,230,236,236,273,295,
+2023-12-20 01:09:33
+microsoft/DialoGPT-large: 13
+2023-12-20 01:09:42
+microsoft/DialoGPT-large: 00
+2023-12-20 01:09:53
+microsoft/DialoGPT-large: 19,19,19,230,236,236,273,
+2023-12-20 01:09:57
+microsoft/DialoGPT-large: 19:19 is better!
+2023-12-20 01:10:21
+microsoft/DialoGPT-large:  03: 25 AM File: 152749297588,
+2023-12-20 01:10:27
+microsoft/DialoGPT-small: 05185084
+2023-12-20 01:10:41
+microsoft/DialoGPT-small: 0,2.3,qffm_mvp_totals.png File: 152749297612,0,3.8,quuxx.png File: 152749297612,0,2.9,queen.png File: 152749297612,0,1.0,totals.png File: 152749297776,0,3.4,zotals.png File: 152749300820,0,4.1,chimera_s.png File: 152749300820,0,4.2,pico_pige
+2023-12-20 01:10:44
+microsoft/DialoGPT-small: 0000 00:25 EST
+2023-12-20 01:10:59
+microsoft/DialoGPT-small: 3.33:77.992890,104424 bytes Driver: C:\WINDOWS\system32\DriverStore\FileRepository
+
+v_dispi.inf_amd64_c664f4e17d.inf_amd64_c664f4e17d.exe_0612.inf_amd64_c664f4e17d_amd64.deb_amd64_c664f4e17d.inf_amd64_c664f4e17d.inf_amd64_c664f4e17d_amd64.bin\v_dispi
+2023-12-20 01:11:01
+microsoft/DialoGPT-small: 
+2023-12-20 01:11:06
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:11:13
+microsoft/DialoGPT-small: 
+2023-12-20 01:11:33
+microsoft/DialoGPT-small: e
+2023-12-20 01:11:36
+microsoft/DialoGPT-small: ?
+2023-12-20 01:11:43
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:12:03
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:12:10
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:12:27
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:12:34
+microsoft/DialoGPT-small: 
+2023-12-20 01:12:40
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:12:45
+microsoft/DialoGPT-small: . vpi
+2023-12-20 01:12:52
+microsoft/DialoGPT-small: 
+2023-12-20 01:13:04
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:13:07
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:13:11
+microsoft/DialoGPT-small: !
+2023-12-20 01:13:24
+microsoft/DialoGPT-small: e
+2023-12-20 01:13:28
+microsoft/DialoGPT-small: ?
+2023-12-20 01:13:38
+microsoft/DialoGPT-small: 
+2023-12-20 01:13:46
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:14:17
+microsoft/DialoGPT-small: .avi
+2023-12-20 01:14:27
+microsoft/DialoGPT-small: .bat'1xpdf
+2023-12-20 01:14:40
+microsoft/DialoGPT-small: .bin_varnakey_d776690
+2023-12-20 01:14:57
+microsoft/DialoGPT-small: .exe
+2023-12-20 01:15:04
+microsoft/DialoGPT-small: ?
+2023-12-20 01:15:07
+microsoft/DialoGPT-small: ?
+2023-12-20 01:15:21
+microsoft/DialoGPT-small: . s
+2023-12-20 01:15:28
+microsoft/DialoGPT-small: .png
+2023-12-20 01:15:31
+microsoft/DialoGPT-small:  files?
+2023-12-20 01:15:41
+microsoft/DialoGPT-small: e
+2023-12-20 01:15:47
+microsoft/DialoGPT-small: \v_dispi.inf_amd64_c6
+2023-12-20 01:15:54
+microsoft/DialoGPT-small: _1415_0.exe
+
+v_dispi
+2023-12-20 01:16:05
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:16:11
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:16:16
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:16:19
+microsoft/DialoGPT-small: _c664f4e17d.inf_amd
+2023-12-20 01:16:38
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:16:47
+microsoft/DialoGPT-small: osepprefried
+2023-12-20 01:17:09
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:17:18
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:17:44
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:18:04
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:18:09
+microsoft/DialoGPT-small: !
+2023-12-20 01:18:14
+microsoft/DialoGPT-small: .exe is the whole system32 file?
+2023-12-20 01:18:19
+microsoft/DialoGPT-small: .txt
+2023-12-20 01:18:34
+microsoft/DialoGPT-small: e
+2023-12-20 01:18:55
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:19:06
+microsoft/DialoGPT-small: 
+2023-12-20 01:19:29
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:19:38
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:19:49
+microsoft/DialoGPT-small: ?
+2023-12-20 01:19:53
+microsoft/DialoGPT-small: .png?
+2023-12-20 01:20:05
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:20:14
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:20:20
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:20:28
+microsoft/DialoGPT-small: ue
+2023-12-20 01:20:31
+microsoft/DialoGPT-small: .exe.pdf
+2023-12-20 01:20:50
+microsoft/DialoGPT-small: e
+2023-12-20 01:21:14
+microsoft/DialoGPT-small: 3. 088s3.ini.m3?
+2023-12-20 01:21:21
+microsoft/DialoGPT-small: .inf_amd64_c664f4e17
+2023-12-20 01:21:44
+microsoft/DialoGPT-small: .sh.
+2023-12-20 01:22:03
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:22:16
+microsoft/DialoGPT-small: e
+2023-12-20 01:22:24
+microsoft/DialoGPT-small: ob
+2023-12-20 01:22:32
+microsoft/DialoGPT-small: .html?
+2023-12-20 01:22:43
+microsoft/DialoGPT-small: .inf_amd64_c664f4e
+2023-12-20 01:22:53
+microsoft/DialoGPT-small: ops
+2023-12-20 01:23:12
+microsoft/DialoGPT-small: .invisible.

@@ -1,5 +1,5 @@
 conversation_models = [
-    "KoboldAI/OPT-350M-Erebus",
+    # "KoboldAI/OPT-350M-Erebus", too pornographic
     "EleutherAI/gpt-neo-125M",
     "microsoft/DialoGPT-small",
     "microsoft/DialoGPT-medium",
@@ -10,9 +10,9 @@ conversation_models = [
     # "mywateriswet/ShuanBot",
     "PygmalionAI/pygmalion-350m",
     "satvikag/chatbot",
-    "tinkoff-ai/ruDialoGPT-medium",
+    # "tinkoff-ai/ruDialoGPT-medium", use only in case if ou need some good russia curses
     "gpt2",
-]
+]  # "gpt-neo-125m",
 
 object_detectors = ["microsoft/table-transformer-structure-recognition-v1.1-all"]
 
