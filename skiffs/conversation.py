@@ -11,6 +11,10 @@ import os
 import re
 
 
+def enough_words_in_reply(reply: str) -> bool:
+    return len(reply.split(" ")) >= 4
+
+
 default_conversation_starter = [
     {"role": "user", "content": "Was john coltrane saint and beoynd good and evil?"},
     {
@@ -45,11 +49,10 @@ class Persona:
         self.tokenizer = None
         self.model = None
 
-    def generate_reply(self, conversation: Conversation) -> str | None:
+    def generate_reply(self, conversation: Conversation) -> str:
         def _setup_generator() -> None:
-            # God please forgive me for this
+            # God forgive me for this
             if "dialo" in self.model_name:
-                # TODO: Seems to be a good idea to be able provide different tokenizers and models to different personas
                 padding = "right"  # DialoGPT performs better with padding on the right according to the docs
             else:
                 padding = "left"
@@ -86,11 +89,7 @@ class Persona:
             output_sequences[:, inputs.shape[-1] :][0], skip_special_tokens=True
         )
         _teardown_generator()
-        response_words = response.split(" ")
-        if len(response_words) >= 1:
-            return response + "?"
-        else:
-            return None
+        return response
 
 
 def log(talker: Persona, reply: Dict[str, str]) -> None:
@@ -118,29 +117,57 @@ def _select_speaker(participants: list[Persona]) -> Persona:
     return random.choice(participants)
 
 
+def _random_beckett_once(
+    c: Conversation, talker: Persona, reply: str, _: list[Persona]
+) -> str:
+    if not enough_words_in_reply(reply):
+        log(talker, {"role": "failed_assistant", "content": reply})
+        return read_random_line(
+            os.path.join(
+                os.path.dirname(__file__),
+                "..",
+                "resources",
+                "beckett_trilogy.txt",
+            )
+        )
+    else:
+        return reply
+
+
+def _interagtor(
+    conversation_obj: Conversation, talker: Persona, reply: str, _: list[Persona]
+) -> str:
+    while not enough_words_in_reply(reply):
+        log(talker, {"role": "nothing_else_ever_assistant", "content": reply})
+        reply = talker.generate_reply(conversation_obj)
+    return reply
+
+
+def _anyone_else(
+    conversation_obj: Conversation, talker: Persona, reply: str, _: list[Persona]
+) -> str:
+    while not enough_words_in_reply(reply):
+        log(talker, {"role": "fail_better_worse_again_assistant", "content": reply})
+        random_talker = random.choice(participants)
+        reply = random_talker.generate_reply(conversation_obj)
+    return reply
+
+
 def talk(
     participants: list[Persona],
     conversation_history: list[dict[str, str]],
     conversation_rounds: int = default_max_conversation_length,
     _select_speaker: Callable[[list[Persona]], Persona] = _select_speaker,
+    _select_reply=_random_beckett_once,
 ) -> None:
     for i in range(conversation_rounds):
         conversation_obj = _create_conresation_obj(conversation_history)
         talker = _select_speaker(participants)
-        talker_message = talker.generate_reply(conversation_obj)
-        if talker_message is None:
-            log(talker, {"role": "assistant", "content": "NO RESPONSE"})
-            talker_message = read_random_line(
-                os.path.join(
-                    os.path.dirname(__file__),
-                    "..",
-                    "resources",
-                    "beckett_trilogy.txt",
-                )
-            )
+        reply = talker.generate_reply(conversation_obj)
+        reply = _select_reply(conversation_obj, talker, reply, participants)
         # Determine the role based on the last message in the conversation object```
         role = "user" if i % 2 == 0 else "assistant"
-        new_message = {"role": role, "content": talker_message}
+        new_message = {"role": role, "content": reply}
         conversation_history.append(
             new_message
         )  # Append the new message to the history
@@ -149,10 +176,10 @@ def talk(
 
         # Update the conversation object with the new message
         if role == "user":
-            conversation_obj.add_user_input(talker_message)
+            conversation_obj.add_user_input(reply)
         else:
             conversation_obj.mark_processed()  # Mark the last assistant message as processed
-            conversation_obj.append_response(talker_message)
+            conversation_obj.append_response(reply)
 
 
 def _create_conresation_obj(
@@ -197,4 +224,5 @@ if __name__ == "__main__":
     talk(
         participants=participants,
         conversation_history=default_conversation_starter,
+        _select_reply=_anyone_else,
     )

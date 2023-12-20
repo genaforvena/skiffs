@@ -1,18 +1,17 @@
 conversation_models = [
-    # "EleutherAI/gpt-neo-125M",
-    # "microsoft/DialoGPT-small",
+    "KoboldAI/OPT-350M-Erebus",
+    "EleutherAI/gpt-neo-125M",
+    "microsoft/DialoGPT-small",
     "microsoft/DialoGPT-medium",
     # "facebook/blenderbot-400M-distill",
     "microsoft/DialoGPT-large",
     # "facebook/blenderbot_small-90M",
     # "ToddGoldfarb/Cadet-Tiny",
     # "mywateriswet/ShuanBot",
-    # "PygmalionAI/pygmalion-350m",
-    # "satvikag/chatbot",
-    # "zenham/wail_m_e4_16h_2k",
-    # "tinkoff-ai/ruDialoGPT-medium",
+    "PygmalionAI/pygmalion-350m",
+    "satvikag/chatbot",
+    "tinkoff-ai/ruDialoGPT-medium",
     "gpt2",
-    # "gpt-neo-125m",
 ]
 
 object_detectors = ["microsoft/table-transformer-structure-recognition-v1.1-all"]
