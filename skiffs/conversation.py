@@ -1,4 +1,4 @@
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Tuple
 from numpy import pad
 from torch import ne
 from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
@@ -68,7 +68,7 @@ def conversation_file() -> str:
 
 
 # TODO: Find a way to dynamically determine the max token limit from tokenizer config
-max_model_token_limit = 1024
+MAX_TOKEN_LIMIT = 1024
 
 
 def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
@@ -81,7 +81,9 @@ class Persona:
         model_name: str,
         name: str,
         instructions: str = "",
-        max_token_limit: int = max_model_token_limit,
+        max_token_limit: int = MAX_TOKEN_LIMIT,
+        first_memory="",
+        memories: list[str] = [],
     ) -> None:
         self.name = name
         self.model_name = model_name
@@ -89,6 +91,8 @@ class Persona:
         self.tokenizer = None
         self.model = None
         self.max_token_limit = max_token_limit
+        self.first_memory = first_memory
+        self.memories = memories
 
     def generate_reply(self, conversation: Conversation) -> str:
         def _setup_generator() -> None:
@@ -111,7 +115,7 @@ class Persona:
         inputs = self.tokenizer.encode(
             conversation.new_user_input,
             return_tensors="pt",
-            max_length=max_model_token_limit,
+            max_length=self.max_token_limit,
             truncation=True,
         )
 
@@ -136,6 +140,13 @@ class Persona:
         )
         _teardown_generator()
         return response
+
+    def remember(self, memory: str) -> None:
+        if len(self.first_memory) == 0:
+            self.first_memory = memory
+        self.memories.append(memory)
+        if len(self.memories) > 10:
+            self.memories.pop(0)
 
 
 def log(talker: Persona, reply: Dict[str, str]) -> None:
@@ -165,38 +176,42 @@ def _select_speaker(participants: list[Persona]) -> Persona:
 
 def _random_beckett_once(
     c: Conversation, talker: Persona, reply: str, _: list[Persona]
-) -> str:
+) -> Tuple[str, Persona]:
     if not enough_words_in_reply(reply):
         log(talker, {"role": "failed_assistant", "content": reply})
-        return read_random_line(
-            os.path.join(
-                os.path.dirname(__file__),
-                "..",
-                "resources",
-                "beckett_trilogy.txt",
-            )
+        return (
+            read_random_line(
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "..",
+                    "resources",
+                    "beckett_trilogy.txt",
+                )
+            ),
+            talker,
         )
     else:
-        return reply
+        return reply, talker
 
 
 def _interagtor(
     conversation_obj: Conversation, talker: Persona, reply: str, _: list[Persona]
-) -> str:
+) -> Tuple[str, Persona]:
     while not enough_words_in_reply(reply):
         log(talker, {"role": "nothing_else_ever_assistant", "content": reply})
         reply = talker.generate_reply(conversation_obj)
-    return reply
+    return reply, talker
 
 
 def _anyone_else(
     conversation_obj: Conversation, talker: Persona, reply: str, _: list[Persona]
-) -> str:
+) -> Tuple[str, Persona]:
+    random_talker = talker
     while not enough_words_in_reply(reply):
         log(talker, {"role": "fail_better_worse_again_assistant", "content": reply})
         random_talker = random.choice(participants)
         reply = random_talker.generate_reply(conversation_obj)
-    return reply
+    return reply, random_talker
 
 
 def talk(
@@ -210,7 +225,8 @@ def talk(
         conversation_obj = _create_conresation_obj(conversation_history)
         talker = _select_speaker(participants)
         reply = talker.generate_reply(conversation_obj)
-        reply = _select_reply(conversation_obj, talker, reply, participants)
+        reply, talker = _select_reply(conversation_obj, talker, reply, participants)
+        talker.remember(reply)
         # Determine the role based on the last message in the conversation object```
         role = "user" if i % 2 == 0 else "assistant"
         new_message = {"role": role, "content": reply}
