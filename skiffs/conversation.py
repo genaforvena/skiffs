@@ -69,6 +69,7 @@ def conversation_file() -> str:
 
 # TODO: Find a way to dynamically determine the max token limit from tokenizer config
 MAX_TOKEN_LIMIT = 1024
+MEMORY_RATIO = 0.2
 
 
 def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
@@ -112,13 +113,7 @@ class Persona:
 
         _setup_generator()
         # Tokenize the conversation string
-        inputs = self.tokenizer.encode(
-            conversation.new_user_input,
-            return_tensors="pt",
-            max_length=self.max_token_limit,
-            truncation=True,
-        )
-
+        inputs = self._encode(conversation.new_user_input)
         # Determine a dynamic max_length for the output based on the input length
         input_length = inputs.size(1)
         output_max_length = min(
@@ -135,11 +130,40 @@ class Persona:
         )
 
         # Decode the response
-        response = self.tokenizer.decode(
-            output_sequences[:, inputs.shape[-1] :][0], skip_special_tokens=True
-        )
+        response = self._decode(output_sequences)
+
         _teardown_generator()
         return response
+
+    def _encode(self, text: str) -> list[int]:
+        return self.tokenizer.encode(
+            text,
+            return_tensors="pt",
+            max_length=self.max_token_limit,
+            truncation=True,
+        )
+
+    def _decode(self, tokens: list[int]) -> str:
+        return self.tokenizer.decode(
+            output_sequences[:, tokens.shape[-1] :][0], skip_special_tokens=True
+        )
+
+    def _select_relevant_memory_snippet(self) -> str:
+        # Allocating 80% influence to the first message and 20% to other messages
+        first_message_tokens = self._encode(self.first_memory)
+        other_messages = " ".join(self.memories)
+        other_messages_tokens = self._encode(other_messages)
+
+        # Adjust the number of tokens from first message and other messages based on their respective influence
+        num_tokens_first = int(MAX_TOKEN_LIMIT * MEMORY_RATIO * 0.8)
+        num_tokens_others = int(MAX_TOKEN_LIMIT * MEMORY_RATIO * 0.2)
+
+        truncated_first_tokens = first_message_tokens[-num_tokens_first:]
+        truncated_other_tokens = other_messages_tokens[-num_tokens_others:]
+
+        # Combine and convert back to string
+        combined_memory_tokens = truncated_first_tokens + truncated_other_tokens
+        return self.tokenizer._decode(combined_memory_tokens)
 
     def remember(self, memory: str) -> None:
         if len(self.first_memory) == 0:
