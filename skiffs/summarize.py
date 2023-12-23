@@ -21,9 +21,8 @@ def divide_text(text):
     return chunks
 
 
-def summarize(txt_path: str, model_name: str) -> str:
+def summarize(txt: str, model_name: str) -> str:
     summarizer = pipeline("summarization", model=model_name)
-    txt = open(txt_path, "r").read()
     combined_summary = ""
     for chunk in divide_text(txt):
         chunk_summary = summarizer(
@@ -36,16 +35,12 @@ def summarize(txt_path: str, model_name: str) -> str:
 
 
 if __name__ == "__main__":
+    compression_times = 12
     for model_name in models_to_consider.summarization_models:
-        print(
-            summarize(
-                summarize(
-                    summarize(
-                        "skiffs/results/conversations/conversation_2023-12-23_09-07-03.txtonly_replies",
-                        model_name,
-                    ),
-                    model_name,
-                ),
-                model_name,
-            )
-        )
+        summary = open(
+            "skiffs/results/conversations/conversation_2023-12-23_09-07-03.txtonly_replies",
+            "r",
+        ).read()
+        for i in range(compression_times):
+            summary = summarize(summary, model_name)
+            print("Summary after compression", i + 1, ":", summary)
