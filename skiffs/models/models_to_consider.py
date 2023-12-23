@@ -57,7 +57,8 @@ text_continuators = [
 summarization_models = [
     # "sshleifer/distilbart-cnn-12-6",
     # "facebook/bart-large-cnn",
-    "Falconsai/medical_summarization"
+    "SamAct/PromptGeneration-base",
+    "Falconsai/medical_summarization",
 ]
 
 code_generation_models = [
@@ -65,7 +66,4 @@ code_generation_models = [
     "gpt-neo-125m",
 ]
 
-prompt_generation_models = [
-    "gpt2",
-    "gpt-neo-125m",
-]
+prompt_generation_models = ["gpt2", "gpt-neo-125m", "SamAct/PromptGeneration-base"]
