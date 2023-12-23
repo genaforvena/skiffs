@@ -151,7 +151,10 @@ class Persona:
         )
 
     def _select_relevant_memory_snippet(self) -> str:
-        return self.first_memory
+        if len(self.memories) > 0:
+            return random.choice(self.memories)
+        else:
+            return self.first_memory
 
     def remember(self, memory: str) -> None:
         if len(self.first_memory) == 0:
@@ -180,6 +183,9 @@ def log(talker: Persona, reply: Dict[str, str]) -> None:
     )
     with open(conversation_file(), "a+") as f:
         f.write(conversation_entry + "\n")
+
+    with open(conversation_file() + "only_replies", "a+") as f:
+        f.write(reply["content"] + "\n")
 
 
 def _select_speaker(participants: list[Persona]) -> Persona:
