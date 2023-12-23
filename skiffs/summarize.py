@@ -48,7 +48,7 @@ if __name__ == "__main__":
                 "results/summaries/beckett_trilogy_summary_"
                 + model_name
                 + " compression: "
-                + i
+                + str(i)
                 + ".txt",
                 "w",
             ) as f:
