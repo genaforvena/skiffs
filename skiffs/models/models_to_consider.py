@@ -36,6 +36,10 @@ question_answerers = [
     "google/tapas-base-finetuned-wtq",  # this one might be sql interpreter. not sure
 ]
 
+evaluator_models = [
+    "khalidrizk/autotrain-mental-health-503641204167",
+]
+
 text_continuators = [
     # "KoboldAI/OPT-350M-Erebus",
     # "PygmalionAI/pygmalion-350m",
@@ -52,6 +56,7 @@ text_continuators = [
     "facebook/opt-125M",
     # "facebook/opt-350m",
     # "microsoft/phi-1",
+    # "DarwinAnim8or/GPT-Greentext-355m"
 ]
 
 summarization_models = [
@@ -65,5 +70,16 @@ code_generation_models = [
     "gpt2",
     "gpt-neo-125m",
 ]
+
+instructuct_text_generation_models = [
+    "nicholasKluge/Aira-2-124M-DPO",
+]
+
+text_expansion_models = [
+    "divg07/facebook-bart-large-news",
+    "Cohee/bart-factbook-summarization",
+]
+
+code_explanation_models = ["ashwinR/CodeExplainer"]
 
 prompt_generation_models = ["gpt2", "gpt-neo-125m", "SamAct/PromptGeneration-base"]
