@@ -54,7 +54,11 @@ text_continuators = [
     # "microsoft/phi-1",
 ]
 
-summarization_models = ["sshleifer/distilbart-cnn-12-6", "facebook/bart-large-cnn"]
+summarization_models = [
+    # "sshleifer/distilbart-cnn-12-6",
+    # "facebook/bart-large-cnn",
+    "Falconsai/medical_summarization"
+]
 
 code_generation_models = [
     "gpt2",
