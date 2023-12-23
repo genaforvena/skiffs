@@ -1,6 +1,6 @@
 from typing import Callable, Dict, List, Tuple
 from numpy import pad
-from torch import ne
+from torch import instance_norm, ne
 from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 from models import models_to_consider
@@ -113,7 +113,9 @@ class Persona:
 
         _setup_generator()
         # Tokenize the conversation string
-        inputs = self._encode(conversation.new_user_input)
+        inputs = self._encode(
+            self._select_relevant_memory_snippet() + conversation.new_user_input
+        )
         # Determine a dynamic max_length for the output based on the input length
         input_length = inputs.size(1)
         output_max_length = min(
@@ -130,7 +132,7 @@ class Persona:
         )
 
         # Decode the response
-        response = self._decode(output_sequences)
+        response = self._decode(output_sequences, inputs)
 
         _teardown_generator()
         return response
@@ -143,27 +145,13 @@ class Persona:
             truncation=True,
         )
 
-    def _decode(self, tokens: list[int]) -> str:
+    def _decode(self, output_sequences: list[int], inputs) -> str:
         return self.tokenizer.decode(
-            output_sequences[:, tokens.shape[-1] :][0], skip_special_tokens=True
+            output_sequences[:, inputs.shape[-1] :][0], skip_special_tokens=True
         )
 
     def _select_relevant_memory_snippet(self) -> str:
-        # Allocating 80% influence to the first message and 20% to other messages
-        first_message_tokens = self._encode(self.first_memory)
-        other_messages = " ".join(self.memories)
-        other_messages_tokens = self._encode(other_messages)
-
-        # Adjust the number of tokens from first message and other messages based on their respective influence
-        num_tokens_first = int(MAX_TOKEN_LIMIT * MEMORY_RATIO * 0.8)
-        num_tokens_others = int(MAX_TOKEN_LIMIT * MEMORY_RATIO * 0.2)
-
-        truncated_first_tokens = first_message_tokens[-num_tokens_first:]
-        truncated_other_tokens = other_messages_tokens[-num_tokens_others:]
-
-        # Combine and convert back to string
-        combined_memory_tokens = truncated_first_tokens + truncated_other_tokens
-        return self.tokenizer._decode(combined_memory_tokens)
+        return self.first_memory
 
     def remember(self, memory: str) -> None:
         if len(self.first_memory) == 0:
