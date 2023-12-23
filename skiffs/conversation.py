@@ -1,6 +1,6 @@
 from typing import Callable, Dict, List, Tuple
 from numpy import pad
-from torch import ne
+from torch import instance_norm, ne
 from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 from models import models_to_consider
@@ -69,6 +69,7 @@ def conversation_file() -> str:
 
 # TODO: Find a way to dynamically determine the max token limit from tokenizer config
 MAX_TOKEN_LIMIT = 1024
+MEMORY_RATIO = 0.2
 
 
 def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
@@ -112,13 +113,9 @@ class Persona:
 
         _setup_generator()
         # Tokenize the conversation string
-        inputs = self.tokenizer.encode(
-            conversation.new_user_input,
-            return_tensors="pt",
-            max_length=self.max_token_limit,
-            truncation=True,
+        inputs = self._encode(
+            self._select_relevant_memory_snippet() + conversation.new_user_input
         )
-
         # Determine a dynamic max_length for the output based on the input length
         input_length = inputs.size(1)
         output_max_length = min(
@@ -135,11 +132,29 @@ class Persona:
         )
 
         # Decode the response
-        response = self.tokenizer.decode(
-            output_sequences[:, inputs.shape[-1] :][0], skip_special_tokens=True
-        )
+        response = self._decode(output_sequences, inputs)
+
         _teardown_generator()
         return response
+
+    def _encode(self, text: str) -> list[int]:
+        return self.tokenizer.encode(
+            text,
+            return_tensors="pt",
+            max_length=self.max_token_limit,
+            truncation=True,
+        )
+
+    def _decode(self, output_sequences: list[int], inputs) -> str:
+        return self.tokenizer.decode(
+            output_sequences[:, inputs.shape[-1] :][0], skip_special_tokens=True
+        )
+
+    def _select_relevant_memory_snippet(self) -> str:
+        if len(self.memories) > 0:
+            return random.choice(self.memories)
+        else:
+            return self.first_memory
 
     def remember(self, memory: str) -> None:
         if len(self.first_memory) == 0:
@@ -168,6 +183,9 @@ def log(talker: Persona, reply: Dict[str, str]) -> None:
     )
     with open(conversation_file(), "a+") as f:
         f.write(conversation_entry + "\n")
+
+    with open(conversation_file() + "only_replies", "a+") as f:
+        f.write(reply["content"] + "\n")
 
 
 def _select_speaker(participants: list[Persona]) -> Persona:
