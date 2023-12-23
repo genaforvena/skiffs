@@ -10,7 +10,7 @@ def divide_text(text):
     # create a list to store the chunks
     chunks = []
     # set the chunk size
-    chunk_size = 1000
+    chunk_size = 300
     # loop through the words
     for i in range(0, len(words), chunk_size):
         # create a chunk of 300 words
@@ -40,7 +40,13 @@ if __name__ == "__main__":
     for model_name in models_to_consider.summarization_models:
         print(
             summarize(
-                "skiffs/results/conversations/conversation_2023-12-23_04-07-47.txtonly_replies",
+                summarize(
+                    summarize(
+                        "skiffs/results/conversations/conversation_2023-12-23_05-38-45.txtonly_replies",
+                        model_name,
+                    ),
+                    model_name,
+                ),
                 model_name,
             )
         )

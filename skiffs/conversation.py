@@ -60,7 +60,7 @@ current_directory = os.path.dirname(os.path.realpath(__file__)) + "/"
 log_file = current_directory + "results/logs/conversation.log"
 
 start_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-default_max_conversation_length = 50000
+default_max_conversation_length = 5000
 
 
 def conversation_file() -> str:
@@ -296,13 +296,10 @@ def _create_conresation_obj(
 
 
 if __name__ == "__main__":
-    participants = [
-        Persona(model_name=model_name, name=model_name)
-        for model_name in models_to_consider.conversation_models
-    ]
-
-    talk(
-        participants=participants,
-        conversation_history=default_conversation_starter,
-        _select_reply=_anyone_else,
-    )
+    for model_name in models_to_consider.conversation_models:
+        participants = [Persona(model_name, model_name, max_token_limit=1024)]
+        talk(
+            participants=participants,
+            conversation_history=default_conversation_starter,
+            _select_reply=_anyone_else,
+        )
