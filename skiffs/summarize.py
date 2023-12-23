@@ -26,7 +26,7 @@ def summarize(txt: str, model_name: str) -> str:
     combined_summary = ""
     for chunk in divide_text(txt):
         chunk_summary = summarizer(
-            chunk, max_length=130, min_length=30, do_sample=False
+            chunk, max_length=130, min_length=10, do_sample=False
         )[0]["summary_text"]
         combined_summary += chunk_summary + "\n\n"
         print(chunk_summary)
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     compression_times = 12
     for model_name in models_to_consider.summarization_models:
         summary = open(
-            "skiffs/results/conversations/conversation_2023-12-23_09-07-03.txtonly_replies",
+            "resources/beckett_trilogy.txt",
             "r",
         ).read()
         for i in range(compression_times):

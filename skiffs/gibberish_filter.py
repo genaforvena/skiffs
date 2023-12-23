@@ -60,6 +60,14 @@ def emotions(text):
     return nlp(text)
 
 
+def prompt_injection_detector(text):
+    select_model = "laiyer/deberta-v3-base-prompt-injection"
+    tokenizer = AutoTokenizer.from_pretrained(select_model)
+    model = AutoModelForSequenceClassification.from_pretrained(select_model)
+    nlp = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
+    return nlp(text)
+
+
 if __name__ == "__main__":
     import os
     from summarize import divide_text
