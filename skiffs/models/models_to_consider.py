@@ -1,16 +1,16 @@
 conversation_models = [
     # "KoboldAI/OPT-350M-Erebus", too pornographic
-    "EleutherAI/gpt-neo-125M",
-    "microsoft/DialoGPT-small",
-    "microsoft/DialoGPT-medium",
+    # "EleutherAI/gpt-neo-125M",
+    # "microsoft/DialoGPT-small",
+    # "microsoft/DialoGPT-medium",
     # "facebook/blenderbot-400M-distill",
-    "microsoft/DialoGPT-large",
+    # "microsoft/DialoGPT-large",
     # "facebook/blenderbot_small-90M",
     # "ToddGoldfarb/Cadet-Tiny",
     # "mywateriswet/ShuanBot",
-    "PygmalionAI/pygmalion-350m",
-    "satvikag/chatbot",
-    # "tinkoff-ai/ruDialoGPT-medium", use only in case if ou need some good russia curses
+    # "PygmalionAI/pygmalion-350m",
+    # "satvikag/chatbot",
+    # "tinkoff-ai/ruDialoGPT-medium",
     "gpt2",
 ]  # "gpt-neo-125m",
 

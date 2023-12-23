@@ -75,4 +75,6 @@ if __name__ == "__main__":
     ) as f:
         text = f.read()
         for chunk in divide_text(text):
-            print(emotions(chunk))
+            emotion = emotions(chunk)[0]["label"]
+            if emotion == "joy":
+                print(chunk)
