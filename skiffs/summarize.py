@@ -44,3 +44,12 @@ if __name__ == "__main__":
         for i in range(compression_times):
             summary = summarize(summary, model_name)
             print("Summary after compression", i + 1, ":", summary)
+            with open(
+                "results/summaries/beckett_trilogy_summary_"
+                + model_name
+                + " compression: "
+                + i
+                + ".txt",
+                "w",
+            ) as f:
+                f.write(summary)
