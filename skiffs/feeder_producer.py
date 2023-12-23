@@ -62,12 +62,19 @@ def prompt_generator(prev_prompt, label, last_score) -> str:
     return generator(instruction)[0]["generated_text"][len(instruction) :]
 
 
+def refine_prompt(prompt) -> str:
+    pipe = pipeline("summarization", model="SamAct/PromptGeneration-base")
+    return pipe(prompt)[0]["summary_text"]
+
+
 if __name__ == "__main__":
     score = 0
     prev_prompt = ""
     for i in range(100):
         prompt = prompt_generator(prev_prompt, "joy", score)
         print("Prompt: " + prompt + "\n")
+        refined_prompt = refine_prompt(prompt)
+        print("Refined Prompt: " + refined_prompt + "\n")
         score = emotional_state(prompt, "joy")
         print("Score:" + str(score) + "\n")
         prev_prompt = prompt
