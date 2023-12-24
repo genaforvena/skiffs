@@ -18,13 +18,17 @@ object_detectors = ["microsoft/table-transformer-structure-recognition-v1.1-all"
 
 info_exttractors = ["microsoft/layoutlm-base-uncased"]
 
-sql_interpreters = ["microsoft/tapex-large-sql-execution"]
+sql_interpreters = ["microsoft/tapex-large-sql-execution", "charanhu/text_to_sql_5"]
 
 image_to_text_converters = ["microsoft/git-base-vatex"]
 
 text_classiriers = [
     "distilbert-base-uncased-finetuned-sst-2-english",
     "roberta-large-mnli",
+]
+
+bias_detection_models = [
+    "d4data/bias-detection-model",
 ]
 
 text_transforers = ["sentence-transformers/all-mpnet-base-v2"]
@@ -49,7 +53,7 @@ text_continuators = [
     # "ericzzz/falcon-rw-1b-chat",
     # "deepseek-ai/deepseek-coder-1.3b-instruct",
     "gpt2",
-    # "distilgpt2",
+    "distilgpt2",
     # "facebook/opt-1.3b",
     # "HuggingFaceM4/tiny-random-LlamaForCausalLM",
     # "EleutherAI/gpt-neo-125m",
@@ -57,6 +61,20 @@ text_continuators = [
     # "facebook/opt-350m",
     # "microsoft/phi-1",
     # "DarwinAnim8or/GPT-Greentext-355m"
+    "nicholasKluge/Aira-OPT-125M",
+    "yukiarimo/Uta-AI",
+    "yukiarimo/Gen-AI",
+    "dannoncaffeine/GPT2-124M-wikitext-v0.1",
+    "bigscience/bloom",
+    "",
+]
+
+text_to_image_models = [
+    "dalle-mini/dalle-mini",
+]
+
+key_word_extractors = [
+    "transformer3/H1-keywordextractor",
 ]
 
 summarization_models = [
@@ -64,6 +82,7 @@ summarization_models = [
     # "facebook/bart-large-cnn",
     # "SamAct/PromptGeneration-base",
     "Falconsai/medical_summarization",
+    "KoalaAI/ChatSum-Large",
 ]
 
 reward_models = [
