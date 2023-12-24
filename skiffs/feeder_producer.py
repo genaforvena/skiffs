@@ -49,6 +49,7 @@ class PromptGenerator:
         self._best_score = 0
         self._prev_prompt = ""
         self._prev_score = 0
+        self.refinement_rounds = 3
 
     def prompt_generator(self, label) -> str:
         generator = pipeline(
@@ -76,7 +77,9 @@ class PromptGenerator:
 
     def _refine_prompt(self, prompt) -> str:
         pipe = pipeline("summarization", model="SamAct/PromptGeneration-base")
-        return pipe(prompt)[0]["summary_text"]
+        prompt = pipe(prompt)[0]["summary_text"]
+        for i in range(self._refinement_rounds):
+            prompt = pipe(prompt)[0]["summary_text"]
 
     def store_result(self, prompt: str, score: float):
         self._prev_prompt = prompt

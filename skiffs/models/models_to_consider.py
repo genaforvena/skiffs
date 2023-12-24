@@ -66,6 +66,10 @@ summarization_models = [
     "Falconsai/medical_summarization",
 ]
 
+reward_models = [
+    "nicholasKluge/RewardModel",
+]
+
 code_generation_models = [
     "gpt2",
     "gpt-neo-125m",
