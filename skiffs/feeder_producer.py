@@ -46,12 +46,13 @@ def emotional_state(text: str, label: str) -> tuple[str, float]:
 class PromptGenerator:
     def __init__(self):
         self._best_prompt = ""
-        self.best_score = 0
+        self._best_score = 0
 
     def prompt_generator(self, prev_prompt, label, last_score) -> str:
         generator = pipeline(
             task="text-generation",
             model="gpt2",
+            max_length=150,
         )
         instruction = (
             "Last prompt was"
@@ -77,9 +78,9 @@ class PromptGenerator:
         pipe = pipeline("summarization", model="SamAct/PromptGeneration-base")
         return pipe(prompt)[0]["summary_text"]
 
-    def store_result(self, prompt, score):
-        if score > self.best_score:
-            self.best_score = score
+    def store_result(self, prompt: str, score: float):
+        if score > self._best_score:
+            self._best_score = score
             self._best_prompt = prompt
 
 
@@ -92,5 +93,5 @@ if __name__ == "__main__":
         print("Prompt:" + prompt + "\n")
         score = emotional_state(prompt, "joy")
         print("Score:" + str(score) + "\n")
-        prompt_generator.store_result(prompt, score)
+        prompt_generator.store_result(prompt, score[1])
         prev_prompt = prompt
