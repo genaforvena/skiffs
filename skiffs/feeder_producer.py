@@ -58,9 +58,9 @@ class PromptGenerator:
             max_length=1024,
         )
         instruction = (
-            "Last prompt was"
+            "Last prompt was:\n"
             + str(self._prev_prompt)
-            + "to maximize "
+            + " to maximize "
             + label
             + ".\n"
             + "The score was "
