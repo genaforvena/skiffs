@@ -35,7 +35,7 @@ def summarize(txt: str, model_name: str) -> str:
 
 
 if __name__ == "__main__":
-    compression_times = 12
+    compression_times = 4
     for model_name in models_to_consider.summarization_models:
         print("Model:", model_name)
         print("Compressing")
@@ -47,9 +47,9 @@ if __name__ == "__main__":
             summary = summarize(summary, model_name)
             print("Summary after compression", i + 1, ":", summary)
             with open(
-                "results/summaries/beckett_trilogy_summary_"
-                + str(model_name.split("/")[0])
-                + " compression: "
+                "skiffs/results/summaries/beckett_trilogy_summary_"
+                + str(model_name.split("/")[-1])
+                + "_compression_"
                 + str(i)
                 + ".txt",
                 "w",

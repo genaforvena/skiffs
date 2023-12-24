@@ -43,38 +43,54 @@ def emotional_state(text: str, label: str) -> tuple[str, float]:
     return label, 0.0
 
 
-def prompt_generator(prev_prompt, label, last_score) -> str:
-    generator = pipeline(
-        task="text-generation",
-        model="gpt2",
-    )
-    instruction = (
-        "You've tried with "
-        + str(prev_prompt)
-        + "to maximize "
-        + label
-        + ".\n"
-        + "The score was "
-        + str(last_score)
-        + ". \n"
-        + " Here is adjusted prompt: "
-    )
-    return generator(instruction)[0]["generated_text"][len(instruction) :]
+class PromptGenerator:
+    def __init__(self):
+        self._best_prompt = ""
+        self.best_score = 0
 
+    def prompt_generator(self, prev_prompt, label, last_score) -> str:
+        generator = pipeline(
+            task="text-generation",
+            model="gpt2",
+        )
+        instruction = (
+            "Last prompt was"
+            + str(prev_prompt)
+            + "to maximize "
+            + label
+            + ".\n"
+            + "The score was "
+            + str(last_score)
+            + ". \n"
+            + "The best prompt was "
+            + self._best_prompt
+            + ".\n"
+            + " Here is adjusted prompt: "
+        )
+        first_model_prompt = generator(instruction)[0]["generated_text"][
+            len(instruction) :
+        ]
+        print("Initil prompt:" + first_model_prompt + "\n")
+        return self._refine_prompt(first_model_prompt)
 
-def refine_prompt(prompt) -> str:
-    pipe = pipeline("summarization", model="SamAct/PromptGeneration-base")
-    return pipe(prompt)[0]["summary_text"]
+    def _refine_prompt(self, prompt) -> str:
+        pipe = pipeline("summarization", model="SamAct/PromptGeneration-base")
+        return pipe(prompt)[0]["summary_text"]
+
+    def store_result(self, prompt, score):
+        if score > self.best_score:
+            self.best_score = score
+            self._best_prompt = prompt
 
 
 if __name__ == "__main__":
     score = 0
     prev_prompt = ""
+    prompt_generator = PromptGenerator()
     for i in range(100):
-        prompt = prompt_generator(prev_prompt, "joy", score)
-        print("Prompt: " + prompt + "\n")
-        refined_prompt = refine_prompt(prompt)
-        print("Refined Prompt: " + refined_prompt + "\n")
+        prompt = prompt_generator.prompt_generator(prev_prompt, "joy", score)
+        print("Prompt:" + prompt + "\n")
         score = emotional_state(prompt, "joy")
         print("Score:" + str(score) + "\n")
+        prompt_generator.store_result(prompt, score)
         prev_prompt = prompt

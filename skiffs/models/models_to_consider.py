@@ -60,9 +60,9 @@ text_continuators = [
 ]
 
 summarization_models = [
-    # "sshleifer/distilbart-cnn-12-6",
+    "sshleifer/distilbart-cnn-12-6",
     # "facebook/bart-large-cnn",
-    "SamAct/PromptGeneration-base",
+    # "SamAct/PromptGeneration-base",
     "Falconsai/medical_summarization",
 ]
 
