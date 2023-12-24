@@ -47,30 +47,30 @@ class PromptGenerator:
     def __init__(self):
         self._best_prompt = ""
         self._best_score = 0
+        self._prev_prompt = ""
+        self._prev_score = 0
 
-    def prompt_generator(self, prev_prompt, label, last_score) -> str:
+    def prompt_generator(self, label) -> str:
         generator = pipeline(
             task="text-generation",
             model="gpt2",
-            max_length=150,
+            max_length=1024,
         )
         instruction = (
             "Last prompt was"
-            + str(prev_prompt)
+            + str(self._prev_prompt)
             + "to maximize "
             + label
             + ".\n"
             + "The score was "
-            + str(last_score)
+            + str(self._prev_score)
             + ". \n"
             + "The best prompt was "
             + self._best_prompt
             + ".\n"
-            + " Here is adjusted prompt: "
+            + "According to that here is adjusted prompt: "
         )
-        first_model_prompt = generator(instruction)[0]["generated_text"][
-            len(instruction) :
-        ]
+        first_model_prompt = generator(instruction)[0]["generated_text"]
         print("Initil prompt:" + first_model_prompt + "\n")
         return self._refine_prompt(first_model_prompt)
 
@@ -79,6 +79,8 @@ class PromptGenerator:
         return pipe(prompt)[0]["summary_text"]
 
     def store_result(self, prompt: str, score: float):
+        self._prev_prompt = prompt
+        self._prev_prompt = score
         if score > self._best_score:
             self._best_score = score
             self._best_prompt = prompt
@@ -89,7 +91,7 @@ if __name__ == "__main__":
     prev_prompt = ""
     prompt_generator = PromptGenerator()
     for i in range(100):
-        prompt = prompt_generator.prompt_generator(prev_prompt, "joy", score)
+        prompt = prompt_generator.prompt_generator("joy")
         print("Prompt:" + prompt + "\n")
         score = emotional_state(prompt, "joy")
         print("Score:" + str(score) + "\n")
