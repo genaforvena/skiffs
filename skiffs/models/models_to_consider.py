@@ -78,11 +78,11 @@ key_word_extractors = [
 ]
 
 summarization_models = [
-    "sshleifer/distilbart-cnn-12-6",
-    # "facebook/bart-large-cnn",
-    # "SamAct/PromptGeneration-base",
-    "Falconsai/medical_summarization",
+    # "sshleifer/distilbart-cnn-12-6",
     "KoalaAI/ChatSum-Large",
+    "Falconsai/medical_summarization",
+    # "facebook/bart-large-cnn",
+    "SamAct/PromptGeneration-base",
 ]
 
 reward_models = [
