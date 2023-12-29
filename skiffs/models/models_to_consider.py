@@ -45,9 +45,9 @@ evaluator_models = [
 ]
 
 text_continuators = [
-    # "KoboldAI/OPT-350M-Erebus", # quite pornographic
-    # "a686d380/rwkv-5-h-world", also very pornographic but in chinese
-    # "PygmalionAI/pygmalion-350m",
+    "KoboldAI/OPT-350M-Erebus",  # quite pornographic
+    # does not have config.json by default, lazy dig more "a686d380/rwkv-5-h-world",  # also very pornographic but in chinese
+    "PygmalionAI/pygmalion-350m",
     # "bigscience/bloomz-560m",
     # "cmarkea/bloomz-560m-sft-chat",
     # "L-R/LLmRa-1.3B",
@@ -61,13 +61,13 @@ text_continuators = [
     # "facebook/opt-125M",
     # "facebook/opt-350m",
     # "microsoft/phi-1",
-    # "DarwinAnim8or/GPT-Greentext-355m"
-    # "nicholasKluge/Aira-OPT-125M",
-    # "yukiarimo/Uta-AI",
-    # "yukiarimo/Gen-AI",
-    # "dannoncaffeine/GPT2-124M-wikitext-v0.1",
+    "DarwinAnim8or/GPT-Greentext-355m",
+    "nicholasKluge/Aira-OPT-125M",
+    "yukiarimo/Uta-AI",
+    "yukiarimo/Gen-AI",
+    "dannoncaffeine/GPT2-124M-wikitext-v0.1",
     # couldnt run with GPTNeoXTokenizer failing import "Q-bert/Mamba-1B",
-    "charent/Phi2-Chinese-0.2B",
+    # failed to talk in default mode for me even in chinese "charent/Phi2-Chinese-0.2B",
     # couldnt run "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3TTinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
 ]
 

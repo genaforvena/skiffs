@@ -19,6 +19,56 @@ def enough_words_in_reply(reply: str) -> bool:
     return len(reply.split(" ")) >= 4
 
 
+onlyfans_conversation_starter = [
+    {"role": "user", "content": "Do clouds ever feel lonely in the vast sky?"},
+    {
+        "role": "assistant",
+        "content": "Perhaps they do, drifting along like solitary ships on an endless ocean of blue.",
+    },
+    {"role": "user", "content": "Is the moon a secret keeper of the night's whispers?"},
+    {
+        "role": "assistant",
+        "content": "Indeed, it listens to the hushed tales of stars and the silent songs of the nocturnal world.",
+    },
+    {
+        "role": "user",
+        "content": "Can a melody paint the colors of a sunset in our minds?",
+    },
+    {
+        "role": "assistant",
+        "content": "Absolutely, each note a brushstroke of hues, crafting a visual symphony in our imagination.",
+    },
+    {"role": "user", "content": "Are shadows the earth's way of holding memories?"},
+    {
+        "role": "assistant",
+        "content": "In a way, yes. Each shadow is a fleeting imprint, a gentle reminder of moments past.",
+    },
+    {
+        "role": "user",
+        "content": "Do trees whisper secrets to each other through their roots?",
+    },
+    # Adding new entries based on the OnlyFans messaging guide
+    {
+        "role": "assistant",
+        "content": "Welcome to my space! I'm thrilled to have you here. Let's embark on an exciting journey together!",
+    },
+    {
+        "role": "assistant",
+        "content": "Have you checked out my latest PPV content? It's something special that I've prepared just for you. Don't miss out!",
+    },
+    {
+        "role": "assistant",
+        "content": "What do you enjoy most about my content? I'm curious to know your thoughts!",
+    },
+    {
+        "role": "assistant",
+        "content": "Here's a special offer for you! Be the first to reply and get a custom video for free!",
+    },
+    {
+        "role": "assistant",
+        "content": "I've got exciting news! I'm now offering a new service on my OnlyFans. Stay tuned for more details!",
+    },
+]
 default_conversation_starter = [
     {"role": "user", "content": "Do clouds ever feel lonely in the vast sky?"},
     {
@@ -102,7 +152,6 @@ class Persona:
 
     def generate_reply(self, conversation: Conversation) -> str:
         def _setup_generator() -> None:
-            print("Model: " + self.model_name)
             # God forgive me for this
             if "dialo" in self.model_name:
                 padding = "right"  # DialoGPT performs better with padding on the right according to the docs
