@@ -19,6 +19,7 @@ Heads up, the only scripts that are currently in working order are:
 - `skiffs/feeder_producer.py`
 
 Mostly, I code at night and don't always keep a tight ship with things like quoting styles and such. So, the repo can be a bit of a mess. If anyone's keen to jump in or spots a nightmare, I'm all for fixing things up together. Just give me a shout!
+Also, I intentionally keep model and scenario run results under git. If you have results you'd like to share, that's great! Just be aware that the current directory structure for results might meremost not be ideal, and I'm considering reorganizing it. If you're interested in collaborating or have ideas for improvements, I'm all ears!
 ### Components
 - **Context Keeper LLM**: Maintains the overarching narrative and context, adapting to the non-linear inputs and outputs of other modules.
 - **Rhizomatic Clarifiers**: These are non-domain-specific LMs that transform language in innovative, non-linear ways, breaking away from conventional patterns.
