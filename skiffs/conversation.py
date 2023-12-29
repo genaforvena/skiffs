@@ -361,6 +361,6 @@ if __name__ == "__main__":
     for _ in range(DEFAULT_CONVERSATION_LENGTH):
         talk(
             participants=participants,
-            conversation_history=default_conversation_starter,
+            conversation_history=onlyfans_conversation_starter,
             _select_reply=_anyone_else,
         )
