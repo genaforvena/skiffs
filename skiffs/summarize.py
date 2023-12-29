@@ -2,23 +2,15 @@ from transformers import pipeline
 from datetime import datetime
 
 from models import models_to_consider
-import textwrap
 
 
 def divide_text(text):
-    # split the text into words
     words = text.split()
-    # create a list to store the chunks
     chunks = []
-    # set the chunk size
     chunk_size = 300
-    # loop through the words
     for i in range(0, len(words), chunk_size):
-        # create a chunk of 300 words
         chunk = words[i : i + chunk_size]
-        # add the chunk to the list
         chunks.append(" ".join(chunk))
-    # return the list of chunks
     return chunks
 
 

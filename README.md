@@ -10,6 +10,15 @@ The guiding philosophy is informed by two key principles:
 
 ## Architecture
 The system consists of multiple smaller LMs, each serving as a node in a non-hierarchical network. These nodes collaborate in a rhizomatic structure, refining and transforming language outputs.
+
+## Usage
+Heads up, the only scripts that are currently in working order are:
+
+- `skiffs/conversation.py`
+- `skiffs/summarize.py`
+- `skiffs/feeder_producer.py`
+
+Mostly, I code at night and don't always keep a tight ship with things like quoting styles and such. So, the repo can be a bit of a mess. If anyone's keen to jump in or spots a nightmare, I'm all for fixing things up together. Just give me a shout!
 ### Components
 - **Context Keeper LLM**: Maintains the overarching narrative and context, adapting to the non-linear inputs and outputs of other modules.
 - **Rhizomatic Clarifiers**: These are non-domain-specific LMs that transform language in innovative, non-linear ways, breaking away from conventional patterns.
