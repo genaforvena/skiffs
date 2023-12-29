@@ -81,10 +81,10 @@ key_word_extractors = [
 
 summarization_models = [
     # "sshleifer/distilbart-cnn-12-6",
+    "SamAct/PromptGeneration-base",  # this is not a summarization model but somehow produces my favorite results
     "KoalaAI/ChatSum-Large",
     "Falconsai/medical_summarization",
     # "facebook/bart-large-cnn",
-    "SamAct/PromptGeneration-base",
 ]
 
 reward_models = [

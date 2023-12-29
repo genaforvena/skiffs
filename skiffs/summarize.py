@@ -1,4 +1,5 @@
 from transformers import pipeline
+from datetime import datetime
 
 from models import models_to_consider
 import textwrap
@@ -35,7 +36,7 @@ def summarize(txt: str, model_name: str) -> str:
 
 
 if __name__ == "__main__":
-    compression_times = 4
+    compression_times = 10
     for model_name in models_to_consider.summarization_models:
         print("Model:", model_name)
         print("Compressing")
@@ -51,6 +52,7 @@ if __name__ == "__main__":
                 + str(model_name.split("/")[-1])
                 + "_compression_"
                 + str(i)
+                + str(datetime.now())
                 + ".txt",
                 "w",
             ) as f:
