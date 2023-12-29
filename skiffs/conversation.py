@@ -1,13 +1,18 @@
-from typing import Callable, Dict, List, Tuple
-from numpy import pad
-from torch import instance_norm, ne
-from transformers import Conversation, AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
-from models import models_to_consider
-from util.text_utils import read_random_line
-import random
 import os
+import random
 import re
+from typing import Callable, Dict, List, Tuple
+
+from torch import instance_norm
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    Conversation,
+)
+
+from models import models_to_consider, mamba
+from util.text_utils import read_random_line
 
 
 def enough_words_in_reply(reply: str) -> bool:
@@ -60,7 +65,6 @@ current_directory = os.path.dirname(os.path.realpath(__file__)) + "/"
 log_file = current_directory + "results/logs/conversation.log"
 
 start_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-default_max_conversation_length = 5000
 
 
 def conversation_file() -> str:
@@ -70,6 +74,7 @@ def conversation_file() -> str:
 # TODO: Find a way to dynamically determine the max token limit from tokenizer config
 MAX_TOKEN_LIMIT = 1024
 MEMORY_RATIO = 0.2
+DEFAULT_CONVERSATION_LENGTH = 5000
 
 
 def _create_conversation_string(conversation_history: list[dict[str, str]]) -> str:
@@ -97,9 +102,13 @@ class Persona:
 
     def generate_reply(self, conversation: Conversation) -> str:
         def _setup_generator() -> None:
+            print("Model: " + self.model_name)
             # God forgive me for this
             if "dialo" in self.model_name:
                 padding = "right"  # DialoGPT performs better with padding on the right according to the docs
+            # God is dead, that is what Jesus said
+            elif "mamba" in self.model_name:
+                return mamba.mamba_reply(conversation.new_user_input)
             else:
                 padding = "left"
             self.tokenizer = AutoTokenizer.from_pretrained(
@@ -235,7 +244,7 @@ def _anyone_else(
 def talk(
     participants: list[Persona],
     conversation_history: list[dict[str, str]],
-    conversation_rounds: int = default_max_conversation_length,
+    conversation_rounds: int = DEFAULT_CONVERSATION_LENGTH,
     _select_speaker: Callable[[list[Persona]], Persona] = _select_speaker,
     _select_reply=_random_beckett_once,
 ) -> None:
@@ -264,7 +273,7 @@ def talk(
 
 def _create_conresation_obj(
     conversation: List[Dict[str, str]],
-    max_length: int = default_max_conversation_length,
+    max_length: int = DEFAULT_CONVERSATION_LENGTH,
 ) -> Conversation:
     # Helper function to get the first sentence
     def get_first_sentence(text: str) -> str:
@@ -296,8 +305,11 @@ def _create_conresation_obj(
 
 
 if __name__ == "__main__":
-    for model_name in models_to_consider.conversation_models:
-        participants = [Persona(model_name, model_name, max_token_limit=1024)]
+    participants = [
+        Persona(model_name, model_name, max_token_limit=1024)
+        for model_name in models_to_consider.text_continuators
+    ]
+    for _ in range(DEFAULT_CONVERSATION_LENGTH):
         talk(
             participants=participants,
             conversation_history=default_conversation_starter,
