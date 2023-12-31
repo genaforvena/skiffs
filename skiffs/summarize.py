@@ -51,7 +51,7 @@ class Summarizer:
     def summarize(self, txt: str) -> str:
         summarizer = pipeline("summarization", model=self.model_name)
         self._add_output(self.model_name, "detailed")
-        self._add_output(self.model_name, "result")
+        summary_filename = self._add_output(self.model_name, "result")
 
         combined_summary = ""
         for chunk in divide_text(txt):
@@ -62,7 +62,7 @@ class Summarizer:
             combined_summary += chunk_summary + "\n\n"
 
             self._log("\n\nSummary: \n" + chunk_summary + "\n\n\n\n")
-            self._log(chunk_summary + "\n", "result", False)
+            self._log(chunk_summary + "\n", summary_filename, False)
 
         return combined_summary
 
