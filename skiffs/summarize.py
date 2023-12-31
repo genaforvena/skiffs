@@ -96,11 +96,12 @@ def divide_text(text: str, chunk_size: int = 256) -> List[str]:
 
 if __name__ == "__main__":
     compression_times = 10
+    src = "resources/gospel.txt"
     for model_name in models_to_consider.summarization_models:
         print("Model:", model_name)
-        print("Compressing")
+        print("Compressing " + src)
         summary = open(
-            "resources/divine_comedy.txt",
+            src,
             "r",
         ).read()
         for i in range(compression_times):
