@@ -130,7 +130,7 @@ def divide_text(text: str, chunk_size: int = 256) -> List[str]:
 
 if __name__ == "__main__":
     compression_times = 1
-    src = "resources/worstward_hoe.txt"
+    src = "resources/the_real_trial_doc.txt"
     for model_name in models_to_consider.summarization_models:
         print("Model:", model_name)
         print("Compressing " + src)
