@@ -86,8 +86,6 @@ summarization_models = [
     "Falconsai/medical_summarization",
     "facebook/bart-large-cnn",
     "transformer3/H1-keywordextractor",
-    "sentence-transformers/all-mpnet-base-v2",
-    "nicholasKluge/Aira-2-124M-DPO",
     "ashwinR/CodeExplainer",
 ]
 
