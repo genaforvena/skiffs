@@ -71,10 +71,10 @@ class MergeSummarizer(Summarizer):
     def __init__(self, model_name: str) -> None:
         super().__init__(model_name)
         self.simple_summarize = super().summarize
-        self.merged_summary_file_name = self._add_output(self.model_name, "merged")
 
     def merge_summarize(self, texts: List[str]) -> str:
         summarizer = pipeline("summarization", model=self.model_name)
+        merged_summary_file_name = self._add_output(self.model_name, "merged")
         while len(texts) > 1:
             merged_texts = []
             for i in range(0, len(texts), 4):
@@ -87,9 +87,7 @@ class MergeSummarizer(Summarizer):
                 )[0]["summary_text"]
                 merged_texts.append(merged_summary)
                 self._log("\n\nMerged Summary: \n" + merged_summary + "\n\n\n\n")
-                self._log(
-                    "\n" + merged_summary + "\n", self.merged_summary_file_name, False
-                )
+                self._log("\n" + merged_summary + "\n", merged_summary_file_name, False)
             texts = merged_texts
         return texts[0]
 
