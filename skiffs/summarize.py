@@ -1,4 +1,5 @@
 import os
+import argparse
 from transformers import pipeline
 from datetime import datetime
 from typing import List
@@ -129,9 +130,36 @@ def divide_text(text: str, chunk_size: int = 256) -> List[str]:
 
 
 if __name__ == "__main__":
+    args = argparse.ArgumentParser()
+    args.add_argument(
+        "-src",
+        type=str,
+        help="Source file or directory to summarize. If directory, all files less than 100kb will be summarized.",
+    )
+    args.add_argument(
+        "--code-summarization",
+        type=bool,
+        help="Summarize code instead of text",
+        default=False,
+    )
     compression_times = 1
-    src = "resources/the_real_trial_doc.txt"
-    for model_name in models_to_consider.summarization_models:
+    src = args.parse_args().src
+    src = os.path.abspath(src)
+    if os.path.isdir(src):
+        # Read all files less than 100kb in the directory recoursevly and make a huge text out of them without any order
+        print("Compressing directory " + src)
+        summary = ""
+        for root, dirs, files in os.walk(src):
+            for file in files:
+                if os.path.getsize(os.path.join(root, file)) < 100000:
+                    summary += open(os.path.join(root, file), "r").read()
+
+    if args.parse_args().code_summarization:
+        models = models_to_consider.code_explanation_models
+    else:
+        models = models_to_consider.summarization_models
+
+    for model_name in models:
         print("Model:", model_name)
         print("Compressing " + src)
         summary = open(
