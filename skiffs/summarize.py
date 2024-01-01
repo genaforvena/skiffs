@@ -67,6 +67,35 @@ class Summarizer:
         return combined_summary
 
 
+class MergeSummarizer(Summarizer):
+    def __init__(self, model_name: str) -> None:
+        super().__init__(model_name)
+        self.simple_summarize = super().summarize
+
+    def merge_summarize(self, texts: List[str]) -> str:
+        summarizer = pipeline("summarization", model=self.model_name)
+        while len(texts) > 1:
+            merged_texts = []
+            for i in range(0, len(texts), 2):
+                combined_text = texts[i]
+                if i + 1 < len(texts):
+                    combined_text += "\n\n" + texts[i + 1]
+                self._log("Merging and summarizing: \n" + combined_text)
+                merged_summary = summarizer(
+                    combined_text, max_length=100, min_length=10, do_sample=False
+                )[0]["summary_text"]
+                merged_texts.append(merged_summary)
+                self._log("\n\nMerged Summary: \n" + merged_summary + "\n\n\n\n")
+            texts = merged_texts
+        return texts[0]
+
+    def summarize(self, txt: str) -> str:
+        chunks = divide_text(txt)
+        initial_summaries = [self.simple_summarize(chunk) for chunk in chunks]
+        final_summary = self.merge_summarize(initial_summaries)
+        return final_summary
+
+
 def divide_text(text: str, chunk_size: int = 256) -> List[str]:
     words = text.split()
     chunks = []
@@ -95,8 +124,8 @@ def divide_text(text: str, chunk_size: int = 256) -> List[str]:
 
 
 if __name__ == "__main__":
-    compression_times = 5
-    src = "resources/the_real_trial_doc.txt"
+    compression_times = 1
+    src = "resources/beckett_trilogy.txt"
     for model_name in models_to_consider.summarization_models:
         print("Model:", model_name)
         print("Compressing " + src)
@@ -105,5 +134,5 @@ if __name__ == "__main__":
             "r",
         ).read()
         for i in range(compression_times):
-            summarizator = Summarizer(model_name)
+            summarizator = MergeSummarizer(model_name)
             summary = summarizator.summarize(summary)
