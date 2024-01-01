@@ -57,7 +57,7 @@ class Summarizer:
         for chunk in divide_text(txt):
             self._log("Summarizing: " + chunk)
             chunk_summary = summarizer(
-                chunk, max_length=25, min_length=4, do_sample=False
+                chunk, max_length=36, min_length=4, do_sample=False
             )[0]["summary_text"]
             combined_summary += chunk_summary + "\n\n"
 
@@ -95,8 +95,8 @@ def divide_text(text: str, chunk_size: int = 256) -> List[str]:
 
 
 if __name__ == "__main__":
-    compression_times = 10
-    src = "resources/gospel.txt"
+    compression_times = 5
+    src = "resources/the_real_trial_doc.txt"
     for model_name in models_to_consider.summarization_models:
         print("Model:", model_name)
         print("Compressing " + src)
