@@ -6,10 +6,13 @@ from typing import List
 
 from models import models_to_consider
 
+# It will never be 42!
+DEFAULT_SUMMARY_MIN_LENGTH = 41
+
 
 class Summarizer:
-    def __init__(self, model_name: str) -> None:
-        self.model_name = model_name
+    def __init__(self, summarization_model_name: str) -> None:
+        self.summarization_model_name = summarization_model_name
         self.creation_time = datetime.now()
         self.outputs = []
 
@@ -33,7 +36,7 @@ class Summarizer:
             "summary_of_"
             + source_name.split("/")[-1]
             + "by_"
-            + self.model_name
+            + self.summarization_model_name
             + "_"
             + postfix
             + "_at_"
@@ -49,10 +52,13 @@ class Summarizer:
         self.outputs.append(output_file_name)
         return output_file_name
 
-    def summarize(self, txt: str) -> str:
-        summarizer = pipeline("summarization", model=self.model_name)
-        self._add_output(self.model_name, "detailed")
-        summary_filename = self._add_output(self.model_name, "result")
+    # At this point any pings of shame in me are gone and the code is ugly
+    NOT_USED = 0
+
+    def summarize(self, txt: str, min_length: int = NOT_USED) -> str:
+        summarizer = pipeline("summarization", model=self.summarization_model_name)
+        self._add_output(self.summarization_model_name, "detailed")
+        summary_filename = self._add_output(self.summarization_model_name, "result")
 
         combined_summary = ""
         for chunk in divide_text(txt):
@@ -73,13 +79,17 @@ class MergeSummarizer(Summarizer):
         super().__init__(model_name)
         self.simple_summarize = super().summarize
 
-    def merge_summarize(self, texts: List[str]) -> str:
-        summarizer = pipeline("summarization", model=self.model_name)
-        merged_summary_file_name = self._add_output(self.model_name, "merged")
+    def merge_summarize(self, texts: List[str], summary_min_length: int) -> str:
+        summarizer = pipeline("summarization", model=self.summarization_model_name)
+        merged_summary_file_name = self._add_output(
+            self.summarization_model_name, "merged"
+        )
         iteration = 0
-        while len(texts) > 1:
+        while len(" ".join(texts)) > summary_min_length:
             merged_texts = []
-            self._log("Iteration " + str(iteration) + "\n\n", merged_summary_file_name)
+            self._log(
+                "\n\n\n\nIteration " + str(iteration) + "\n\n", merged_summary_file_name
+            )
             for i in range(0, len(texts), 4):
                 combined_text = texts[i]
                 if i + 1 < len(texts):
@@ -95,10 +105,26 @@ class MergeSummarizer(Summarizer):
             iteration += 1
         return texts[0]
 
-    def summarize(self, txt: str) -> str:
+    def summarize(self, txt: str, min_summary_length: int) -> str:
         chunks = divide_text(txt)
         initial_summaries = [self.simple_summarize(chunk) for chunk in chunks]
-        final_summary = self.merge_summarize(initial_summaries)
+        final_summary = self.merge_summarize(initial_summaries, min_summary_length)
+        return final_summary
+
+
+class KeywordAwareMergeSummarizer(MergeSummarizer):
+    def __init__(self, model_name: str) -> None:
+        super().__init__(model_name)
+        self.keyword_aware_summarize = super().summarize
+
+    def summarize(self, txt: str, min_summary_length: int) -> str:
+        summarizer = pipeline("summarization", model=self.summarization_model_name)
+        keywords = summarizer(txt, max_length=100, min_length=10, do_sample=False)[0][
+            "summary_text"
+        ]
+        chunks = divide_text(txt)
+        initial_summaries = [self.simple_summarize(chunk) for chunk in chunks]
+        final_summary = self.merge_summarize(initial_summaries, min_summary_length)
         return final_summary
 
 
@@ -142,7 +168,12 @@ if __name__ == "__main__":
         help="Summarize code instead of text",
         default=False,
     )
-    compression_times = 1
+    args.add_argument(
+        "--min-length",
+        type=int,
+        help="Minimum length of summary",
+        default=DEFAULT_SUMMARY_MIN_LENGTH,
+    )
     src = args.parse_args().src
     src = os.path.abspath(src)
     if os.path.isdir(src):
@@ -155,17 +186,17 @@ if __name__ == "__main__":
                     summary += open(os.path.join(root, file), "r").read()
 
     if args.parse_args().code_summarization:
-        models = models_to_consider.code_explanation_models
+        models_for_summarization = models_to_consider.code_explanation_models
     else:
-        models = models_to_consider.summarization_models
+        models_for_summarization = models_to_consider.summarization_models
 
-    for model_name in models:
-        print("Model:", model_name)
+    min_summary_length = args.parse_args().min_length
+    for summarization_model_name in models_for_summarization:
+        print("Model:", summarization_model_name)
         print("Compressing " + src)
         summary = open(
             src,
             "r",
         ).read()
-        for i in range(compression_times):
-            summarizator = MergeSummarizer(model_name)
-            summary = summarizator.summarize(summary)
+        summarizator = MergeSummarizer(summarization_model_name)
+        summary = summarizator.summarize(summary, min_summary_length)
