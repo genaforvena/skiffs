@@ -85,7 +85,7 @@ class MergeSummarizer(Summarizer):
             self.summarization_model_name, "merged"
         )
         iteration = 0
-        while len(" ".join(texts)) > summary_min_length:
+        while len(texts) > 1 or len(" ".join(texts)) > summary_min_length:
             merged_texts = []
             self._log(
                 "\n\n\n\nIteration " + str(iteration) + "\n\n", merged_summary_file_name
