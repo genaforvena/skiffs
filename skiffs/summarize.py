@@ -90,7 +90,7 @@ class MergeSummarizer(Summarizer):
             self._log(
                 "\n\n\n\nIteration " + str(iteration) + "\n\n", merged_summary_file_name
             )
-            for i in range(0, len(texts), 4):
+            for i in range(0, len(texts), 2):
                 combined_text = texts[i]
                 if i + 1 < len(texts):
                     combined_text += "\n\n" + texts[i + 1]
