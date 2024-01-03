@@ -6,8 +6,7 @@ from typing import List
 
 from models import models_to_consider
 
-# It will never be 42!
-DEFAULT_SUMMARY_MIN_LENGTH = 41
+DEFAULT_SUMMARY_MIN_LENGTH = 1
 
 
 class Summarizer:
@@ -85,7 +84,7 @@ class MergeSummarizer(Summarizer):
             self.summarization_model_name, "merged"
         )
         iteration = 0
-        while len(texts) > 1 or len(" ".join(texts)) > summary_min_length:
+        while len(texts) > summary_min_length:
             merged_texts = []
             self._log(
                 "\n\n\n\nIteration " + str(iteration) + "\n\n", merged_summary_file_name
@@ -94,7 +93,7 @@ class MergeSummarizer(Summarizer):
                 combined_text = texts[i]
                 if i + 1 < len(texts):
                     combined_text += "\n\n" + texts[i + 1]
-                self._log("Merging and summarizing: \n" + combined_text)
+                self._log("Mrging and summarizing: \n" + combined_text)
                 merged_summary = summarizer(
                     combined_text, max_length=100, min_length=10, do_sample=False
                 )[0]["summary_text"]
