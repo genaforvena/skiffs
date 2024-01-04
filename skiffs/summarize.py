@@ -71,12 +71,12 @@ class Summarizer:
         summaries = ""
         for summarization_model_name in self.summarization_model_names:
             summarizer = pipeline("summarization", model=summarization_model_name)
-            summary = summarizer(text, max_length=36, min_length=4, do_sample=False)
+            summary = summarizer(text, max_length=72, min_length=4, do_sample=False)
             options_length = len(summary)
 
             for i in range(options_length):
                 summaries += summary[i]["summary_text"]
-        return summarizer(summaries, max_length=36, min_length=4, do_sample=False)[0][
+        return summarizer(summaries, max_length=72, min_length=4, do_sample=False)[0][
             "summary_text"
         ]
 
