@@ -1,4 +1,5 @@
 from datetime import datetime
+import torch
 import os
 import random
 import re
@@ -9,6 +10,7 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     Conversation,
+    ReformerModelWithLMHead,
 )
 
 from models import models_to_consider, mamba
@@ -150,30 +152,33 @@ class Persona:
         self.first_memory = first_memory
         self.memories = memories
 
-    def generate_reply(self, conversation: Conversation) -> str:
-        def _setup_generator() -> None:
-            # God forgive me for this
-            if "dialo" in self.model_name:
-                padding = "right"  # DialoGPT performs better with padding on the right according to the docs
-            # God is dead, that is what Jesus said
-            elif "mamba" in self.model_name:
-                return mamba.mamba_reply(conversation.new_user_input)
-            else:
-                padding = "left"
-            self.tokenizer = AutoTokenizer.from_pretrained(
-                self.model_name, use_fast=False, padding_side=padding
-            )
-            self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
+    def _setup_generator(self) -> None:
+        # God forgive me for this
+        if "dialo" in self.model_name:
+            padding = "right"  # DialoGPT performs better with padding on the right according to the docs
+        # God is dead, that is what Jesus said
+        else:
+            padding = "left"
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.model_name, use_fast=False, padding_side=padding
+        )
+        self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
 
-        def _teardown_generator() -> None:
-            self.tokenizer = None
-            self.model = None
+    def _teardown_generator(self) -> None:
+        self.tokenizer = None
+        self.model = None
 
-        _setup_generator()
-        # Tokenize the conversation string
-        inputs = self._encode(
+    def reply(self, conversation: Conversation) -> str:
+        text_to_reply: str = (
             self._select_relevant_memory_snippet() + conversation.new_user_input
         )
+
+        return self._generate_reply(text_to_reply)
+
+    def _generate_reply(self, text: str) -> str:
+        self._setup_generator()
+        # Tokenize the conversation string
+        inputs = self._encode(text)
         # Determine a dynamic max_length for the output based on the input length
         input_length = inputs.size(1)
         output_max_length = min(
@@ -192,7 +197,7 @@ class Persona:
         # Decode the response
         response = self._decode(output_sequences, inputs)
 
-        _teardown_generator()
+        self._teardown_generator()
         return response
 
     def _encode(self, text: str) -> list[int]:
@@ -220,6 +225,37 @@ class Persona:
         self.memories.append(memory)
         if len(self.memories) > 10:
             self.memories.pop(0)
+
+
+class ReformerPersona(Persona):
+    def encode(self, list_of_strings: list[str], pad_token_id: int = 0):
+        max_length = max([len(string) for string in list_of_strings])
+        attention_masks = torch.zeros(
+            (len(list_of_strings), max_length), dtype=torch.long
+        )
+        input_ids = torch.full(
+            (len(list_of_strings), max_length), pad_token_id, dtype=torch.long
+        )
+        for idx, string in enumerate(list_of_strings):
+            if not isinstance(string, bytes):
+                string = str.encode(string)
+            input_ids[idx, : len(string)] = torch.tensor([x + 2 for x in string])
+            attention_masks[idx, : len(string)] = 1
+        return input_ids, attention_masks
+
+    def decode(self, outputs_ids):
+        decoded_outputs = []
+        for output_ids in outputs_ids.tolist():
+            # transform id back to char IDs < 2 are simply transformed to ""
+            decoded_outputs.append(
+                "".join([chr(x - 2) if x > 1 else "" for x in output_ids])
+            )
+        return decoded_outputs[0]
+
+    def reply(self, conversation: Conversation) -> str:
+        model = ReformerModelWithLMHead.from_pretrained(self.model_name)
+        encoded, attention_masks = self.encode([conversation.new_user_input])
+        return self.decode(model.generate(encoded, do_sample=True, max_length=150))
 
 
 def log(talker: Persona, reply: Dict[str, str]) -> None:
@@ -275,7 +311,7 @@ def _interagtor(
 ) -> Tuple[str, Persona]:
     while not enough_words_in_reply(reply):
         log(talker, {"role": "nothing_else_ever_assistant", "content": reply})
-        reply = talker.generate_reply(conversation_obj)
+        reply = talker.reply(conversation_obj)
     return reply, talker
 
 
@@ -286,7 +322,7 @@ def _anyone_else(
     while not enough_words_in_reply(reply):
         log(talker, {"role": "fail_better_worse_again_assistant", "content": reply})
         random_talker = random.choice(participants)
-        reply = random_talker.generate_reply(conversation_obj)
+        reply = random_talker.reply(conversation_obj)
     return reply, random_talker
 
 
@@ -300,7 +336,7 @@ def talk(
     for i in range(conversation_rounds):
         conversation_obj = _create_conresation_obj(conversation_history)
         talker = _select_speaker(participants)
-        reply = talker.generate_reply(conversation_obj)
+        reply = talker.reply(conversation_obj)
         reply, talker = _select_reply(conversation_obj, talker, reply, participants)
         talker.remember(reply)
         # Determine the role based on the last message in the conversation object```
@@ -356,7 +392,9 @@ def _create_conresation_obj(
 if __name__ == "__main__":
     participants = [
         Persona(model_name, model_name, max_token_limit=1024)
-        for model_name in models_to_consider.text_continuators
+        for model_name in [
+            "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        ]
     ]
     for _ in range(DEFAULT_CONVERSATION_LENGTH):
         talk(

@@ -1,5 +1,22 @@
 # skiffs ------------ Modular Language Model Architecture
 
+## Current Focus
+### My Work on Making Summaries
+
+Right now, I am working a lot on one part of this project: making summaries. The big project is still growing, but I am focusing on this special part.
+
+### Making Short Versions of Samuel Beckett's Stories
+In my own time, I am looking closely at Samuel Beckett's stories. I want to do more than just make his stories shorter. I am trying to really understand the special parts and meanings in his writing by making summaries. This is about getting the deep ideas and styles in his work, not just making simple stories.
+
+This job is something I do alone. It's about trying new things. I am curious and want to see how we can use computers to understand books and stories in new ways. What I do might be different, but I hope it helps us see how great Beckett's writing is.
+
+### Everyone Can Join
+I am doing this part by myself now, but I like to hear ideas from others. If you like books, technology, and new ways of doing things, or know about Beckett and how computers can read his work, I want to hear from you.
+
+We're not just using technology to make summaries. We are trying to find out what happens when we use new computer ways to look at old, famous stories. This is a project that keeps going and changing, and I am excited to share it with more people.
+
+## Use Anything from This Project
+I want to say something important: everyone is free to use anything from this project. There are no rules or licenses stopping you. I don't believe in keeping ideas only to myself, so you can take, change, or use any part of this work in your own projects. I'm against the idea of copyright, so don't worry about asking for permission or giving credit. It's all open for you to use however you like.
 ## Overview
 This project adopts a unique approach to natural language processing using a modular architecture of smaller language models (LMs). Inspired by Deleuzian philosophy, especially the shift from representative to rhizomatic thinking, this architecture aims to refine the output of general models through non-linear "clarification layers." These layers act as translators, transforming raw output into more precise and contextually appropriate responses without adhering to a rigid hierarchical structure.
 

@@ -1,8 +1,12 @@
 import os
 import argparse
+import torch
 from transformers import pipeline
 from datetime import datetime
 from typing import List
+
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers.configuration_utils import re
 
 from models import models_to_consider, picked_models
 
@@ -68,17 +72,22 @@ class Summarizer:
         return combined_summary
 
     def _call_summarizer(self, text: str, item_to_select_index: int = 0) -> str:
-        summaries = ""
-        for summarization_model_name in self.summarization_model_names:
-            summarizer = pipeline("summarization", model=summarization_model_name)
-            summary = summarizer(text, max_length=72, min_length=4, do_sample=False)
-            options_length = len(summary)
+        summarizator = pipeline(
+            "summarization", model="Cohee/bart-factbook-summarization"
+        )
 
-            for i in range(options_length):
-                summaries += summary[i]["summary_text"]
-        return summarizer(summaries, max_length=72, min_length=4, do_sample=False)[0][
+        summary = summarizator(text, max_length=256, do_sample=False)[0]["summary_text"]
+        print("Rephrased summary: " + summary)
+        keywords_extractor = pipeline(
+            "summarization", model="transformer3/H1-keywordextractor"
+        )
+        keywords = keywords_extractor(text)[0]["summary_text"]
+        print("Keywords: " + keywords)
+
+        summary = summarizator(summary + keywords, max_length=128, do_sample=False)[0][
             "summary_text"
         ]
+        return summary
 
 
 class MergeSummarizer(Summarizer):
@@ -86,7 +95,7 @@ class MergeSummarizer(Summarizer):
         super().__init__(model_names)
         self.simple_summarize = super().summarize
 
-    def merge_summarize(
+    def _merge_summarize(
         self, name: str, texts: List[str], summary_min_length: int
     ) -> str:
         self.merged_summary_file_name = self._add_output(name, "merged")
@@ -115,14 +124,25 @@ class MergeSummarizer(Summarizer):
     def summarize(self, name: str, txt: str, min_length: int) -> str:
         chunks = divide_text(txt)
         initial_summaries = [self.simple_summarize(name, chunk) for chunk in chunks]
-        final_summary = self.merge_summarize(name, initial_summaries, min_length)
+        final_summary = self._merge_summarize(name, initial_summaries, min_length)
         return final_summary
 
 
 class KeywordAwareMergeSummarizer(MergeSummarizer):
-    def __init__(self, model_names: list[str]) -> None:
-        super().__init__(model_names)
-        self.keyword_aware_summarize = super().summarize
+    def __init__(
+        self,
+        summarization_model_names: list[str],
+        keyword_extraction_model_names: list[str],
+    ) -> None:
+        super().__init__(summarization_model_names)
+        self._merge_summarize = super().summarize
+
+    def _extract_keywords(self, txt: str) -> list[str]:
+        keywords = []
+        for keyword_extraction_model_name in self.keyword_extraction_model_names:
+            keyword_extractor = pipeline("ner", model=keyword_extraction_model_name)
+            keywords += keyword_extractor(txt)
+        return keywords
 
     def summarize(self, name: str, txt: str, min_length: int) -> str:
         summarizer = pipeline("summarization", model=self.summarization_model_name)
@@ -131,7 +151,7 @@ class KeywordAwareMergeSummarizer(MergeSummarizer):
         ]
         chunks = divide_text(txt)
         initial_summaries = [self.simple_summarize(name, chunk) for chunk in chunks]
-        final_summary = self.merge_summarize(
+        final_summary = self._merge_summarize(
             name, initial_summaries, min_summary_length
         )
         return final_summary
