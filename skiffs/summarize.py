@@ -28,7 +28,7 @@ class Summarizer:
     def _divide_text(self, text: str) -> List[str]:
         nltk.download("punkt")
         tokenizer = AutoTokenizer.from_pretrained(self.summarization_model_name)
-        max_token_length = tokenizer.model_max_length
+        max_token_length = tokenizer.model_max_length / 1.5
         paragraphs = text.split("\n\n")
         chunks = []
         current_chunk_tokens = []
