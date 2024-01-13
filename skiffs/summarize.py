@@ -1,4 +1,5 @@
 import os
+import nltk
 import argparse
 import torch
 from transformers import pipeline
@@ -18,6 +19,49 @@ class Summarizer:
         self.summarization_model_names = summarization_model_names
         self.creation_time = datetime.now()
         self.outputs = []
+        # Use only one summzriation model, ignore the provided list
+        self.summarization_model_name = "Cohee/bart-factbook-summarization"
+
+    def _sentence_tokenizer(self, text: str) -> List[str]:
+        return nltk.tokenize.sent_tokenize(text)
+
+    def _divide_text(self, text: str) -> List[str]:
+        nltk.download("punkt")
+        tokenizer = AutoTokenizer.from_pretrained(self.summarization_model_name)
+        max_token_length = tokenizer.model_max_length
+        paragraphs = text.split("\n\n")
+        chunks = []
+        current_chunk_tokens = []
+
+        for paragraph in paragraphs:
+            sentences = self._sentence_tokenizer(paragraph)
+            for sentence in sentences:
+                sentence_tokens = tokenizer.tokenize(sentence)
+
+                # Check if adding this sentence exceeds the max token length
+                if len(current_chunk_tokens) + len(sentence_tokens) <= max_token_length:
+                    current_chunk_tokens.extend(sentence_tokens)
+                else:
+                    # Add the current chunk to chunks
+                    if current_chunk_tokens:
+                        chunks.append(
+                            tokenizer.convert_tokens_to_string(current_chunk_tokens)
+                        )
+                        current_chunk_tokens = sentence_tokens
+                    else:
+                        # Handle very long sentences
+                        chunks.append(
+                            tokenizer.convert_tokens_to_string(
+                                sentence_tokens[:max_token_length]
+                            )
+                        )
+                        current_chunk_tokens = sentence_tokens[max_token_length:]
+
+        # Add the last chunk if it exists
+        if current_chunk_tokens:
+            chunks.append(tokenizer.convert_tokens_to_string(current_chunk_tokens))
+
+        return chunks
 
     def _log(
         self, msg: str, output_file_name: str = "", print_log: bool = True
@@ -61,7 +105,7 @@ class Summarizer:
         summary_filename = self._add_output(name, "result")
 
         combined_summary = ""
-        for chunk in divide_text(txt):
+        for chunk in self._divide_text(txt):
             self._log("Summarizing: " + chunk)
             chunk_summary = self._call_summarizer(chunk)
             combined_summary += chunk_summary + "\n\n"
@@ -72,9 +116,7 @@ class Summarizer:
         return combined_summary
 
     def _call_summarizer(self, text: str, item_to_select_index: int = 0) -> str:
-        summarizator = pipeline(
-            "summarization", model="Cohee/bart-factbook-summarization"
-        )
+        summarizator = pipeline("summarization", model=self.summarization_model_name)
 
         summary = summarizator(text, max_length=256, do_sample=False)[0]["summary_text"]
         print("Rephrased summary: " + summary)
@@ -121,67 +163,11 @@ class MergeSummarizer(Summarizer):
             iteration += 1
         return texts[0]
 
-    def summarize(self, name: str, txt: str, min_length: int) -> str:
-        chunks = divide_text(txt)
+    def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
+        chunks = self._divide_text(txt)
         initial_summaries = [self.simple_summarize(name, chunk) for chunk in chunks]
         final_summary = self._merge_summarize(name, initial_summaries, min_length)
         return final_summary
-
-
-class KeywordAwareMergeSummarizer(MergeSummarizer):
-    def __init__(
-        self,
-        summarization_model_names: list[str],
-        keyword_extraction_model_names: list[str],
-    ) -> None:
-        super().__init__(summarization_model_names)
-        self._merge_summarize = super().summarize
-
-    def _extract_keywords(self, txt: str) -> list[str]:
-        keywords = []
-        for keyword_extraction_model_name in self.keyword_extraction_model_names:
-            keyword_extractor = pipeline("ner", model=keyword_extraction_model_name)
-            keywords += keyword_extractor(txt)
-        return keywords
-
-    def summarize(self, name: str, txt: str, min_length: int) -> str:
-        summarizer = pipeline("summarization", model=self.summarization_model_name)
-        keywords = summarizer(txt, max_length=100, min_length=10, do_sample=False)[0][
-            "summary_text"
-        ]
-        chunks = divide_text(txt)
-        initial_summaries = [self.simple_summarize(name, chunk) for chunk in chunks]
-        final_summary = self._merge_summarize(
-            name, initial_summaries, min_summary_length
-        )
-        return final_summary
-
-
-def divide_text(text: str, chunk_size: int = 256) -> List[str]:
-    words = text.split()
-    chunks = []
-    current_chunk = []
-    last_word_index = 0
-
-    for word in words:
-        current_chunk.append(word)
-        if word.endswith((".", "!", "?")):
-            last_word_index = len(current_chunk) - 1
-
-        if len(current_chunk) >= chunk_size:
-            if len(current_chunk) == chunk_size and current_chunk[-1].endswith(
-                (".", "!", "?")
-            ):
-                chunks.append(" ".join(current_chunk))
-                current_chunk = []
-            else:
-                chunks.append(" ".join(current_chunk[:last_word_index]))
-                current_chunk = current_chunk[last_word_index:]
-
-    if current_chunk:
-        chunks.append(" ".join(current_chunk))
-
-    return chunks
 
 
 if __name__ == "__main__":
