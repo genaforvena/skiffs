@@ -1,4 +1,5 @@
 import os
+import math
 import nltk
 import argparse
 import torch
@@ -117,8 +118,11 @@ class Summarizer:
 
     def _call_summarizer(self, text: str, item_to_select_index: int = 0) -> str:
         summarizator = pipeline("summarization", model=self.summarization_model_name)
+        summarizator_max_length = math.floor(summarizator.tokenizer.model_max_length)
 
-        summary = summarizator(text, max_length=256, do_sample=False)[0]["summary_text"]
+        summary = summarizator(
+            text, max_length=math.floor(summarizator_max_length / 6), do_sample=False
+        )[0]["summary_text"]
         print("Rephrased summary: " + summary)
         keywords_extractor = pipeline(
             "summarization", model="transformer3/H1-keywordextractor"
@@ -126,9 +130,11 @@ class Summarizer:
         keywords = keywords_extractor(text)[0]["summary_text"]
         print("Keywords: " + keywords)
 
-        summary = summarizator(summary + keywords, max_length=128, do_sample=False)[0][
-            "summary_text"
-        ]
+        summary = summarizator(
+            summary + keywords,
+            max_length=math.floor(summarizator_max_length / 12),
+            do_sample=False,
+        )[0]["summary_text"]
         return summary
 
 
