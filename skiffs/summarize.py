@@ -1,14 +1,13 @@
 import os
+import pathlib
 import math
 import nltk
 import argparse
-import torch
 from transformers import pipeline
 from datetime import datetime
 from typing import List
 
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from transformers.configuration_utils import re
+from transformers import AutoTokenizer
 
 from models import models_to_consider, picked_models
 
@@ -16,20 +15,72 @@ DEFAULT_SUMMARY_MIN_LENGTH = 1
 
 
 class Summarizer:
-    def __init__(self, summarization_model_names: list[str]) -> None:
-        self.summarization_model_names = summarization_model_names
+    def __init__(
+        self,
+        summarization_model_names: list[str],
+        keyword_extraction_model_names: list[str],
+    ) -> None:
+        self.summarization_model_name = summarization_model_names[0]
+        self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.creation_time = datetime.now()
-        self.outputs = []
-        # Use only one summzriation model, ignore the provided list
-        self.summarization_model_name = "Cohee/bart-factbook-summarization"
+        nltk.download("punkt")
+
+    def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
+        self.log_name = self._create_out_filename(name, "log")
+        self.merged_summary_file_name = self._create_out_filename(
+            name, "result_using_merge"
+        )
+        chunks = self._divide_text(txt)
+        final_summary = self._merge_summarize(name, chunks, min_length)
+        return final_summary
+
+    def _call_summarizer(self, text: str) -> str:
+        summarizator = pipeline("summarization", model=self.summarization_model_name)
+        summarizator_max_length = math.floor(summarizator.tokenizer.model_max_length)
+
+        summary = summarizator(
+            text, max_length=math.floor(summarizator_max_length / 6)
+        )[0]["summary_text"]
+        keywords_extractor = pipeline(
+            "summarization", model=self.keyword_extraction_model_name
+        )
+        keywords = keywords_extractor(text)[0]["summary_text"]
+
+        summary = summarizator(
+            summary + keywords,
+            max_length=math.floor(summarizator_max_length / 12),
+            do_sample=False,
+        )[0]["summary_text"]
+        return summary
+
+    def _merge_summarize(
+        self, name: str, texts: List[str], summary_min_length: int
+    ) -> str:
+        iteration = 0
+        while len(texts) > summary_min_length:
+            merged_texts = []
+            self._print_out(
+                "\n\n\n\nIteration " + str(iteration) + "\n\n",
+            )
+            for i in range(0, len(texts), 2):
+                combined_text = texts[i]
+                if i + 1 < len(texts):
+                    combined_text += "\n\n" + texts[i + 1]
+                self._log("Merging and summarizing: \n" + combined_text)
+                merged_summary = self._call_summarizer(combined_text)
+                merged_texts.append(merged_summary)
+                self._log("\n\nMerged Summary: \n" + merged_summary + "\n\n\n\n")
+                self._print_out("\n" + merged_summary + "\n")
+            texts = merged_texts
+            iteration += 1
+        return texts[0]
 
     def _sentence_tokenizer(self, text: str) -> List[str]:
         return nltk.tokenize.sent_tokenize(text)
 
     def _divide_text(self, text: str) -> List[str]:
-        nltk.download("punkt")
         tokenizer = AutoTokenizer.from_pretrained(self.summarization_model_name)
-        max_token_length = tokenizer.model_max_length / 1.5
+        max_token_length = tokenizer.model_max_length / 2.5
         paragraphs = text.split("\n\n")
         chunks = []
         current_chunk_tokens = []
@@ -64,23 +115,18 @@ class Summarizer:
 
         return chunks
 
-    def _log(
-        self, msg: str, output_file_name: str = "", print_log: bool = True
-    ) -> None:
-        if output_file_name not in self.outputs:
-            for out in self.outputs:
-                if output_file_name in out:
-                    output_file_name = out
-                    break
-        if output_file_name not in self.outputs:
-            output_file_name = self._add_output("detailed")
-        with open(output_file_name, "a+") as f:
+    def _log(self, msg: str) -> None:
+        with open(self.log_name, "a+") as f:
             f.write(msg)
-            if print_log:
-                print(msg)
+        print(msg)
 
-    def _add_output(self, source_name: str, postfix: str = "") -> str:
-        output_file_name = (
+    def _print_out(self, msg: str) -> None:
+        self._log(msg)
+        with open(self.merged_summary_file_name, "a+") as f:
+            f.write(msg)
+
+    def _create_out_filename(self, source_name: str, postfix: str = "") -> str:
+        output_filename = (
             "summary_of_"
             + source_name.split("/")[-1]
             + "_"
@@ -88,98 +134,20 @@ class Summarizer:
             + "_at_"
             + str(self.creation_time)
         )
-        output_file_name = output_file_name.replace(" ", "_").replace("/", "_")
-        output_file_name = (
-            os.path.dirname(os.path.abspath(__file__))
-            + "/results/summaries/"
-            + output_file_name
+        output_filename = output_filename.replace(" ", "_").replace("/", "_")
+        output_filename = (
+            str(pathlib.Path(__file__).parent.parent.absolute())
+            + "/tmp_results/summaries/"
+            + output_filename
             + ".txt"
         )
-        self.outputs.append(output_file_name)
-        return output_file_name
-
-    # At this point any pings of shame in me are gone and the code is ugly
-    NOT_USED = 0
-
-    def summarize(self, name: str, txt: str, min_length: int = NOT_USED) -> str:
-        self._add_output(name, "detailed")
-        summary_filename = self._add_output(name, "result")
-
-        combined_summary = ""
-        for chunk in self._divide_text(txt):
-            self._log("Summarizing: " + chunk)
-            chunk_summary = self._call_summarizer(chunk)
-            combined_summary += chunk_summary + "\n\n"
-
-            self._log("\n\nSummary: \n" + chunk_summary + "\n\n\n\n")
-            self._log(chunk_summary + "\n", summary_filename, False)
-
-        return combined_summary
-
-    def _call_summarizer(self, text: str, item_to_select_index: int = 0) -> str:
-        summarizator = pipeline("summarization", model=self.summarization_model_name)
-        summarizator_max_length = math.floor(summarizator.tokenizer.model_max_length)
-
-        summary = summarizator(
-            text, max_length=math.floor(summarizator_max_length / 6), do_sample=False
-        )[0]["summary_text"]
-        print("Rephrased summary: " + summary)
-        keywords_extractor = pipeline(
-            "summarization", model="transformer3/H1-keywordextractor"
-        )
-        keywords = keywords_extractor(text)[0]["summary_text"]
-        print("Keywords: " + keywords)
-
-        summary = summarizator(
-            summary + keywords,
-            max_length=math.floor(summarizator_max_length / 12),
-            do_sample=False,
-        )[0]["summary_text"]
-        return summary
-
-
-class MergeSummarizer(Summarizer):
-    def __init__(self, model_names: list[str]) -> None:
-        super().__init__(model_names)
-        self.simple_summarize = super().summarize
-
-    def _merge_summarize(
-        self, name: str, texts: List[str], summary_min_length: int
-    ) -> str:
-        self.merged_summary_file_name = self._add_output(name, "merged")
-        iteration = 0
-        while len(texts) > summary_min_length:
-            merged_texts = []
-            self._log(
-                "\n\n\n\nIteration " + str(iteration) + "\n\n",
-                self.merged_summary_file_name,
-            )
-            for i in range(0, len(texts), 2):
-                combined_text = texts[i]
-                if i + 1 < len(texts):
-                    combined_text += "\n\n" + texts[i + 1]
-                self._log("Mrging and summarizing: \n" + combined_text)
-                merged_summary = self._call_summarizer(combined_text)
-                merged_texts.append(merged_summary)
-                self._log("\n\nMerged Summary: \n" + merged_summary + "\n\n\n\n")
-                self._log(
-                    "\n" + merged_summary + "\n", self.merged_summary_file_name, False
-                )
-            texts = merged_texts
-            iteration += 1
-        return texts[0]
-
-    def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
-        chunks = self._divide_text(txt)
-        initial_summaries = [self.simple_summarize(name, chunk) for chunk in chunks]
-        final_summary = self._merge_summarize(name, initial_summaries, min_length)
-        return final_summary
+        return output_filename
 
 
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument(
-        "-src",
+        "src",
         type=str,
         help="Source file or directory to summarize. If directory, all files less than 100kb will be summarized.",
     )
@@ -211,13 +179,14 @@ if __name__ == "__main__":
     else:
         models_for_summarization = picked_models.summarization_models
 
+    keywords_extraction_model_name = picked_models.keyword_extraction_models
     min_summary_length = args.parse_args().min_length
-    print("Compressing " + src)
+    print("Summarizing text from path: " + src)
     summary = open(
         src,
         "r",
     ).read()
-    summarizator = MergeSummarizer(models_for_summarization)
+    summarizator = Summarizer(models_for_summarization, keywords_extraction_model_name)
     summary = summarizator.summarize(
         src.split("/")[-1].split(".")[0].lower(), summary, min_summary_length
     )

@@ -6,7 +6,7 @@
 Right now, I am working a lot on one part of this project: making summaries. The big project is still growing, but I am focusing on this special part.
 
 #### Usage:
-python3 skiffs/summarize -src <text_file_path>
+python3 skiffs/summarize <text_file_path>
 
 ### Making Short Versions of Samuel Beckett's Stories
 In my own time, I am looking closely at Samuel Beckett's stories. I want to do more than just make his stories shorter. I am trying to really understand the special parts and meanings in his writing by making summaries. This is about getting the deep ideas and styles in his work, not just making simple stories.
