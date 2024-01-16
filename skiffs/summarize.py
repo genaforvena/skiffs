@@ -51,7 +51,14 @@ class Summarizer:
             max_length=math.floor(summarizator_max_length / 12),
             do_sample=False,
         )[0]["summary_text"]
-        return summary
+        expanded_summary = pipeline(
+            "text-generation",
+            model="gpt2",
+        )(
+            summary, max_length=summarizator_max_length / 4
+        )[0]["generated_text"]
+        expanded_summary = expanded_summary.replace(summary, "")
+        return expanded_summary
 
     def _merge_summarize(
         self, name: str, texts: List[str], summary_min_length: int
