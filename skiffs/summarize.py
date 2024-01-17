@@ -19,6 +19,7 @@ class Summarizer:
         self,
         summarization_model_names: list[str],
         keyword_extraction_model_names: list[str],
+        hallucinate: bool = False,
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
@@ -51,14 +52,17 @@ class Summarizer:
             max_length=math.floor(summarizator_max_length / 12),
             do_sample=False,
         )[0]["summary_text"]
-        expanded_summary = pipeline(
-            "text-generation",
-            model="gpt2",
-        )(
-            summary, max_length=summarizator_max_length / 4
-        )[0]["generated_text"]
-        expanded_summary = expanded_summary.replace(summary, "")
-        return expanded_summary
+        if hallucinate:
+            hallucinated_summary = pipeline(
+                "text-generation",
+                model="gpt2",
+            )(
+                summary, max_length=summarizator_max_length / 4
+            )[0]["generated_text"]
+            hallucinated_summary = hallucinated_summary.replace(summary, "")
+            return hallucinated_summary
+        else:
+            return summary
 
     def _merge_summarize(
         self, name: str, texts: List[str], summary_min_length: int
@@ -170,6 +174,12 @@ if __name__ == "__main__":
         help="Minimum length of summary",
         default=DEFAULT_SUMMARY_MIN_LENGTH,
     )
+    args.add_argument(
+        "--hallucinate",
+        type=bool,
+        help="Hallucinate summary",
+        default=False,
+    )
     src = args.parse_args().src
     src = os.path.abspath(src)
     if os.path.isdir(src):
@@ -193,7 +203,11 @@ if __name__ == "__main__":
         src,
         "r",
     ).read()
-    summarizator = Summarizer(models_for_summarization, keywords_extraction_model_name)
+    summarizator = Summarizer(
+        models_for_summarization,
+        keywords_extraction_model_name,
+        args.parse_args().hallucinate,
+    )
     summary = summarizator.summarize(
         src.split("/")[-1].split(".")[0].lower(), summary, min_summary_length
     )
