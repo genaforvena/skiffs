@@ -24,6 +24,7 @@ class Summarizer:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.creation_time = datetime.now()
+        self.hallucinate = hallucinate
         nltk.download("punkt")
 
     def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
@@ -52,13 +53,11 @@ class Summarizer:
             max_length=math.floor(summarizator_max_length / 12),
             do_sample=False,
         )[0]["summary_text"]
-        if hallucinate:
+        if self.hallucinate:
             hallucinated_summary = pipeline(
                 "text-generation",
-                model="gpt2",
-            )(
-                summary, max_length=summarizator_max_length / 4
-            )[0]["generated_text"]
+                model="stabilityai/stable-code-3b",
+            )(summary, max_length=summarizator_max_length / 4)[0]["generated_text"]
             hallucinated_summary = hallucinated_summary.replace(summary, "")
             return hallucinated_summary
         else:
