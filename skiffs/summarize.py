@@ -43,22 +43,27 @@ class Summarizer:
         summary = summarizator(
             text, max_length=math.floor(summarizator_max_length / 6)
         )[0]["summary_text"]
+        self._log("Summarization models summary: \n" + summary + "\n")
         keywords_extractor = pipeline(
             "summarization", model=self.keyword_extraction_model_name
         )
         keywords = keywords_extractor(text)[0]["summary_text"]
+        self._log("Keywords extractor summary: \n" + keywords + "\n")
 
         summary = summarizator(
             summary + keywords,
             max_length=math.floor(summarizator_max_length / 12),
             do_sample=False,
         )[0]["summary_text"]
+        self._log("Summary with keywords: \n" + summary + "\n")
         if self.hallucinate:
             hallucinated_summary = pipeline(
                 "text-generation",
-                model="stabilityai/stable-code-3b",
+                trust_remote_code=True,
+                model="tinkoff-ai/ruDialoGPT-medium",
             )(summary, max_length=summarizator_max_length / 4)[0]["generated_text"]
-            hallucinated_summary = hallucinated_summary.replace(summary, "")
+            # Lets keep the original summary still
+            # hallucinated_summary = hallucinated_summary.replace(summary, "")
             return hallucinated_summary
         else:
             return summary
