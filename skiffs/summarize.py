@@ -133,6 +133,8 @@ class Summarizer:
                 checkpoint.current_chunk_index = i + 1
                 checkpoint.processed_chunks.append(merged_summary)
                 checkpoint.save(checkpoint_file)
+            checkpoint.current_chunk_index = 0
+            checkpoint.save(checkpoint_file)
             texts = merged_texts
             iteration += 1
         return texts[0]
