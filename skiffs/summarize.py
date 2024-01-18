@@ -60,7 +60,7 @@ class Summarizer:
             hallucinated_summary = pipeline(
                 "text-generation",
                 trust_remote_code=True,
-                model="tinkoff-ai/ruDialoGPT-medium",
+                model="KoboldAI/OPT-350M-Erebus",
             )(summary, max_length=summarizator_max_length / 4)[0]["generated_text"]
             # Lets keep the original summary still
             # hallucinated_summary = hallucinated_summary.replace(summary, "")
