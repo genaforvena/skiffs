@@ -1,4 +1,5 @@
 import os
+import json
 import pathlib
 import math
 import nltk
@@ -12,6 +13,25 @@ from transformers import AutoTokenizer
 from models import models_to_consider, picked_models
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
+
+
+class Checkpoint:
+    def __init__(self, current_chunk_index=0, processed_chunks=[]):
+        self.current_chunk_index = current_chunk_index
+        self.processed_chunks = processed_chunks
+
+    def save(self, file_path):
+        with open(file_path, "w") as file:
+            json.dump(self.__dict__, file)
+
+    @staticmethod
+    def load(file_path):
+        try:
+            with open(file_path, "r") as file:
+                data = json.load(file)
+                return Checkpoint(**data)
+        except FileNotFoundError:
+            return Checkpoint()
 
 
 class Summarizer:
@@ -71,13 +91,16 @@ class Summarizer:
     def _merge_summarize(
         self, name: str, texts: List[str], summary_min_length: int
     ) -> str:
+        checkpoint_file = "checkpoint.json"
+        checkpoint = Checkpoint.load(checkpoint_file)
+
         iteration = 0
         while len(texts) > summary_min_length:
             merged_texts = []
             self._print_out(
                 "\n\n\n\nIteration " + str(iteration) + "\n\n",
             )
-            for i in range(0, len(texts), 2):
+            for i in range(checkpoint.current_chunk_index, len(texts), 2):
                 combined_text = texts[i]
                 if i + 1 < len(texts):
                     combined_text += "\n\n" + texts[i + 1]
@@ -86,6 +109,10 @@ class Summarizer:
                 merged_texts.append(merged_summary)
                 self._log("\n\nMerged Summary: \n" + merged_summary + "\n\n\n\n")
                 self._print_out("\n" + merged_summary + "\n")
+
+                checkpoint.current_chunk_index = i + 1
+                checkpoint.processed_chunks.append(merged_summary)
+                checkpoint.save(checkpoint_file)
             texts = merged_texts
             iteration += 1
         return texts[0]
