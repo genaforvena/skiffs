@@ -40,11 +40,13 @@ class Summarizer:
         self,
         summarization_model_names: list[str],
         keyword_extraction_model_names: list[str],
+        context_keeper_model_name: str = "",
         hallucination_times: int = 0,
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.creation_time = datetime.now()
+        self.context_keeper_model_name = context_keeper_model_name
         self.hallucination_times = hallucination_times
         nltk.download("punkt")
 
@@ -77,6 +79,7 @@ class Summarizer:
             do_sample=False,
         )[0]["summary_text"]
         self._log("Summary with keywords: \n" + summary + "\n")
+        summary = ""
         if self.hallucination_times > 0:
             times = self.hallucination_times
             while times > 0:
@@ -90,9 +93,21 @@ class Summarizer:
                 times -= 1
             # Lets keep the original summary still
             # hallucinated_summary = hallucinated_summary.replace(summary, "")
-            return summary
-        else:
-            return summary
+        if self.context_keeper_model_name != "":
+            with open(self.merged_summary_file_name, "r") as f:
+                if len(f.readlines()) > 8:
+                    summary = f.readlines()[-8:-2]
+                summary_pipeline = pipeline(
+                    "text-generation",
+                    trust_remote_code=True,
+                    model=self.context_keeper_model_name,
+                )
+            max_summary_length = math.floor(len(summary))
+
+            summary = summary_pipeline(summary, max_length=max_summary_length)[0][
+                "generated_text"
+            ]
+        return summary
 
     def _merge_summarize(
         self, name: str, texts: List[str], summary_min_length: int

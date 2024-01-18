@@ -1,0 +1,26 @@
+
+
+
+
+Iteration 0
+
+Merging and summarizing: 
+Perhaps he is really a true prophet and even the rulers have recognized him.But there is one reason for not believing him: it is written that when God's messenger shall come no one will know whence he came, but we know where this man was born and we know his whole family.The people still did not understand his teaching, and still sought proofs.Then Jesus said to them: You know me, and where I came from in the body, but you do not know where I come from in the spirit.You do not know Him from whom I come in spirit, and that is the one thing it is necessary to know.If I had said: 'I am the Christ', you would have believed me, the man, but you would not have believed the Father who is in me and in you.You should believe in the Father only.For the short space of my life I point out to you the path to that source of life from which I have come.But you ask of me proofs, and wish to condemn me.If you do not know that path, then when I am no longer here you will not be able to find it.You should not judge me but should follow me.He who does what I say will know whether what I say is true.He for whom the life of the flesh has not become merely food for the spirit, he who does not seek truth as a thirsty man seeks for water, cannot understand me.He who thirsts for truth, let him come to me and drink.And he who believes my teaching will obtain true life.He will receive the life of the spirit.And many believed his teaching and said: What he says is true, and is of God.Others did not understand him, and were always seeking in the prophecies for proofs that he was sent from God.And many disputed with him but no one was able to controvert him.
+
+The Orthodox teachers of the law sent their assistants to contend with him, but these assistants returned to them and said: We can do nothing with him.And the chief priest said: How is it you have not convicted him?They replied: No one ever spoke as he does.Then the Orthodox said: It signifies nothing that you cannot refute him and that the people believe his teaching.We do not believe it and none of the rulers believe it.The people are accursed, they always were stupid and ignorant, and will believe anyone.But Nicodemus, to whom Jesus had explained his teaching, said to the chief priests: A man should not be condemned without being heard, and without understanding what he teaches.But they said to him: There is nothing to hear or to understand.We know that no prophet can come from Galilee.Another time Jesus spoke to the Orthodox and said: There can be no proof of the truth of my teaching, just as you cannot have an illumination of light.My teaching is the real light by which people see what is good and what is bad, and so it is impossible to prove my teaching; everything else is proved by it.He who follows me will not be in darkness but will have life.Life and enlightenment are one and the same.But the Orthodox said: It is only you who say this.And he replied: If I alone say it, still I am right, for I know whence I come and whither I go.In my teaching life has a meaning, but according to yours it has none.Besides, not I alone teach this, but my Father, the spirit, teaches it too.They said: Where is your Father?He replied: You do not understand my teaching or you would know my Father.You do not know whence you are nor whither you go.I show you the way, but instead of following me you discuss who I am; and so you cannot reach that salvation and life to which I wish to lead you.Summarization models summary: 
+There is a man named Jesus who claims to be a true prophet.
+The people still do not understand his teaching and seek proof of his teachings.
+Despite his teaching, many people believe his teachings and seek proofs for them.
+He has pointed out a path to a source of life from which he has come but warns that if they do not know the path, they will not be able to find it when he is no longer here.
+Nicodemus, the Orthodox teacher of the law, explains Jesus' teaching to the chief priests, who are unable to refute it and say they can't do anything with him.
+They say that no prophet can come from Galilee and that no one has ever spoken as he does.
+Jesus believes that life and enlightenment are one and the same.
+In his
+Keywords extractor summary: 
+Propheic,  God's messenger,  Jesus,  Christ,  Father,  Orthodox teachers of the law,  Nicodemus,  Galilee,  true life,  life and enlightenment,  prophecies for proofs that he was sent from God
+Summary with keywords: 
+A man named Jesus claims to be a true prophet.
+Despite his teachings, many people still do not understand his teaching and seek proof of his teachings.
+Nicodemus, an Orthodox teacher of the law, explains Jesus' teaching to the chief priests.
+The chief priests are unable to refute Jesus' teachings and say they can't do anything with him.
+They state that no prophet
