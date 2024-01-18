@@ -83,15 +83,21 @@ class Summarizer:
         if self.hallucination_times > 0:
             times = self.hallucination_times
             while times > 0:
+                model_to_hallucinate = random.choice(
+                    models_to_consider.text_continuators
+                )
                 summary = pipeline(
                     "text-generation",
                     trust_remote_code=True,
-                    model=random.choice(models_to_consider.text_continuators),
+                    model=model_to_hallucinate,
                 )(summary, max_length=summarizator_max_length / (4 + times))[0][
                     "generated_text"
                 ]
                 self._log(
                     "Hallucinated summary: \n"
+                    + "by the model "
+                    + model_to_hallucinate
+                    + "\n"
                     + summary
                     + " \n + after "
                     + str(times)
