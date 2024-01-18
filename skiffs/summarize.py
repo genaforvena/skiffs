@@ -1,4 +1,5 @@
 import os
+import random
 import json
 import pathlib
 import math
@@ -39,12 +40,12 @@ class Summarizer:
         self,
         summarization_model_names: list[str],
         keyword_extraction_model_names: list[str],
-        hallucinate: bool = False,
+        hallucination_times: int = 0,
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.creation_time = datetime.now()
-        self.hallucinate = hallucinate
+        self.hallucination_times = hallucination_times
         nltk.download("punkt")
 
     def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
@@ -76,15 +77,20 @@ class Summarizer:
             do_sample=False,
         )[0]["summary_text"]
         self._log("Summary with keywords: \n" + summary + "\n")
-        if self.hallucinate:
-            hallucinated_summary = pipeline(
-                "text-generation",
-                trust_remote_code=True,
-                model="KoboldAI/OPT-350M-Erebus",
-            )(summary, max_length=summarizator_max_length / 4)[0]["generated_text"]
+        if self.hallucination_times > 0:
+            times = self.hallucination_times
+            while times > 0:
+                summary = pipeline(
+                    "text-generation",
+                    trust_remote_code=True,
+                    model=random.choice(models_to_consider.text_continuators),
+                )(summary, max_length=summarizator_max_length / (4 + times))[0][
+                    "generated_text"
+                ]
+                times -= 1
             # Lets keep the original summary still
             # hallucinated_summary = hallucinated_summary.replace(summary, "")
-            return hallucinated_summary
+            return summary
         else:
             return summary
 
@@ -206,10 +212,10 @@ if __name__ == "__main__":
         default=DEFAULT_SUMMARY_MIN_LENGTH,
     )
     args.add_argument(
-        "--hallucinate",
-        type=bool,
-        help="Hallucinate summary",
-        default=False,
+        "--hallucination-times",
+        type=int,
+        help="How many times after completing the summary should we hallucinate, default 0",
+        default=0,
     )
     src = args.parse_args().src
     src = os.path.abspath(src)
@@ -237,7 +243,7 @@ if __name__ == "__main__":
     summarizator = Summarizer(
         models_for_summarization,
         keywords_extraction_model_name,
-        args.parse_args().hallucinate,
+        args.parse_args().hallucination_times,
     )
     summary = summarizator.summarize(
         src.split("/")[-1].split(".")[0].lower(), summary, min_summary_length

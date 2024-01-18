@@ -47,7 +47,7 @@ evaluator_models = [
 text_continuators = [
     "KoboldAI/OPT-350M-Erebus",  # quite pornographic
     # does not have config.json by default, lazy dig more "a686d380/rwkv-5-h-world",  # also very pornographic but in chinese
-    # "PygmalionAI/pygmalion-350m", # fantasy bs
+    "PygmalionAI/pygmalion-350m",  # fantasy bs
     # "bigscience/bloomz-560m",
     # "cmarkea/bloomz-560m-sft-chat",
     # "L-R/LLmRa-1.3B",
@@ -57,9 +57,9 @@ text_continuators = [
     # "distilgpt2",
     # "facebook/opt-1.3b",
     # "HuggingFaceM4/tiny-random-LlamaForCausalLM",
-    # "EleutherAI/gpt-neo-125m",
+    "EleutherAI/gpt-neo-125m",
     # "facebook/opt-125M",
-    # "facebook/opt-350m",
+    "facebook/opt-350m",
     # "microsoft/phi-1",
     # "DarwinAnim8or/GPT-Greentext-355m",
     # "nicholasKluge/Aira-OPT-125M",
