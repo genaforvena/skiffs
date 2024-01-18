@@ -80,7 +80,6 @@ class Summarizer:
             do_sample=False,
         )[0]["summary_text"]
         self._log("Summary with keywords: \n" + summary + "\n")
-        summary = ""
         if self.hallucination_times > 0:
             times = self.hallucination_times
             while times > 0:
@@ -91,23 +90,16 @@ class Summarizer:
                 )(summary, max_length=summarizator_max_length / (4 + times))[0][
                     "generated_text"
                 ]
+                self._log(
+                    "Hallucinated summary: \n"
+                    + summary
+                    + " \n + after "
+                    + str(times)
+                    + " times \n"
+                )
                 times -= 1
             # Lets keep the original summary still
             # hallucinated_summary = hallucinated_summary.replace(summary, "")
-        if self.context_keeper_model_name != "":
-            with open(self.merged_summary_file_name, "r") as f:
-                if len(f.readlines()) > 8:
-                    summary = f.readlines()[-8:-2]
-                summary_pipeline = pipeline(
-                    "text-generation",
-                    trust_remote_code=True,
-                    model=self.context_keeper_model_name,
-                )
-            max_summary_length = math.floor(len(summary))
-
-            summary = summary_pipeline(summary, max_length=max_summary_length)[0][
-                "generated_text"
-            ]
         return summary
 
     def _merge_summarize(

@@ -1,0 +1,37 @@
+
+
+
+
+Iteration 0
+
+Merging and summarizing: 
+And you will perish if you remain in this error and do not follow me.The Jews asked: Who are you?He said: I told you when I first began to teach: I am the son of man, acknowledging the spirit as my Father, and what I have understood from him I tell to the world.When you exalt the son of man in yourselves you will know what I am, because I do and speak not of myself as a man, but what the Father has taught me.He who sent me is always in me and will not leave me, for I do His will.He who keeps to my understanding of life and fulfils the will of the Father will be truly taught by me.To know the truth you must do good to men.He who does harm to men loves the darkness and goes towards it; he who does good to men goes to the light.So to understand my teaching you must do good.He who does good will know the truth; he will be free from evil, from death.For everyone who errs becomes the slave of his error.And as a slave does not always live in his master's house while the master's son does, so a man if he errs in life and becomes the slave of his errors does not live always, but dies.Only he who is in the truth remains always living.To know truth is to be a son and not a slave.If you err, you will be slaves and will die: but if you are in the truth you will be free sons and will live.You say of yourselves that you are sons of Abraham, and that you know the truth.Yet you wish to kill me because you do not understand my teaching.And it comes to this, that I speak what I have understood from my Father while you wish to do what you have understood from your father.They said: Our father is Abraham.Jesus said to them: If you were the sons of Abraham you would do his deeds.
+
+But you wish to kill me because I have told you what I have learnt from God.Abraham did not act like that.You do not serve God, but serve another father.They said to him: We are not bastards, we are all sons of one Father, we are all God's children.And Jesus said to them: If your father were one with me you would love me, for I came forth from the Father; I was not born of myself.You are not children of one Father with me, so you do not understand my words and my understanding of life finds no place in you.If I am of the Father and you are of the same Father, then you cannot wish to kill me.If you wish to kill me, we are not of the same Father.I am from the Father of goodness, God: but you are from the father of evil, the devil.You wish to do the lusts of your father who always was a murderer and a liar with no truth in him.If he, the devil, says anything, he says not what is common to all, but what is his own, and he is the father of lies.So you are servants of the devil and are his children.You see how plainly you are convicted of error.If I err, convict me; but if there is no error in me why do you not believe me?And the Jews began to revile him and to say that he was possessed.He said: I am not possessed.I honour the Father, and you wish to kill me, which shows that you are not my brothers but sons of another father.It is not I who affirm that I am right, but the truth that speaks for me.And so I repeat to you: he who comprehends my teaching and performs it shall not see death.And the Jews said: Now, were we not right in saying that you are a Samaritan and have a devil?You convict yourself!Summarization models summary: 
+He identifies himself as the son of man and acknowledges the spirit as his Father.
+He teaches that to know the truth, one must do good to men.
+Everyone who errs and becomes a slave of his errors becomes the slave of the error and dies.
+The Jews accuse Jesus of being possessed and accuse him of being a devil.
+Jesus insists that he is not possessed and that the spirit of the Father is always present in him and will not leave him.
+They accuse Jesus and the Jews of being sons of Abraham and claim that they are servants of the devil and are his children.
+In response to the accusation, Jesus points out that Abraham was a murderer and a liar with no truth in his
+Keywords extractor summary: 
+you will perish if you remain in this error,  do not follow me,  Jews asked,  son of man,  Father,  good to men,  slavery,  slave of his errors,  slaves and will die,  sons of Abraham,  Satan,  murderers and liars
+Summary with keywords: 
+To know the truth, one must do good to men.
+Everyone who errs and becomes a slave of his errors becomes the slave of the error and dies.
+The Jews accuse Jesus of being possessed and accuse him of being a devil.
+Jesus insists that he is not possessed and that the spirit of the Father is always present in him.
+They accuse Jesus and the Jews of being sons of Abraham
+Hallucinated summary: 
+To know the truth, one must do good to men.
+Everyone who errs and becomes a slave of his errors becomes the slave of the error and dies.
+The Jews accuse Jesus of being possessed and accuse him of being a devil.
+Jesus insists that he is not possessed and that the spirit of the Father is always present in him.
+They accuse Jesus and the Jews of being sons of Abraham.
+They accuse Jesus of being a devil.
+They accuse Jesus of being a devil.
+They accuse Jesus of being a devil.
+They accuse Jesus of being a devil.
+They accuse Jesus of being a devil. 
+ + after 4 times 
