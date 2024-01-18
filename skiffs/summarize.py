@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import os
 import random
 import json
@@ -258,7 +259,8 @@ if __name__ == "__main__":
     summarizator = Summarizer(
         models_for_summarization,
         keywords_extraction_model_name,
-        args.parse_args().hallucination_times,
+        context_keeper_model_name="",
+        hallucination_times=args.parse_args().hallucination_times,
     )
     summary = summarizator.summarize(
         src.split("/")[-1].split(".")[0].lower(), summary, min_summary_length
