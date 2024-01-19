@@ -1090,3 +1090,162 @@ However, this old man did not take the situation too seriously.         I asked 
  Yes. 
  What are these problems? 
  + after 3 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-DMV-125m
+Skull and lidless have the ability to communicate by sight alone.
+Despite the absence of words, there is a sense of joy and joy in those who can communicate.
+I read about some couples who express their love through their hearts and bodies.
+An old man and a child have left holding hands.
+A character referred to as "Legless" describes the situation as similar to his home.
+However, this old man did not take the situation too seriously.         I asked him to elaborate. He told me he was having problems with a dog, but wanted me to find him a new home. 
+ He did? 
+ Yes. 
+ What are these problems?                         
+ + after 2 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/DailyChat-350M
+Skull and lidless have the ability to communicate by sight alone.
+Despite the absence of words, there is a sense of joy and joy in those who can communicate.
+I read about some couples who express their love through their hearts and bodies.
+An old man and a child have left holding hands.
+A character referred to as "Legless" describes the situation as similar to his home.
+However, this old man did not take the situation too seriously.         I asked him to elaborate. He told me he was having problems with a dog, but wanted me to find him a new home. 
+ He did? 
+ Yes. 
+ What are these problems?                        
+ Who knows how to tell him about the situation? 
+ There is no one who knows how to tell him. 
+ I've never felt better, but I 
+ + after 1 times 
+
+
+Merged Summary: 
+Skull and lidless have the ability to communicate by sight alone.
+Despite the absence of words, there is a sense of joy and joy in those who can communicate.
+I read about some couples who express their love through their hearts and bodies.
+An old man and a child have left holding hands.
+A character referred to as "Legless" describes the situation as similar to his home.
+However, this old man did not take the situation too seriously.         I asked him to elaborate. He told me he was having problems with a dog, but wanted me to find him a new home. 
+ He did? 
+ Yes. 
+ What are these problems?                        
+ Who knows how to tell him about the situation? 
+ There is no one who knows how to tell him. 
+ I've never felt better, but I
+
+
+
+
+Skull and lidless have the ability to communicate by sight alone.
+Despite the absence of words, there is a sense of joy and joy in those who can communicate.
+I read about some couples who express their love through their hearts and bodies.
+An old man and a child have left holding hands.
+A character referred to as "Legless" describes the situation as similar to his home.
+However, this old man did not take the situation too seriously.         I asked him to elaborate. He told me he was having problems with a dog, but wanted me to find him a new home. 
+ He did? 
+ Yes. 
+ What are these problems?                        
+ Who knows how to tell him about the situation? 
+ There is no one who knows how to tell him. 
+ I've never felt better, but I
+
+
+
+
+Iteration 3
+
+Merging and summarizing: 
+An old man and a child walk hand-in-hand through a dim void with a dim light source.
+In the dim void, the body has to face the pain of bones until it has no choice but to stand up and walk.
+There is no future for the body in the void as there is no one to turn the back on.
+A character named "Skull and stare alone" is waiting for us to start talking.    *The old man is the head of his own company,   it's a game on his own company that he has built over the years, the company has been successful in the past, and he is the head of his company.    *Skull is a common character in the community.He is the leader the local team. By the way, he often gets drunk and says terrible things about people.  The old man is the one who designed the character to speak normally to players,  the player characters are entirely modeled after a variety
+
+Skull and lidless have the ability to communicate by sight alone.
+Despite the absence of words, there is a sense of joy and joy in those who can communicate.
+I read about some couples who express their love through their hearts and bodies.
+An old man and a child have left holding hands.
+A character referred to as "Legless" describes the situation as similar to his home.
+However, this old man did not take the situation too seriously.         I asked him to elaborate. He told me he was having problems with a dog, but wanted me to find him a new home. 
+ He did? 
+ Yes. 
+ What are these problems?                        
+ Who knows how to tell him about the situation? 
+ There is no one who knows how to tell him. 
+ I've never felt better, but ISummarization models summary: 
+An old man and a child walk hand-in-hand through a dim void with a dim light source.
+In the void, there is no one to turn the back on.
+The old man is the head of his own company that has been successful in the past.
+A character named "Skull and stare alone" is waiting for us to start talking.
+Skull is a common character in the community and is the leader of a local team.
+He often gets drunk and says terrible things about people.
+An old character referred to as "Legless" describes the situation as similar to his home.
+Legless has problems with a
+Keywords extractor summary: 
+old man, child, dim void, dim light source, bones, future, Skull, lidless, dog
+Summary with keywords: 
+An old man and a child are walking hand-in-hand through a dim void with a dim light source.
+The old man is the head of his own company that has been successful in the past.
+A character named "Skull and stare alone" is waiting for them to start talking.
+Skull is a common character in the community and is the leader of a local team.
+
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-Greentext-355m
+An old man and a child are walking hand-in-hand through a dim void with a dim light source.
+The old man is the head of his own company that has been successful in the past.
+A character named "Skull and stare alone" is waiting for them to start talking.
+Skull is a common character in the community and is the leader of a local team.
+The child is playing in the yard with her head down, staring intently into nothing.
+Both of them have bright skin with dark hair.
+The child's name is Lilian  
+ + after 4 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-DMV-125m
+An old man and a child are walking hand-in-hand through a dim void with a dim light source.
+The old man is the head of his own company that has been successful in the past.
+A character named "Skull and stare alone" is waiting for them to start talking.
+Skull is a common character in the community and is the leader of a local team.
+The child is playing in the yard with her head down, staring intently into nothing.
+Both of them have bright skin with dark hair.
+The child's name is Lilian  and her nickname is Lilian. She is a member of the team. She is also a member of the team. She is a member 
+ + after 3 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-NoSleep-355m
+An old man and a child are walking hand-in-hand through a dim void with a dim light source.
+The old man is the head of his own company that has been successful in the past.
+A character named "Skull and stare alone" is waiting for them to start talking.
+Skull is a common character in the community and is the leader of a local team.
+The child is playing in the yard with her head down, staring intently into nothing.
+Both of them have bright skin with dark hair.
+The child's name is Lilian  and her nickname is Lilian. She is a member of the team. She is also a member of the team. She is a member of the team.    I didn’t know what to expect when I walked into the yard.  
+ + after 2 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-Greentext-355m
+An old man and a child are walking hand-in-hand through a dim void with a dim light source.
+The old man is the head of his own company that has been successful in the past.
+A character named "Skull and stare alone" is waiting for them to start talking.
+Skull is a common character in the community and is the leader of a local team.
+The child is playing in the yard with her head down, staring intently into nothing.
+Both of them have bright skin with dark hair.
+The child's name is Lilian  and her nickname is Lilian. She is a member of the team. She is also a member of the team. She is a member of the team.    I didn’t know what to expect when I walked into the yard.    Lilian:  Lillian we are coming... 
+ + after 1 times 
+
+
+Merged Summary: 
+An old man and a child are walking hand-in-hand through a dim void with a dim light source.
+The old man is the head of his own company that has been successful in the past.
+A character named "Skull and stare alone" is waiting for them to start talking.
+Skull is a common character in the community and is the leader of a local team.
+The child is playing in the yard with her head down, staring intently into nothing.
+Both of them have bright skin with dark hair.
+The child's name is Lilian  and her nickname is Lilian. She is a member of the team. She is also a member of the team. She is a member of the team.    I didn’t know what to expect when I walked into the yard.    Lilian:  Lillian we are coming...
+
+
+
+
+An old man and a child are walking hand-in-hand through a dim void with a dim light source.
+The old man is the head of his own company that has been successful in the past.
+A character named "Skull and stare alone" is waiting for them to start talking.
+Skull is a common character in the community and is the leader of a local team.
+The child is playing in the yard with her head down, staring intently into nothing.
+Both of them have bright skin with dark hair.
+The child's name is Lilian  and her nickname is Lilian. She is a member of the team. She is also a member of the team. She is a member of the team.    I didn’t know what to expect when I walked into the yard.    Lilian:  Lillian we are coming...
