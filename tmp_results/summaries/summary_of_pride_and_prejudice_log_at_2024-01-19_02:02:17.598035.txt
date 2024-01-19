@@ -128,4 +128,201 @@ Mary Wollstonecraft protested with better general sense than particular
 taste or judgment.Miss Austen, too, drew back when the white frost
 touched her shoes; but I think she would have made a pretty good journey
 even in a black one.__For if her knowledge was not very extended, she knew two things which
-only genius knows.The one was humanity, and the other was art.
+only genius knows.The one was humanity, and the other was art.Summarization models summary: 
+The word "cynical" is often misused in the English language, especially when it is applied to gentle and oblique satire.
+According to Mr. Goldwin Smith, Miss Austen was a cynic and took an epicurean delight in dissecting, displaying, and setting at work her fools and her mean persons.
+In her art, Austen executed six capital works in two very short periods of about three years and five years, and has not left a single failure.
+Miss Austen grew up in an English country retirement, brought up in a time when a white frost might have penetrated her kid shoes, and her studies, their ways, and their conduct were subject to all those fantastic limits and restrictions against which they were subject.
+Mary Wollstonecraft protested with better general sense than
+Keywords extractor summary: 
+cynical,  English language,  grotesque,  invective,  satire,  other side,  acceptance hells
+Summary with keywords: 
+According to Mr. Goldwin Smith, Austen was a cynic and took an epicurean delight in dissecting, displaying, and setting at work her fools and mean persons.
+Austen executed six capital works in two very short periods of about three years and five years.
+She was raised in an English country retirement, brought up in a time when a white frost might have penetrated her
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-NoSleep-355m
+According to Mr. Goldwin Smith, Austen was a cynic and took an epicurean delight in dissecting, displaying, and setting at work her fools and mean persons.
+Austen executed six capital works in two very short periods of about three years and five years.
+She was raised in an English country retirement, brought up in a time when a white frost might have penetrated her house, but her manners, mannerisms and eccentricities marked her as a modern woman. Her first book in American, In Blue, was published in 1834.  She was very particular of her style and the words she said had a 
+ + after 4 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/DailyChat-350M
+According to Mr. Goldwin Smith, Austen was a cynic and took an epicurean delight in dissecting, displaying, and setting at work her fools and mean persons.
+Austen executed six capital works in two very short periods of about three years and five years.
+She was raised in an English country retirement, brought up in a time when a white frost might have penetrated her house, but her manners, mannerisms and eccentricities marked her as a modern woman. Her first book in American, In Blue, was published in 1834.  She was very particular of her style and the words she said had a wide range of characters and various words. 
+ She could show a skillful skillful language 
+ + after 3 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-DMV-125m
+According to Mr. Goldwin Smith, Austen was a cynic and took an epicurean delight in dissecting, displaying, and setting at work her fools and mean persons.
+Austen executed six capital works in two very short periods of about three years and five years.
+She was raised in an English country retirement, brought up in a time when a white frost might have penetrated her house, but her manners, mannerisms and eccentricities marked her as a modern woman. Her first book in American, In Blue, was published in 1834.  She was very particular of her style and the words she said had a wide range of characters and various words. 
+ She could show a skillful skillful language, but her style was not her own. She was a woman of the world, and her style was her own. 
+ + after 2 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-NoSleep-355m
+According to Mr. Goldwin Smith, Austen was a cynic and took an epicurean delight in dissecting, displaying, and setting at work her fools and mean persons.
+Austen executed six capital works in two very short periods of about three years and five years.
+She was raised in an English country retirement, brought up in a time when a white frost might have penetrated her house, but her manners, mannerisms and eccentricities marked her as a modern woman. Her first book in American, In Blue, was published in 1834.  She was very particular of her style and the words she said had a wide range of characters and various words. 
+ She could show a skillful skillful language, but her style was not her own. She was a woman of the world, and her style was her own. This was part of her life, a story she told herself over and over again.  After three years and a half  in New York, her old friend David H 
+ + after 1 times 
+
+
+Merged Summary: 
+According to Mr. Goldwin Smith, Austen was a cynic and took an epicurean delight in dissecting, displaying, and setting at work her fools and mean persons.
+Austen executed six capital works in two very short periods of about three years and five years.
+She was raised in an English country retirement, brought up in a time when a white frost might have penetrated her house, but her manners, mannerisms and eccentricities marked her as a modern woman. Her first book in American, In Blue, was published in 1834.  She was very particular of her style and the words she said had a wide range of characters and various words. 
+ She could show a skillful skillful language, but her style was not her own. She was a woman of the world, and her style was her own. This was part of her life, a story she told herself over and over again.  After three years and a half  in New York, her old friend David H
+
+
+
+
+According to Mr. Goldwin Smith, Austen was a cynic and took an epicurean delight in dissecting, displaying, and setting at work her fools and mean persons.
+Austen executed six capital works in two very short periods of about three years and five years.
+She was raised in an English country retirement, brought up in a time when a white frost might have penetrated her house, but her manners, mannerisms and eccentricities marked her as a modern woman. Her first book in American, In Blue, was published in 1834.  She was very particular of her style and the words she said had a wide range of characters and various words. 
+ She could show a skillful skillful language, but her style was not her own. She was a woman of the world, and her style was her own. This was part of her life, a story she told herself over and over again.  After three years and a half  in New York, her old friend David H
+Merging and summarizing: 
+On the
+first head she could not make a mistake; her men, though limited, are
+true, and her women are, in the old sense, “absolute.” As to art, if she
+has never tried idealism, her realism is real to a degree which makes
+the false realism of our own day look merely dead-alive.Take almost any
+Frenchman, except the late M. de Maupassant, and watch him laboriously
+piling up strokes in the hope of giving a complete impression.You get
+none; you are lucky if, discarding two-thirds of what he gives, you can
+shape a real impression out of the rest.But with Miss Austen the
+myriad, trivial, unforced strokes build up the picture like magic.Nothing is false; nothing is superfluous.When (to take the present book
+only) Mr. Collins changed his mind from Jane to Elizabeth “while Mrs.
+Bennet was stirring the fire” (and we know_ how _Mrs.Bennet would have
+stirred the fire), when Mr. Darcy “brought his coffee-cup back_
+himself,” _the touch in each case is like that of Swift--“taller by the
+breadth of my nail”--which impressed the half-reluctant Thackeray with
+just and outspoken admiration.Indeed, fantastic as it may seem, I
+should put Miss Austen as near to Swift in some ways, as I have put her
+to Addison in others.__This Swiftian quality appears in the present novel as it appears
+nowhere else in the character of the immortal, the ineffable Mr.
+Collins.Mr. Collins is really_ great; _far greater than anything Addison
+ever did, almost great enough for Fielding or for Swift himself.It has
+been said that no one ever was like him.
+
+But in the first place,_ he
+_was like him; he is there--alive, imperishable, more real than hundreds
+of prime ministers and archbishops, of “metals, semi-metals, and
+distinguished philosophers.” In the second place, it is rash, I think,
+to conclude that an actual Mr. Collins was impossible or non-existent at
+the end of the eighteenth century.It is very interesting that we
+possess, in this same gallery, what may be called a spoiled first
+draught, or an unsuccessful study of him, in John Dashwood.The
+formality, the under-breeding, the meanness, are there; but the portrait
+is only half alive, and is felt to be even a little unnatural.Mr.
+Collins is perfectly natural, and perfectly alive.In fact, for all the
+“miniature,” there is something gigantic in the way in which a certain
+side, and more than one, of humanity, and especially eighteenth-century
+humanity, its Philistinism, its well-meaning but hide-bound morality,
+its formal pettiness, its grovelling respect for rank, its materialism,
+its selfishness, receives exhibition.I will not admit that one speech
+or one action of this inestimable man is incapable of being reconciled
+with reality, and I should not wonder if many of these words and actions
+are historically true.__But the greatness of Mr. Collins could not have been so satisfactorily
+exhibited if his creatress had not adjusted so artfully to him the
+figures of Mr. Bennet and of Lady Catherine de Bourgh.The latter, like
+Mr. Collins himself, has been charged with exaggeration.There is,
+perhaps, a very faint shade of colour for the charge; but it seems to me
+very faint indeed.Summarization models summary: 
+Austen is a master of realism, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.
+In her art, Austen creates a sense of reality where nothing is false and nothing is superfluous.
+Mr. Collins changed his mind from Jane to Elizabeth while Mrs. Bennet was stirring the fire and Mr. Darcy brought his coffee-cup back.
+Austen's touch is like that of Swift's, which impressed Thackeray with just and outspoken admiration.
+The character of the immortal, the ineffable Mr. Collins, is as great as anything Addison ever did, far greater than anything Fielding or Swift ever did.
+Despite the fact that no one was like him, Collins is perfectly natural and perfectly alive.
+
+Keywords extractor summary: 
+realism, idealism, false realism, real impression, magic, Jane, Elizabeth, Mr. Collins, natural, humanity, Philistinism
+Summary with keywords: 
+Austen is a master of realism and her art is real to a degree that makes the false realism of our own day look merely dead-alive.
+Mr. Collins changed his mind from Jane to Elizabeth while Mrs. Bennet was stirring the fire and Mr. Darcy brought his coffee-cup back.
+Austen's touch is similar to that of Swift's, which impressed Thackeray
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-DMV-125m
+Austen is a master of realism and her art is real to a degree that makes the false realism of our own day look merely dead-alive.
+Mr. Collins changed his mind from Jane to Elizabeth while Mrs. Bennet was stirring the fire and Mr. Darcy brought his coffee-cup back.
+Austen's touch is similar to that of Swift's, which impressed Thackeray in his own way. Austen is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive. 
+ + after 4 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/DailyChat-350M
+Austen is a master of realism and her art is real to a degree that makes the false realism of our own day look merely dead-alive.
+Mr. Collins changed his mind from Jane to Elizabeth while Mrs. Bennet was stirring the fire and Mr. Darcy brought his coffee-cup back.
+Austen's touch is similar to that of Swift's, which impressed Thackeray in his own way. Austen is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.That's just a way of enriching the subject she's writing for me. 
+ I have been waiting under the bush for the chance to 
+ + after 3 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-DMV-125m
+Austen is a master of realism and her art is real to a degree that makes the false realism of our own day look merely dead-alive.
+Mr. Collins changed his mind from Jane to Elizabeth while Mrs. Bennet was stirring the fire and Mr. Darcy brought his coffee-cup back.
+Austen's touch is similar to that of Swift's, which impressed Thackeray in his own way. Austen is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.That's just a way of enriching the subject she's writing for me. 
+ I have been waiting under the bush for the chance to see Austen's work. She is a true artist, and her art is real to a degree that makes the false realism 
+ + after 2 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-DMV-125m
+Austen is a master of realism and her art is real to a degree that makes the false realism of our own day look merely dead-alive.
+Mr. Collins changed his mind from Jane to Elizabeth while Mrs. Bennet was stirring the fire and Mr. Darcy brought his coffee-cup back.
+Austen's touch is similar to that of Swift's, which impressed Thackeray in his own way. Austen is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.That's just a way of enriching the subject she's writing for me. 
+ I have been waiting under the bush for the chance to see Austen's work. She is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.                        
+ + after 1 times 
+
+
+Merged Summary: 
+Austen is a master of realism and her art is real to a degree that makes the false realism of our own day look merely dead-alive.
+Mr. Collins changed his mind from Jane to Elizabeth while Mrs. Bennet was stirring the fire and Mr. Darcy brought his coffee-cup back.
+Austen's touch is similar to that of Swift's, which impressed Thackeray in his own way. Austen is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.That's just a way of enriching the subject she's writing for me. 
+ I have been waiting under the bush for the chance to see Austen's work. She is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.                       
+
+
+
+
+Austen is a master of realism and her art is real to a degree that makes the false realism of our own day look merely dead-alive.
+Mr. Collins changed his mind from Jane to Elizabeth while Mrs. Bennet was stirring the fire and Mr. Darcy brought his coffee-cup back.
+Austen's touch is similar to that of Swift's, which impressed Thackeray in his own way. Austen is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.That's just a way of enriching the subject she's writing for me. 
+ I have been waiting under the bush for the chance to see Austen's work. She is a true artist, and her art is real to a degree that makes the false realism of our own day look merely dead-alive.                       
+Merging and summarizing: 
+Even now I do not think that it would be impossible
+to find persons, especially female persons, not necessarily of noble
+birth, as overbearing, as self-centred, as neglectful of good manners,
+as Lady Catherine.A hundred years ago, an earl’s daughter, the Lady
+Powerful (if not exactly Bountiful) of an out-of-the-way country parish,
+rich, long out of marital authority, and so forth, had opportunities of
+developing these agreeable characteristics which seldom present
+themselves now.As for Mr. Bennet, Miss Austen, and Mr. Darcy, and even
+Miss Elizabeth herself, were, I am inclined to think, rather hard on him
+for the “impropriety” of his conduct.His wife was evidently, and must
+always have been, a quite irreclaimable fool; and unless he had shot her
+or himself there was no way out of it for a man of sense and spirit but
+the ironic.From no other point of view is he open to any reproach,
+except for an excusable and not unnatural helplessness at the crisis of
+the elopement, and his utterances are the most acutely delightful in the
+consciously humorous kind--in the kind that we laugh with, not at--that
+even Miss Austen has put into the mouth of any of her characters.It is
+difficult to know whether he is most agreeable when talking to his wife,
+or when putting Mr. Collins through his paces; but the general sense of
+the world has probably been right in preferring to the first rank his
+consolation to the former when she maunders over the entail, “My dear,
+do not give way to such gloomy thoughts.Let us hope for better things.
+
+Let us flatter ourselves that_ I _may be the survivor;” and his inquiry
+to his colossal cousin as to the compliments which Mr. Collins has just
+related as made by himself to Lady Catherine, “May I ask whether these
+pleasing attentions proceed from the impulse of the moment, or are the
+result of previous study?” These are the things which give Miss Austen’s
+readers the pleasant shocks, the delightful thrills, which are felt by
+the readers of Swift, of Fielding, and we may here add, of Thackeray, as
+they are felt by the readers of no other English author of fiction
+outside of these four.__The goodness of the minor characters in_ Pride and Prejudice _has been
+already alluded to, and it makes a detailed dwelling on their beauties
+difficult in any space, and impossible in this.Mrs. Bennet we have
+glanced at, and it is not easy to say whether she is more exquisitely
+amusing or more horribly true.Much the same may be said of Kitty and
+Lydia; but it is not every author, even of genius, who would have
+differentiated with such unerring skill the effects of folly and
+vulgarity of intellect and disposition working upon the common
+weaknesses of woman at such different ages.
