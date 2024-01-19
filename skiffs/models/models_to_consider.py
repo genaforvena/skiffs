@@ -49,6 +49,7 @@ hallucinators = [
     "DarwinAnim8or/DailyChat-350M",
     "DarwinAnim8or/GPT-DMV-125m",
     "DarwinAnim8or/GPT-NoSleep-355m",
+    "model-attribution-challenge/distilgpt2",
 ]
 
 text_continuators = [
