@@ -44,6 +44,13 @@ evaluator_models = [
     "khalidrizk/autotrain-mental-health-503641204167",
 ]
 
+hallucinators = [
+    "DarwinAnim8or/GPT-Greentext-355m",
+    "DarwinAnim8or/DailyChat-350M",
+    "DarwinAnim8or/GPT-DMV-125m",
+    "DarwinAnim8or/GPT-NoSleep-355m",
+]
+
 text_continuators = [
     "KoboldAI/OPT-350M-Erebus",  # quite pornographic
     # does not have config.json by default, lazy dig more "a686d380/rwkv-5-h-world",  # also very pornographic but in chinese

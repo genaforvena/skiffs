@@ -1,0 +1,20 @@
+
+
+
+
+Iteration 0
+
+Merging and summarizing: 
+On.Say on.Be said on.Somehow on.Till nohow on.Said nohow on.Say for be said.Missaid.From now say for missaid.Say a body.Where none.No mind.Where none.That at least.A place.Where none.For the body.To be in.Move in.Out of.Back into.No.No out.No back.Only in.Stay in.On in.Still.All of old.Nothing else ever.Ever tried.Ever failed.No matter.Try again.Fail again.Fail better.First the body.No.First the place.No.First both.Now either.Now the other.Sick of the either try the other.Sick of it back sick of the either.So on.Somehow on.Till sick of both.Throw up and go.Where neither.Till sick of there.Throw up and back.The body again.Where none.The place again.Where none.Try again.Fail again.Better again.Or better worse.Fail worse again.Still worse again.Till sick for good.Throw up for good.Go for good.Where neither for good.Good and all.It stands.What?Yes.Say it stands.Had to up in the end and stand.Say bones.No bones but say bones.Say ground.No ground but say ground.So as to say pain.No mind and pain?Say yes that the bones may pain till no choice but stand.Somehow up and stand.Or better worse remains.Say remains of mind where none to permit of pain.Pain of bones till no choice but up and stand.Somehow up.Somehow stand.Remains of mind where none for the sake of pain.Here of bones.Other examples if needs must.Of pain.Relief from.Change of.All of old.Nothing else ever.But never so failed.Worse failed.
+
+With care never worse failed.Dim light source unknown.Know minimum.Know nothing no.Too much to hope.At most mereminimum.Meremost minimum.No choice but stand.Somehow up and stand.Somehow stand.That or groan.The groan so long on itsway.No.No groan.Simply pain.Simply up.A time when try how.Try see.Try say.How first it lay.Then somehow knelt.Bit by bit.Then on from there.Bit by bit.Till up at last.Not now.Fail better worse now.Another.Say another.Head sunk on crippled hands.Vertex vertical.Eyes clenched.Seat of all.Germ of all.No future in this.Alas yes.It stands.See in the dim void how at last it stands.In the dim light source unknown.Before the downcast eyes.Clenched eyes.Staring eyes.Clenched staring eyes.That shade.Once lying.Now standing.That a body?Yes.Say that a body.Somehow standing.In the dim void.A place.Where none.A time when try see.Try say.How small.How vast.How if not boundless bounded.Whence the dim.Not now.Know better now.Unknow better now.Know only no out of.No knowing how know only no out of.Into only.Hence another.Another place where none.Whither once whence noreturn.No.No place but the one.None but the one where none.Whence never once in.Somehow in.Beyondless.Thenceless there.Thitherless there.Thenceless thitherless there.Where then but there see--See for be seen.Misseen.From now see for be misseen.Where then but there see now--First back turned the shade astand.In the dim void see first back turned the shade astand.Summarization models summary: 
+The conversation is about a body, a place where there is no mind, no pain, and there is only one place for the body to be in.
+The body stands in a dim void with a dim light source unknown.
+In the dim void, the body has to face the pain of bones until it has no choice but to stand up and stand.
+There is no future in this place.
+Keywords extractor summary: 
+be said on, nohow on, missaid, mind, pain, bones
+Summary with keywords: 
+The conversation is about a body, a place where there is no mind, no pain, and only one place for the body to be: a dim void with a dim light source.
+In the dim void, the body has to face the pain of bones until it has no choice but to stand up and stand.
+There is no future in this place.
