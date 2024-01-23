@@ -43,12 +43,14 @@ class Summarizer:
         keyword_extraction_model_names: list[str],
         context_keeper_model_name: str = "",
         hallucination_times: int = 0,
+        ask_persianmind: bool = False,
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.creation_time = datetime.now()
         self.context_keeper_model_name = context_keeper_model_name
         self.hallucination_times = hallucination_times
+        self.ask_persianmind = ask_persianmind
         nltk.download("punkt")
 
     def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
@@ -104,6 +106,14 @@ class Summarizer:
                 times -= 1
             # Lets keep the original summary still
             # hallucinated_summary = hallucinated_summary.replace(summary, "")
+        if self.context_keeper_model_name:
+            summary = pipeline(
+                "text-generation",
+                trust_remote_code=True,
+                model=self.context_keeper_model_name,
+            )(summary, max_length=summarizator_max_length / 2)[0]["generated_text"]
+        if self.ask_persianmind:
+            summary = ask_persianmind(summary)
         return summary
 
     def _merge_summarize(
@@ -206,6 +216,42 @@ class Summarizer:
         return output_filename
 
 
+def ask_persianmind(prompt: str) -> str:
+    from transformers import LlamaTokenizer, LlamaForCausalLM
+    import torch
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model = LlamaForCausalLM.from_pretrained(
+        "universitytehran/PersianMind-v1.0",
+        torch_dtype=torch.bfloat16,
+        low_cpu_mem_usage=True,
+        device_map={"": device},
+    )
+    tokenizer = LlamaTokenizer.from_pretrained(
+        "universitytehran/PersianMind-v1.0",
+    )
+
+    TEMPLATE = "{context}\nYou: {prompt}\nPersianMind: "
+    CONTEXT = (
+        "This is a conversation with PersianMind. It is an artificial intelligence model designed by a team of "
+        "NLP experts at the University of Tehran to help you with various tasks such as answering questions, "
+        "providing recommendations, and helping with decision making. You can ask it anything you want and "
+        "it will do its best to give you accurate and relevant information."
+    )
+
+    model_input = TEMPLATE.format(context=CONTEXT, prompt=prompt)
+    input_tokens = tokenizer(model_input, return_tensors="pt")
+    input_tokens = input_tokens.to(device)
+    generate_ids = model.generate(
+        **input_tokens, max_new_tokens=512, do_sample=False, repetition_penalty=1.1
+    )
+    model_output = tokenizer.batch_decode(
+        generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+    )[0]
+
+    return model_output[len(model_input) :].replace(prompt, "")
+
+
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument(
@@ -230,6 +276,12 @@ if __name__ == "__main__":
         type=int,
         help="How many times after completing the summary should we hallucinate, default 0",
         default=0,
+    )
+    args.add_argument(
+        "--ask-persianmind",
+        type=bool,
+        help="Ask persianmind for help",
+        default=False,
     )
     src = args.parse_args().src
     src = os.path.abspath(src)
@@ -259,6 +311,7 @@ if __name__ == "__main__":
         keywords_extraction_model_name,
         context_keeper_model_name="",
         hallucination_times=args.parse_args().hallucination_times,
+        ask_persianmind=args.parse_args().ask_persianmind,
     )
     summary = summarizator.summarize(
         src.split("/")[-1].split(".")[0].lower(), summary, min_summary_length

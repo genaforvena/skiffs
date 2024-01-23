@@ -1,0 +1,66 @@
+
+
+
+
+Iteration 0
+
+Merging and summarizing: 
+Molloy
+I am in my mother’s room.It’s I who live there now.I don’t 
+know how I got tl^pre.Perhaps in an ambulance, certainly a vehicle 
+of some kind.I was helped.I’d never have got there alone.There’s 
+this man who comes every week.Perhaps I got here thanks to him.He says not.He gives me money and takes away the pages.So many 
+pages, so much money.Yes, I work now, a little like I used to, 
+except that I don’t know how to work any more.That doesn’t 
+matter apparently.What I’d like now is to speak of the things that 
+arc left, say my good-byes, finish dying.They don’t want that.Yes, 
+there is more than one, apparently.But it’s always the same one 
+that comes.You’ll do that later, he says.Good.The truth is I 
+haven’t m’’ch will left.When he comes for the fresh pages he brings 
+back the previous week’s.They arc marked with signs I don’t under- 
+stand.Anyway I don’t read them.When I’ve done nothing he, gives 
+me nothing, he scolds me.Yet I don’t work for money.For what 
+then?I don’t know.The truth is I don’t know much.For example 
+my mother’s death.Was she already cjpad when I came?Or did 
+she only die later?I mean enough to bury.I don’t know.Perhaps8
+SAMUEL BECKETT
+they haven’t buried her yet.
+
+In any case I have her room.I sleep 
+in her bed.I piss and shit in her pot.I have taken her place.I must 
+resemble her more and more.All I need now is a son.Perhaps I 
+have one somewhere.But I think not.He would be old now, nearly 
+as old as myself.It was a little chambermaid.It wasn’t true love.The true love was in another.We’ll come to that.Her name?I’ve 
+forgotten it again.It seems to me sometimes that I even knew my 
+son, that I helped him.Then I tell myself it’s impossible.It’s impos- 
+sible I could ever have helped anyone.I’ve forgotten how to spell 
+too, and half the words.That doesn’t matter apparently.Good.He’s 
+a queer one the one who conics to see me.He comes every Sunday 
+apparently.The other days he isn't free.He’s always thirsty.It was 
+he told me I’d begun all wrong, that I should have begun differently.He must be right.I began at the beginning, like an old ballocks, 
+can you imagine that?Here’s my beginning.Because they’re keep- 
+ing it apparently.I took a lot of trouble with it.Here it is.It gave 
+me a lot of trouble.It was the beginning, do you understand?Whereas now it’s nearly the end.Is what I do now any better?I 
+don’t know.That’s beside the point.Here's my beginning.It must 
+mean something, or they wouldn’t keep it.Here it is.Summarization models summary: 
+Molloy is living in her mother's room and doesn't know how she got there.
+There is a man who comes every week and gives her money and takes away the pages.
+The man is a queer one who comes for the fresh pages every Sunday and brings back the previous week's, which are marked with signs that she doesn't understand.
+She doesn't work for money for the pages and she does not know how to work any more.
+Her mother's death occurred after her death and she has taken her place in her room, sleeping in her bed and pissing and shitting in her pot.
+Despite her absence, Molloy feels a strong desire to have a son and hopes for a son.
+In the past, she had a chambermaid named Samuel Beckett,
+Keywords extractor summary: 
+Molloy,  mother's room,  ambulance,  money,  pages,  good byes,  son,  true love
+Summary with keywords: 
+Molloy is living in her mother's room and doesn't know how she got there.
+There is a man who gives her money every week and takes away the pages.
+The man is a queer one who comes for the fresh pages every Sunday and brings back the previous week's pages, which are marked with signs that Molloy doesn't understand.
+Molly doesn't work for
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-NoSleep-355m
+Molloy is living in her mother's room and doesn't know how she got there.
+There is a man who gives her money every week and takes away the pages.
+The man is a queer one who comes for the fresh pages every Sunday and brings back the previous week's pages, which are marked with signs that Molloy doesn't understand.
+Molly doesn't work for him and doesn't even follow his orders.  She just keeps telling herself that she can use the old pages she just got for free. But not the ones in the new ones.  Some of the old ones have marks that Molloy is terrified of and that she tries not to touch, like the one on the left side 
+ + after 3 times 

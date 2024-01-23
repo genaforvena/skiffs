@@ -44,12 +44,17 @@ evaluator_models = [
     "khalidrizk/autotrain-mental-health-503641204167",
 ]
 
+story_tellers = [
+    "universitytehran/PersianMind-v1.0",
+]
+
 hallucinators = [
     "DarwinAnim8or/GPT-Greentext-355m",
     "DarwinAnim8or/DailyChat-350M",
     "DarwinAnim8or/GPT-DMV-125m",
     "DarwinAnim8or/GPT-NoSleep-355m",
-    "model-attribution-challenge/distilgpt2",
+    # "ashwinR/CodeExplainer",
+    # "model-attribution-challenge/distilgpt2",
 ]
 
 text_continuators = [
