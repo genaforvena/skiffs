@@ -107,13 +107,18 @@ class Summarizer:
             # Lets keep the original summary still
             # hallucinated_summary = hallucinated_summary.replace(summary, "")
         if self.convert_to_headline is True:
-            headline_max_length = math.floor(summarizator.tokenizer.model_max_length)
-            summary = pipeline(
+            headline_pipeline = pipeline(
                 "text-generation",
                 trust_remote_code=True,
                 model=models_to_consider.story_tellers[0],
-                # this 9 is quite arbitrary number to avoid overflow
-            )(summary, max_length=headline_max_length - 9)[0]["generated_text"]
+            )
+            headline_max_length = math.floor(
+                headline_pipeline.tokenizer.model_max_length
+            )
+            # this 9 is quite arbitrary number to avoid overflow
+            summary = headline_pipeline(summary, max_length=headline_max_length - 9)[0][
+                "generated_text"
+            ]
         if self.ask_persianmind:
             summary = ask_persianmind(summary)
         return summary
