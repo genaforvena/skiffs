@@ -41,12 +41,14 @@ class Summarizer:
         self,
         summarization_model_names: list[str],
         keyword_extraction_model_names: list[str],
+        hallucination_models: list[str] = [],
         convert_to_headline: bool = False,
         hallucination_times: int = 0,
         ask_persianmind: bool = False,
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
+        self.hallucination_models = hallucination_models
         self.creation_time = datetime.now()
         self.convert_to_headline = convert_to_headline
         self.hallucination_times = hallucination_times
@@ -85,7 +87,7 @@ class Summarizer:
         if self.hallucination_times > 0:
             times = self.hallucination_times
             while times > 0:
-                model_to_hallucinate = random.choice(models_to_consider.hallucinators)
+                model_to_hallucinate = random.choice(self.hallucination_models)
                 summary = pipeline(
                     "text-generation",
                     trust_remote_code=True,
@@ -323,9 +325,13 @@ if __name__ == "__main__":
         src,
         "r",
     ).read()
+    # models_for_summarization = ["tinkoff-ai/ruDialoGPT-small"]
+    # keywords_extraction_model_name = ["tinkoff-ai/ruDialoGPT-small"]
+    hallucination_models = models_to_consider.hallucinators
     summarizator = Summarizer(
         models_for_summarization,
         keywords_extraction_model_name,
+        hallucination_models=hallucination_models,
         hallucination_times=args.parse_args().hallucination_times,
         convert_to_headline=args.parse_args().convert_to_headline,
         ask_persianmind=args.parse_args().ask_persianmind,
