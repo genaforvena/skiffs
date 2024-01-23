@@ -50,4 +50,40 @@ hands.She was also beginning to smell.She had never smelt
 sweet, but between not smelling sweet and giving off the smell she 
 was giving off now there is a gulf.She was also subject to fits 
 of vomiting.Turning away, so that her lover should only see her 
-convulsive' back, she vomited at length on the floor.
+convulsive' back, she vomited at length on the floor.Summarization models summary: 
+Macmann and Moll have been in a romantic relationship for some time.
+Macmann has been in love with Moll for a while, but he has yet to reciprocate her feelings.
+Moll has two ears, which he initially questioned, implying that one was more than enough for him.
+She has a blobber-lip with a yellow canine and a long yellow canine bared to the roots and carved with a drill into her gums to represent Christ.
+Christ is in her mouth and she fears she might have swallowed it.
+After the incident, Moll is no longer the same and she vomits on the floor.
+The incident has left an impression on Macmann and he enjoys his affections for Moll.
+In the end, Macmann decides to kill Moll, but
+Keywords extractor summary: 
+Macmann,  Moll,  ear  beads,  two ears,  forgiveness,  thieves,  blobber lip,  grotesque sacrifice,  garter 
+Summary with keywords: 
+Macmann and Moll have been in a romantic relationship for some time.
+Macmann has been in love with Moll for a while, but has yet to reciprocate her feelings.
+Moll has two ears, which initially surprised Macmann, but he decided that one ear was enough for him.
+She has a blobber-lip with a yellow canine and a long yellow canine bared
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-DMV-125m
+Macmann and Moll have been in a romantic relationship for some time.
+Macmann has been in love with Moll for a while, but has yet to reciprocate her feelings.
+Moll has two ears, which initially surprised Macmann, but he decided that one ear was enough for him.
+She has a blobber-lip with a yellow canine and a long yellow canine bared in the middle. She is also a cat lover. She is also a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. 
+ + after 3 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-DMV-125m
+Macmann and Moll have been in a romantic relationship for some time.
+Macmann has been in love with Moll for a while, but has yet to reciprocate her feelings.
+Moll has two ears, which initially surprised Macmann, but he decided that one ear was enough for him.
+She has a blobber-lip with a yellow canine and a long yellow canine bared in the middle. She is also a cat lover. She is also a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. 
+ + after 2 times 
+Hallucinated summary: 
+by the model DarwinAnim8or/GPT-Greentext-355m
+Macmann and Moll have been in a romantic relationship for some time.
+Macmann has been in love with Moll for a while, but has yet to reciprocate her feelings.
+Moll has two ears, which initially surprised Macmann, but he decided that one ear was enough for him.
+She has a blobber-lip with a yellow canine and a long yellow canine bared in the middle. She is also a cat lover. She is also a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat lover. She is a cat love. 
+ + after 1 times 

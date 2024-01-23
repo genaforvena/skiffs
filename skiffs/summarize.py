@@ -56,7 +56,7 @@ class Summarizer:
     def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
         self.log_name = self._create_out_filename(name, "log")
         self.merged_summary_file_name = self._create_out_filename(
-            name, "result_using_merge"
+            name, format="md", postfix="result_using_merge"
         )
         chunks = self._divide_text(txt)
         final_summary = self._merge_summarize(name, chunks, min_length)
@@ -197,7 +197,9 @@ class Summarizer:
         with open(self.merged_summary_file_name, "a+") as f:
             f.write(msg)
 
-    def _create_out_filename(self, source_name: str, postfix: str = "") -> str:
+    def _create_out_filename(
+        self, source_name: str, format: str = "txt", postfix: str = ""
+    ) -> str:
         output_filename = (
             "summary_of_"
             + source_name.split("/")[-1]
@@ -211,7 +213,8 @@ class Summarizer:
             str(pathlib.Path(__file__).parent.parent.absolute())
             + "/tmp_results/summaries/"
             + output_filename
-            + ".txt"
+            + "."
+            + format
         )
         return output_filename
 
