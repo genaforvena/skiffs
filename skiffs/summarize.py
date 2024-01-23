@@ -41,14 +41,14 @@ class Summarizer:
         self,
         summarization_model_names: list[str],
         keyword_extraction_model_names: list[str],
-        context_keeper_model_name: str = "",
+        convert_to_headline: bool = False,
         hallucination_times: int = 0,
         ask_persianmind: bool = False,
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.creation_time = datetime.now()
-        self.context_keeper_model_name = context_keeper_model_name
+        self.convert_to_headline = convert_to_headline
         self.hallucination_times = hallucination_times
         self.ask_persianmind = ask_persianmind
         nltk.download("punkt")
@@ -106,12 +106,14 @@ class Summarizer:
                 times -= 1
             # Lets keep the original summary still
             # hallucinated_summary = hallucinated_summary.replace(summary, "")
-        if self.context_keeper_model_name:
+        if self.convert_to_headline is True:
+            headline_max_length = math.floor(summarizator.tokenizer.model_max_length)
             summary = pipeline(
                 "text-generation",
                 trust_remote_code=True,
-                model=self.context_keeper_model_name,
-            )(summary, max_length=summarizator_max_length / 2)[0]["generated_text"]
+                model=models_to_consider.story_tellers[0],
+                # this 9 is quite arbitrary number to avoid overflow
+            )(summary, max_length=headline_max_length - 9)[0]["generated_text"]
         if self.ask_persianmind:
             summary = ask_persianmind(summary)
         return summary
@@ -286,6 +288,13 @@ if __name__ == "__main__":
         help="Ask persianmind for help",
         default=False,
     )
+    args.add_argument(
+        "--convert-to-headline",
+        type=str,
+        help="Name of the model to write headline",
+        default="",
+    )
+
     src = args.parse_args().src
     src = os.path.abspath(src)
     if os.path.isdir(src):
@@ -312,8 +321,8 @@ if __name__ == "__main__":
     summarizator = Summarizer(
         models_for_summarization,
         keywords_extraction_model_name,
-        context_keeper_model_name="",
         hallucination_times=args.parse_args().hallucination_times,
+        convert_to_headline=args.parse_args().convert_to_headline,
         ask_persianmind=args.parse_args().ask_persianmind,
     )
     summary = summarizator.summarize(

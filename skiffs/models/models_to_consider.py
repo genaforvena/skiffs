@@ -45,7 +45,7 @@ evaluator_models = [
 ]
 
 story_tellers = [
-    "universitytehran/PersianMind-v1.0",
+    "chinhon/headline_writer",
 ]
 
 hallucinators = [
