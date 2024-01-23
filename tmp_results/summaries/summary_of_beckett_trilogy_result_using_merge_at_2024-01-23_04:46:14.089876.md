@@ -1302,3 +1302,19 @@ The two male co-writers, who are now in development at Twentynine Palms, have al
  And it will be of great importance to people who know only a few words of English to find the proper translation of their expressions. 
  Right.Many filmists seem to agree with us that the most important character in a film is its main character, who must be the most important person. 
  We should also give some importance to the hero who has been saved a whole time.
+
+Mahood is a weeper and a great weeper.
+Worm is also known for being aphonic.
+Both Mahood and Worm are known for their aphorisms.
+There is an eye that is not visible and no one knows where it is for the time being.
+Despite being blind, the eye weeps for the smallest things.
+The worms are called the worms because of their long spines.
+They don't dig for food. They have many small mouths along their backs which when exposed to air, create a huge mouth where food can be exposed.  “The worms are worm-like but they do not look worm-like. They have human eyes and large mouth but they look like other worms of the family called the chimaeras. Their bodies are covered by large, long, sharp teeth and they have a long tail that is used as a stepping stone.  “In the evening when the sun sets, they wait beneath the trees by the edge
+
+Worm and Mahood are involved in a conversation about a character named Rovers.
+Worm has a vision of Rovers being abandoned by a person named Mahood.
+Mahood believes that Rovers has been told a lot of lies and is to be hunted through the woods to bring a new God to exist.
+Despite not having the skills to hunt Rovers himself, Mahood believes in the power of Mahood's knowledge. Mahood is a member of the Mahood Clan. Mahood is a member of the Mahood Clan. Mahood is a member of the Mahood Clan. Mahood is a member of the Mahood Clan. Mahood is a member of the Mahood Clan. Mahood is a member of the Mahood Clan. The following is the transcript of the conversation that was exchanged between I am Worm and Mahood
+
+Samuel Beckett has a criminal record which includes insults to policemen, indecent exposure, sins against holy ghost, contempt of court, impertinence to superiors, insults to inferiors, deviations from reason, and insults to superiors.
+Despite his criminal record, Samuel has a medical record which shows no signs of harm, including spasmodic tabes, painless ulcers, multiple soft-hips, and no visible wounds. There are even reports of him not having taken medicine throughout his life. But this is nothing compared to the mental health problems that Samuel now faces due to his mental health issues.* In an interview, doctors told me that the most difficult part of treating him is the lack of resources available to help him because the mental health system is a completely separate organization. One of the other psychiatrists I spoke to told me he would have to go to a psychiatrist to see if there was a way to get help. I asked him if he could go to a psychiatrist to see if there was a way to get
