@@ -45,6 +45,7 @@ class Summarizer:
         convert_to_headline: bool = False,
         hallucination_times: int = 0,
         ask_persianmind: bool = False,
+        russian: bool = False,
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
@@ -53,6 +54,7 @@ class Summarizer:
         self.convert_to_headline = convert_to_headline
         self.hallucination_times = hallucination_times
         self.ask_persianmind = ask_persianmind
+        self.russian = russian
         nltk.download("punkt")
 
     def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
@@ -72,18 +74,24 @@ class Summarizer:
             text, max_length=math.floor(summarizator_max_length / 6)
         )[0]["summary_text"]
         self._log("Summarization models summary: \n" + summary + "\n")
-        keywords_extractor = pipeline(
-            "summarization", model=self.keyword_extraction_model_name
-        )
-        keywords = keywords_extractor(text)[0]["summary_text"]
-        self._log("Keywords extractor summary: \n" + keywords + "\n")
+        if self.russian:
+            keywords = ""
+        else:
+            keywords_extractor = pipeline(
+                "summarization", model=self.keyword_extraction_model_name
+            )
+            keywords = keywords_extractor(text)[0]["summary_text"]
+            self._log("Keywords extractor summary: \n" + keywords + "\n")
 
-        summary = summarizator(
-            summary + keywords,
-            max_length=math.floor(summarizator_max_length / 12),
-            do_sample=False,
-        )[0]["summary_text"]
-        self._log("Summary with keywords: \n" + summary + "\n")
+        if keywords == "":
+            pass
+        else:
+            summary = summarizator(
+                summary + "\n" + keywords,
+                max_length=math.floor(summarizator_max_length / 12),
+                do_sample=False,
+            )[0]["summary_text"]
+            self._log("Summary with keywords: \n" + summary + "\n")
         if self.hallucination_times > 0:
             times = self.hallucination_times
             while times > 0:
@@ -92,7 +100,7 @@ class Summarizer:
                     "text-generation",
                     trust_remote_code=True,
                     model=model_to_hallucinate,
-                )(summary, max_length=summarizator_max_length / (4 + times))[0][
+                )(summary, max_length=summarizator_max_length / (6 + times))[0][
                     "generated_text"
                 ]
                 self._log(
@@ -301,6 +309,12 @@ if __name__ == "__main__":
         help="Name of the model to write headline",
         default="",
     )
+    args.add_argument(
+        "--russian",
+        type=bool,
+        help="Use russian models",
+        default=False,
+    )
 
     src = args.parse_args().src
     src = os.path.abspath(src)
@@ -318,6 +332,17 @@ if __name__ == "__main__":
     else:
         models_for_summarization = picked_models.summarization_models
 
+    if args.parse_args().russian:
+        models_for_summarization = ["IlyaGusev/mbart_ru_sum_gazeta"]
+        keywords_extraction_model_name = []
+        hallucination_models = [
+            "Mary222/MADE_AI_Dungeon_model_RUS",
+            "igorktech/rugpt3-joker-150k",
+            "Nehc/gpt2_lovecraft_ru",
+        ]
+    else:
+        hallucination_models = models_to_consider.hallucinators
+
     keywords_extraction_model_name = picked_models.keyword_extraction_models
     min_summary_length = args.parse_args().min_length
     print("Summarizing text from path: " + src)
@@ -325,9 +350,6 @@ if __name__ == "__main__":
         src,
         "r",
     ).read()
-    # models_for_summarization = ["tinkoff-ai/ruDialoGPT-small"]
-    # keywords_extraction_model_name = ["tinkoff-ai/ruDialoGPT-small"]
-    hallucination_models = models_to_consider.hallucinators
     summarizator = Summarizer(
         models_for_summarization,
         keywords_extraction_model_name,
@@ -335,6 +357,7 @@ if __name__ == "__main__":
         hallucination_times=args.parse_args().hallucination_times,
         convert_to_headline=args.parse_args().convert_to_headline,
         ask_persianmind=args.parse_args().ask_persianmind,
+        russian=args.parse_args().russian,
     )
     summary = summarizator.summarize(
         src.split("/")[-1].split(".")[0].lower(), summary, min_summary_length
