@@ -135,6 +135,7 @@ class Summarizer:
                     + " times \n"
                 )
                 times -= 1
+                old_summary = summary
             # Lets keep the original summary still
             # hallucinated_summary = hallucinated_summary.replace(summary, "")
         if self.convert_to_headline is True:
