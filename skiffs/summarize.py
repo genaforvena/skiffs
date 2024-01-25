@@ -94,9 +94,9 @@ class Summarizer:
             self._log("Summary with keywords: \n" + summary + "\n")
         if self.hallucination_times > 0:
             times = self.hallucination_times
+            old_summary = summary
             while times > 0:
                 model_to_hallucinate = random.choice(self.hallucination_models)
-                old_summary = summary
                 summary = pipeline(
                     "text-generation",
                     trust_remote_code=True,
