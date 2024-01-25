@@ -1,4 +1,3 @@
-from contextlib import contextmanager
 import os
 import random
 import json
@@ -13,6 +12,7 @@ from typing import List
 from transformers import AutoTokenizer
 
 from models import models_to_consider, picked_models
+from util.text_utils import calculate_entropy
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
 
@@ -96,6 +96,7 @@ class Summarizer:
             times = self.hallucination_times
             while times > 0:
                 model_to_hallucinate = random.choice(self.hallucination_models)
+                old_summary = summary
                 summary = pipeline(
                     "text-generation",
                     trust_remote_code=True,
@@ -103,6 +104,26 @@ class Summarizer:
                 )(summary, max_length=summarizator_max_length / (6 + times))[0][
                     "generated_text"
                 ]
+                entropy = calculate_entropy(summary.replace(old_summary, ""))
+                if entropy < 0.5:
+                    self._log(
+                        "Rejected summary: \n"
+                        + "by the model "
+                        + model_to_hallucinate
+                        + "\n"
+                        + "because the entropy is "
+                        + str(entropy)
+                        + "\n"
+                        + "Hallucinated summary: \n"
+                        + "by the model "
+                        + model_to_hallucinate
+                        + "\n"
+                        + summary
+                        + " \n + after "
+                        + str(times)
+                        + " times \n"
+                    )
+                    continue
                 self._log(
                     "Hallucinated summary: \n"
                     + "by the model "

@@ -1,9 +1,24 @@
+from collections import Counter
+import math
 import nltk
 import re
 import random
 import os
 
 SUMMARIZE_CHUNK_SIZE = 300
+
+
+def calculate_entropy(text: str) -> float:
+    words = text.split()
+    if not words:
+        return 0.0
+    word_counts = Counter(words)
+    total_words = len(words)
+    entropy = -sum(
+        (count / total_words) * math.log2(count / total_words)
+        for count in word_counts.values()
+    )
+    return entropy
 
 
 def read_random_line(path):
