@@ -42,6 +42,7 @@ class Summarizer:
         summarization_model_names: list[str],
         keyword_extraction_model_names: list[str],
         hallucination_models: list[str] = [],
+        narration_on: bool = False,
         convert_to_headline: bool = False,
         hallucination_times: int = 0,
         ask_persianmind: bool = False,
@@ -50,6 +51,7 @@ class Summarizer:
         self.summarization_model_name = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.hallucination_models = hallucination_models
+        self.narration_on = narration_on
         self.creation_time = datetime.now()
         self.convert_to_headline = convert_to_headline
         self.hallucination_times = hallucination_times
@@ -235,6 +237,8 @@ class Summarizer:
         self._log(msg)
         with open(self.merged_summary_file_name, "a+") as f:
             f.write(msg)
+        if self.narration_on is True:
+            fb_speaks(msg)
 
     def _create_out_filename(
         self, source_name: str, format: str = "txt", postfix: str = ""
@@ -294,6 +298,29 @@ def ask_persianmind(prompt: str) -> str:
     return model_output[len(model_input) :].replace(prompt, "")
 
 
+def fb_speaks(msg: str) -> None:
+    import simpleaudio as sa
+    from transformers import VitsModel, AutoTokenizer
+    import torch
+
+    model = VitsModel.from_pretrained("facebook/mms-tts-eng")
+    tokenizer = AutoTokenizer.from_pretrained("facebook/mms-tts-eng")
+
+    inputs = tokenizer(msg, return_tensors="pt")
+
+    with torch.no_grad():
+        output = model(**inputs).waveform
+
+    # Convert the waveform to a numpy array
+    waveform = output.squeeze().numpy()
+    # Normalize the waveform to 16-bit signed integers
+    waveform_int16 = (waveform * 32767).astype("int16")
+
+    # Play the audio
+    play_obj = sa.play_buffer(waveform_int16, 1, 2, 22050)
+    play_obj.wait_done()  # Adjust the rate if necessary
+
+
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument(
@@ -318,6 +345,12 @@ if __name__ == "__main__":
         type=int,
         help="How many times after completing the summary should we hallucinate, default 0",
         default=0,
+    )
+    args.add_argument(
+        "--narration-on",
+        type=bool,
+        help="Narrate the summary",
+        default=False,
     )
     args.add_argument(
         "--ask-persianmind",
@@ -377,6 +410,7 @@ if __name__ == "__main__":
         keywords_extraction_model_name,
         hallucination_models=hallucination_models,
         hallucination_times=args.parse_args().hallucination_times,
+        narration_on=args.parse_args().narration_on,
         convert_to_headline=args.parse_args().convert_to_headline,
         ask_persianmind=args.parse_args().ask_persianmind,
         russian=args.parse_args().russian,
