@@ -99,13 +99,23 @@ class Summarizer:
             old_summary = summary
             while times > 0:
                 model_to_hallucinate = random.choice(self.hallucination_models)
-                summary = pipeline(
-                    "text-generation",
-                    trust_remote_code=True,
-                    model=model_to_hallucinate,
-                )(summary, max_length=summarizator_max_length / (6 + times))[0][
-                    "generated_text"
-                ]
+                if model_to_hallucinate.endswith("gguf"):
+                    from llama_cpp import Llama
+
+                    llm = Llama(
+                        model_path=model_to_hallucinate,  # Download the model file first
+                    )
+
+                    summary = summary + llm(summary)["choices"][0]["text"]
+
+                else:
+                    summary = pipeline(
+                        "text-generation",
+                        trust_remote_code=True,
+                        model=model_to_hallucinate,
+                    )(summary, max_length=summarizator_max_length / (6 + times))[0][
+                        "generated_text"
+                    ]
                 entropy = calculate_entropy(summary.replace(old_summary, ""))
                 if entropy < 0.5:
                     self._log(

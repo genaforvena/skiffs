@@ -49,11 +49,12 @@ story_tellers = [
 ]
 
 hallucinators = [
-    "DarwinAnim8or/GPT-Greentext-355m",
-    "DarwinAnim8or/DailyChat-350M",
-    "DarwinAnim8or/GPT-DMV-125m",
-    "DarwinAnim8or/GPT-NoSleep-355m",
-    "adityavelusamy/quest-v3",
+    # "DarwinAnim8or/GPT-Greentext-355m",
+    # "DarwinAnim8or/DailyChat-350M",
+    # "DarwinAnim8or/GPT-DMV-125m",
+    # "DarwinAnim8or/GPT-NoSleep-355m",
+    # "adityavelusamy/quest-v3",
+    "/home/ilyahome/Developer/my_robots/llama.cpp/models/phi-2.Q4_K_M.gguf"
     # "ashwinR/CodeExplainer",
     # "model-attribution-challenge/distilgpt2",
 ]
