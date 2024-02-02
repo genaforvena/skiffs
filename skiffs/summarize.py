@@ -106,11 +106,7 @@ class Summarizer:
         if keywords == "":
             pass
         else:
-            summary = summarizator(
-                summary + "\n" + keywords,
-                max_length=math.floor(summarizator_max_length / 12),
-                do_sample=False,
-            )[0]["summary_text"]
+            summary = self._call_summarizer_model(summary + "\n" + keywords)
             self._log("Summary with keywords: \n" + summary + "\n")
         if self.hallucination_times > 0:
             times = self.hallucination_times
