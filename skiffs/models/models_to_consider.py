@@ -54,7 +54,10 @@ hallucinators = [
     # "DarwinAnim8or/GPT-DMV-125m",
     # "DarwinAnim8or/GPT-NoSleep-355m",
     # "adityavelusamy/quest-v3",
-    "/home/ilyahome/Developer/my_robots/llama.cpp/models/phi-2.Q4_K_M.gguf"
+    "/home/ilyahome/Developer/my_robots/llama.cpp/models/phi-2.Q4_K_M.gguf",
+    "/home/ilyahome/Developer/my_robots/llama.cpp/models/stablelm-2-zephyr-1_6b.gguf",
+    "/home/ilyahome/Developer/my_robots/llama.cpp/models/openhermes-2.5-mistral-7b.Q4_K_M.gguf",
+    "/home/ilyahome/Developer/my_robots/llama.cpp/models/llava-v1.6-mistral-7b.Q5_K_M.gguf",
     # "ashwinR/CodeExplainer",
     # "model-attribution-challenge/distilgpt2",
 ]
