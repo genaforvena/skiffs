@@ -48,7 +48,8 @@ class Summarizer:
         ask_persianmind: bool = False,
         russian: bool = False,
     ) -> None:
-        self.summarization_model_name = summarization_model_names[0]
+        self.summarization_model_name = summarization_model_names[1]
+        self._summarizer_model = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.hallucination_models = hallucination_models
         self.narration_on = narration_on
@@ -68,14 +69,31 @@ class Summarizer:
         final_summary = self._merge_summarize(name, chunks, min_length)
         return final_summary
 
-    def _call_summarizer(self, text: str) -> str:
-        summarizator = pipeline("summarization", model=self.summarization_model_name)
-        summarizator_max_length = math.floor(summarizator.tokenizer.model_max_length)
+    def _call_summarizer_model(self, text: str) -> str:
+        if self._summarizer_model.endswith("gguf"):
+            from llama_cpp import Llama
 
-        summary = summarizator(
-            text, max_length=math.floor(summarizator_max_length / 6)
-        )[0]["summary_text"]
-        self._log("Summarization models summary: \n" + summary + "\n")
+            llm = Llama(
+                model_path=self._summarizer_model,  # Download the model file first
+            )
+            summary = llm("Summarize this text: " + text)["choices"][0]["text"]
+            self._log(
+                "Summary by the model "
+                + self._summarizer_model
+                + ": \n"
+                + summary
+                + "\n"
+            )
+        else:
+            summarizator = pipeline(
+                "summarization", model=self.summarization_model_name
+            )
+            summary = summarizator(text, max_length=150)[0]["summary_text"]
+            self._log("Summary by the model " + model_name + ": \n" + summary + "\n")
+        return summary
+
+    def _call_summarizer(self, text: str) -> str:
+        summary = self._call_summarizer_model(text)
         if self.russian:
             keywords = ""
         else:
@@ -203,7 +221,7 @@ class Summarizer:
 
     def _divide_text(self, text: str) -> List[str]:
         tokenizer = AutoTokenizer.from_pretrained(self.summarization_model_name)
-        max_token_length = tokenizer.model_max_length / 2.5
+        max_token_length = tokenizer.model_max_length / 4.5
         paragraphs = text.split("\n\n")
         chunks = []
         current_chunk_tokens = []
