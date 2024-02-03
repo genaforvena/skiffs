@@ -48,7 +48,7 @@ class Summarizer:
         ask_persianmind: bool = False,
         russian: bool = False,
     ) -> None:
-        self.summarization_model_name = summarization_model_names[1]
+        self.summarization_model_name = summarization_model_names[0]
         self._summarizer_model = summarization_model_names[0]
         self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         self.hallucination_models = hallucination_models
@@ -89,7 +89,13 @@ class Summarizer:
                 "summarization", model=self.summarization_model_name
             )
             summary = summarizator(text, max_length=150)[0]["summary_text"]
-            self._log("Summary by the model " + model_name + ": \n" + summary + "\n")
+            self._log(
+                "Summary by the model "
+                + self.summarization_model_name
+                + ": \n"
+                + summary
+                + "\n"
+            )
         return summary
 
     def _call_summarizer(self, text: str) -> str:
@@ -111,8 +117,9 @@ class Summarizer:
         if self.hallucination_times > 0:
             times = self.hallucination_times
             old_summary = summary
+            # Pick one model randomly for all hallucinations as it is quite expensive to change the model
+            model_to_hallucinate = random.choice(self.hallucination_models)
             while times > 0:
-                model_to_hallucinate = random.choice(self.hallucination_models)
                 if model_to_hallucinate.endswith("gguf"):
                     from llama_cpp import Llama
 
@@ -149,6 +156,7 @@ class Summarizer:
                         + str(times)
                         + " times \n"
                     )
+                    model_to_hallucinate = random.choice(self.hallucination_models)
                     continue
                 self._log(
                     "Hallucinated summary: \n"
