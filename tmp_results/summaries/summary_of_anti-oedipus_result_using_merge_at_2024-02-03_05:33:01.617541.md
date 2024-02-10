@@ -118,3 +118,50 @@ Mommy is a loving, caring person who wants me to be happy, and she also wants me
 She is not my mother, but rather someone who is nurturing and supportive of me as I grow older.
 In this context, the question is formulated in terms of the relationship between the child and their caregiver.
 The caregiver's concern for the child's happiness and well-being is evident in her question about whether the
+
+The Oedipus complex is a framework for understanding childhood and the production of the unconscious.
+The unconscious produces itself within the identity of nature and man within the process of production.
+Artaud, a socialist thinker, discovered the unity of man and nature within the processes of production and discovered the independence of the child from its parents.
+In the Cartesian cogito, the child discovers that it has no parents and discovers its independence from an indefinite parental regression.
+According to Artaud, the unconscio us is an orphan and the child's identity is within the identities of nature, man, and nature.
+There is a confusion between the meanings of "process" and "process": one refers to an act of production that is continuous and always ongoing, while the other refers to an organized and linear progression of actions or events.
+The unconscious does not produce itself but rather emerges from an endless process of self-production.
+Artaud's discovery of the unity of man and nature within processes of production led him to the idea that the child discovers its independence from parents, while Lacan saw the unconscious as a structure produced by language.
+
+H. D. Lawrence has reservations about psychoanalysis, perceiving it as restricting sexuality and stifling it.
+Lawrence perceives psychoanalysis as creating a repugnant artifical triangle and restricting the production of desire, turning it into a "dirty little secret," a family secret, and a private theater rather than a production of nature and production.
+Despite his reservations, Lawrence has an instinctive impression that sexuality possesses more power or potentiality than psychoanalysis.
+According to Lawrence, the dirty little secret of Oedipus-the-modern-tyrant benefited little from having been "disinfected" by psychoanalytic interpretation, and he suggests that the psychoanalytic process might have been more fruitful if it had not tried to disinfect it.
+Lawrence also believes that sexuality is closely tied to nature and creativity, which makes him skeptical of psychoanalysis's attempts to control or suppress it. He argues that sexual desire is a natural part of the human experience and cannot be fully understood or controlled through psychological analysis. 
+
+The relationship between madness and the family can be traced back to a development that affected bourgeois society in the 19th century.
+Foucault suggests that the family was entrusted with functions that became the measuring rod of the responsibility of its members and their possible guilt.
+According to Foucault, psychoanalysis is reviving an age-old tendency to humble, demean, and make people feel guilty.
+Despite the fact that psychoanalysis cloaks insanity in the mantle of a "parental complex," and regards the patterns of self-punishment resulting from Oedipus as a confession of guilt, it is not considered radical or innovative.
+Foucault points out that what he calls the "authority" which has been ascribed to psychoanalysis over the past half century did not originate with Sigmund Freud and his followers: rather it was inherited from the era before the 18th century, when madness had its own particular social role as a punishment.
+Foucault makes a distinction between two types of insanity: the "madness of the family" and "the madness of the community."
+
+Oedipus is the figure of the daddy-mommy-me triangle, a familial constellation.
+Psychoanalytic theory considers the concept of the "nuclear complex" as a dogma of Oedipos.
+The nuclear complex is inseparable from a concept of a "gended generalized Oed," which is a pre-Oedipal concept.
+Although Freud's Oedipus complex has been the most influential model for understanding psychoanalysis, it has its limitations.
+One limitation is that the Oedipus complex applies to only heterosexuals and has not been extended to include homosexuals or bisexuals.
+The other main criticism of the Oedipal complex theory is that it tends to be reductionist in nature (as in "the father wants to kill his son") by simplifying things rather than attempting to explore
+
+The distinction between the Imaginary* and the Symbolic* allows the emergence of an Oedipal structure, a system of positions and functions that do not conform to the variable figure of those who occupy them in a given social or pathological formation.
+The Oedipus (3 + 1) is a structural structure that performs all the possible triangulations by distributing desire, its object, and the law within a given domain.
+Oedipalization, neurosis, and exo oEDipal phenomena are discussed.
+"The imaginary is not the same as imaginary."
+Imaginary: A mental process or product that is not symbolic but serves as a foundation for it. (Lacan)
+* The Symbolic: Represents the order of language and culture through which individuals experience meaning.
+* The Imaginary: Represents the subject's perception of their own body and environment, shaped by their mirror image and the Other.
+The Real: The inherent
+
+The concept of "foreclosure" suggests a specific structural deficiency in the Oedipal organization.
+One of Jacques Lacan's disciples proposes to investigate the role of Oedipus in psychoses and the nature of psychotic pregenitality.
+Lacan's previous criticism of OEDipus was perceived as superficial and petty, focusing on an imaginary character and its role of parental figures.
+The disciples propose to focus on the role and nature of the "Oedipal" organization and the forms of the pregeneritality of psychoses.
+They propose to explore the concept of a "desiring-production" in order to investigate OEDipus' place in the process of desiring-production.
+The disciples intend to focus on the role that Oedipus plays in the desiring-production and its relation to the pregenitality.
+They propose to study how this "desiring-production" is formed by the pregeneralization process as well as the role of OEDipus in the "desiring-production".
+The disciples intend to
