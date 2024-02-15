@@ -26,7 +26,7 @@ def talk_to(llama, text, history, max_tokens=1024):
 
 if __name__ == "__main__":
     llama = Llama(
-        "/home/ilyahome/Developer/my_robots/llama.cpp/models/laser-mistral-xs.gguf",
+        "/home/ilyahome/Developer/my_robots/llama.cpp/models/stablelm-2-zephyr-1_6b.gguf",
         chat_format="llama-2",
     )
     conversation_history = []
