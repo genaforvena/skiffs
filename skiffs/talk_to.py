@@ -4,7 +4,10 @@ from llama_cpp import Llama
 def talk_to(llama, text, history, max_tokens=1024):
     # Prepare the full text by combining history with the new text
     full_text = "\n".join(history + ["User: " + text])
-    response = llama(full_text)["choices"][0]["text"]
+    response = ""
+    response = llama.create_chat_completion(
+        messages=[{"role": "user", "content": text}]
+    )["choices"][0]["message"]["content"]
 
     # Update the conversation history
     updated_history = history + ["User: " + text, "System: " + response]
@@ -23,7 +26,8 @@ def talk_to(llama, text, history, max_tokens=1024):
 
 if __name__ == "__main__":
     llama = Llama(
-        "/home/ilyahome/Developer/my_robots/llama.cpp/models/phi-2.Q4_K_M.gguf"
+        "/home/ilyahome/Developer/my_robots/llama.cpp/models/laser-mistral-xs.gguf",
+        chat_format="llama-2",
     )
     conversation_history = []
 
