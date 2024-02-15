@@ -125,9 +125,13 @@ class Summarizer:
 
                     llm = Llama(
                         model_path=model_to_hallucinate,  # Download the model file first
+                        chat_format="llama-2",
                     )
 
-                    summary = summary + llm(summary)["choices"][0]["text"]
+                    response = llm.create_chat_completion(
+                        messages=[{"role": "user", "content": summary}],
+                    )["choices"][0]["message"]["content"]
+                    summary = summary + response
 
                 else:
                     summary = pipeline(
