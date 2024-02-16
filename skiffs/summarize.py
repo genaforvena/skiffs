@@ -126,6 +126,7 @@ class Summarizer:
                     llm = Llama(
                         model_path=model_to_hallucinate,  # Download the model file first
                         chat_format="llama-2",
+                        verbose=False,
                     )
 
                     response = llm.create_chat_completion(
