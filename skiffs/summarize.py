@@ -121,18 +121,9 @@ class Summarizer:
             model_to_hallucinate = random.choice(self.hallucination_models)
             while times > 0:
                 if model_to_hallucinate.endswith("gguf"):
-                    from llama_cpp import Llama
+                    from talk_to import ask
 
-                    llm = Llama(
-                        model_path=model_to_hallucinate,  # Download the model file first
-                        chat_format="llama-2",
-                        verbose=False,
-                    )
-
-                    response = llm.create_chat_completion(
-                        messages=[{"role": "user", "content": summary}],
-                    )["choices"][0]["message"]["content"]
-                    summary = summary + response
+                    summary = summary + ask(model_to_hallucinate, summary, [], 1024)[0]
 
                 else:
                     summary = pipeline(

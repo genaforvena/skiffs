@@ -1,9 +1,12 @@
 from llama_cpp import Llama
 
 
-def talk_to(llama, text, history, max_tokens=1024):
+def ask(llama_path, text, history, max_tokens=1024):
+    llama = Llama(
+        llama_path,
+        chat_format="llama-2",
+    )
     # Prepare the full text by combining history with the new text
-    full_text = "\n".join(history + ["User: " + text])
     response = ""
     response = llama.create_chat_completion(
         messages=[{"role": "user", "content": text}]
@@ -25,19 +28,16 @@ def talk_to(llama, text, history, max_tokens=1024):
 
 
 if __name__ == "__main__":
-    llama = Llama(
-        "/home/ilyahome/Developer/my_robots/llama.cpp/models/stablelm-2-zephyr-1_6b.gguf",
-        chat_format="llama-2",
-    )
     conversation_history = []
 
+    llama_path = "/home/ilyahome/Developer/my_robots/llama.cpp/models/llava-v1.6-mistral-7b.Q5_K_M.gguf"
     while True:
         user_input = input("You: ")
         if user_input.lower() in ["exit", "quit"]:
             print("Exiting conversation.")
             break
 
-        response, conversation_history = talk_to(
-            llama, user_input, conversation_history
+        response, conversation_history = ask(
+            llama_path, user_input, conversation_history
         )
         print("Llama:", response)
