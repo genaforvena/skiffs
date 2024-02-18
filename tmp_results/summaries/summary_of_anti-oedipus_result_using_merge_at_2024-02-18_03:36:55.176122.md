@@ -326,3 +326,139 @@ In this way, Nijinsky's God is an inclusive, generalist entity whose existence i
 In Le Livre, Nijinsky envisions a schizophrenic God whose attributes diverge from traditional religious conceptions of divinity. Instead, this God embodies the synthesis itself through disjunction and shifting between terms. This departure from conventional notions of God reflects Nijinsky's artistic expression and exploration of abstract concepts rather than fixed beliefs or dogmatic principles.
 
 In contrast, Baphomet Klossowski's portrayal of God in Psychology and FAMIL highlights an antichrist figure who represents limitations and boundaries imposed by disjunctive syllogism. This antichrist stands in opposition to the traditional notion of God, emphasizing exclusions and restrictions rather than inclusivity and generalization. The divergent perspectives on God demonstrate how philosophers and artists approach divine presence differently—one through synthesis and shifting boundaries while the other through limitations and contrasting principles.
+
+
+
+This poem seems to be discussing a conceptual framework created by the "genealogist-madman," which involves creating a disjointed network that allows him to explore different perspectives simultaneously while recording his thoughts in various branches. This network is described as being built upon graduated relationships and indivisible overflights, possibly representing complex connections and unbreakable journeys through thought processes.
+
+The poem then shifts to discuss the act of recording itself - both its benefits and drawbacks when it comes to paranoiac inscriptions (possibly referring to a heightened sense of self-awareness) and miraculating inscriptions (which might represent transformative moments). These recordings are said to be inscribed on the "unengendered body," which could symbolize an abstract plane or state of consciousness where these thoughts occur without any predetermined structure.
+
+Finally, the poem mentions Nijinsky keeping a diary - likely referring to the famous dancer and choreographer Vaslav Nijinsky who maintained personal diaries throughout his life. This connection suggests that Nijinsky may be connected to this abstract framework created by the genealogist-madman as he explores his thoughts through various avenues of expression, including dance and diary writing.
+
+
+
+In this passage, the author is exploring different concepts related to exclusive relations and their implications on various situations. They highlight how an exclusive relation introduces a distinction between differentiation and alternative choices within those scenarios. Additionally, they note that the concept of "parental appellation" differs from a "divide-and-conveyor" idea, emphasizing that these distinct concepts have unique characteristics and definitions. Furthermore, they mention how global individuals emerge due to prohibitions in exclusive disjunctions but do not exist prior to those restrictions being established.
+
+The most important factor in choosing a career is your passion for the job. If you don't enjoy what you do, it can be difficult to succeed. So when deciding on a career path, think about what brings you joy and fulfillment.
+
+When selecting a profession, it's crucial to consider your interests and talents. If you love something deeply, you are more likely to excel at it and find happiness in your work. Therefore, take the time to explore different options before making your decision. Don't rush into choosing a career just because others expect you to do so or because it seems popular. Instead, follow your heart and choose what makes you happy.
+
+Additionally, remember that your career choice doesn't have to be permanent. You can always change paths if you find something else that brings you joy later on in life. So don't worry about making the wrong decision initially; just trust your instincts and follow your passion.
+
+Finally, keep in mind that success comes from hard work combined with genuine interest in your chosen career path. If you enjoy what you do, you will be more motivated to put forth effort into it. And when you're passionate about something, you'll find the energy to overcome challenges and obstacles along the way. So remember to choose a career that ignites your passion and fuels your motivation for success!
+
+discrete dyad\]with contradictory messages,\[ENDRULES\]two individuals are speaking while sending messages that negate each other.\[ENDOFINST\]
+
+In this description given by Gregory Bateson, a double bind refers to when two conflicting messages are simultaneously transmitted. He associates the double bind with schizophrenia-related phenomena. In his perspective, the term "double-impasse" signifies a common scenario that perfectly exemplifies this situation.
+
+Additionally, Russell's theory of types can be seen as a paradox within psychoanalysis according to Bateson's interpretation. This paradoxical aspect is referred to as a paralogism in relation to psychoanalytic theories.
+
+In simpler terms, when two individuals communicate while sending messages that negate each other, it represents a double bind situation described by Bateson.
+
+identity is formed.[LONG]
+Sigmund Freud proposes that schizophrenia arises due to the coexistence of normality and neurosis within an individual. This double path creates a complex dynamic where withdrawal into the body without organs becomes the only means of escaping this duality. In Freudian terms, the Oedipal bond refers to essential elements that are strictly prohibited from surpassing the father figure's influence. According to Freudian psychoanalysis, Oedipus and the father are intrinsically linked, forming an inseparable bond. This interpretation of the father-child relationship indicates that it plays a crucial role in shaping the historical series of events that define a child's identity formation.[SHORT]
+
+In this given text snippet, we can understand that there is a comparison being drawn between the American industrial society and Freudian ideas related to psychology. Specifically, it seems that the former is seen as an attempt at reviving older forms of societal organization. Two psychoanalysts named Dr. Mendel and Dr. Stephane are mentioned as prominent figures in this field. Additionally, there appears to be a reference to individuals who resist becoming part of what's called an "Oedipal" situation (likely relating to familial dynamics) being labeled as requiring assistance from either an asylum or the police. Overall, it seems that psychology plays a significant role in analyzing societal trends and dynamics in this context.[ //! ]
+
+Effenately, within Marx's "On the Jewish Question," the notion of a double bind refers to the intricate bond between family units and societal structures. In this context, Oedipus becomes a symbolic figure representing the futility of individuals when it comes to establishing equilibrium between these two entities. Various narratives depict people as being healthy or well due to the existence of Oedipus, while simultaneously portraying sickness resulting from "OED." This ambiguous distinction highlights how Oedipus signifies both uselessness and functionality in different contexts.
+
+
+This passage discusses Schizoanalysis as an alternative approach distinct from Oedipus-centered Psychoanalysis. The goal of Schizoanalysis is not to resolve the problem posed by Oedipus but rather to deconstruct or "de-oedipalize" unconscious patterns in order to tackle more authentic issues at hand.
+
+Schizoanalysis acknowledges that psychoanalytic solutions may not be sufficient for resolving the problem presented by Oedipus, yet it doesn't share the pessimistic belief that only Psychoanalysis can offer a solution. Instead, Schizoanalysis envisions an internal reversal within analytical frameworks as part of broader revolutionary processes.
+
+
+
+This passage discusses the interpretation given by J. M. Pohier regarding Lacanism's view of Oedipus as a symbolic structure within another structure. According to this interpretation, Oedipus represents a familial trinity with an insufficient religious foundation. Lacanism is presented as a form of structural worship that aims to create and close the double by altering traditional father-mother relationships into mother-functional and father-functional roles. The underlying basis for this structure lies in parental images.
+
+The given passage discusses Sigmund Freud's perspective on the concept of Oedipus as a double bind. It explains that this concept represents two contrasting ways of living psychically: one based on "Oedipai" structures and another centered around "The Symbolic." This intricate duality is believed to be inherent in critical phases of life. Freud considers it both man's grandeur and misery, highlighting its impactful nature. In his article Anti-Oedipus, he proposes that breaching the Symbolic realm could lead us back to the Imaginary realm.[END]
+
+In Freud's viewpoint, this double bind represents a significant aspect of human existence, encompassing both greatness and suffering. The Symbolic structures play a crucial role in understanding these contrasting ways of life. This dialectical relationship is deeply rooted in critical phases of psychic life, emphasizing its importance throughout one's journey.
+
+In this given text, Lacan refers to two distinct ways of interpreting Oedipus. One is called "anoedipal use," which involves inclusive, nonrestrictive disjunctions. The other interpretation is termed "Oedipal uses" and deals with exclusive disjuncts. It's important to note that Lacan believes these latter interpretations borrow from the Imaginary and symbolic values associated with the Symbolic realm.
+
+In his analysis, Lacan contends that the Oedipus myth cannot stand without a ritualistic aspect, implying that psychoanalysis might not be essential for understanding it fully. Furthermore, he suggests that the initial followers of his thoughts are less likely to encounter false problems related to this myth compared to others who come after them in the chain of interpretation.\
+
+These complexities highlight Lacan's intricate approach to analyzing Oedipus and its symbolic significance while emphasizing the importance of contextualization within rituals and interpretations.
+
+In Psychanalysis and Familiarism: The Holy Family, 83, Lacan questions whether it is possible to denounce Oed.,
+This fragment discusses Lacan's musings on denouncing something called "Oed." He explores the concept through a projection of signifying chains onto what he terms as a despotic signifier—a signifier that lacks unto itself and introduces a lack into the chain of desires. The Holy Family context refers to Freud's theories, where Lacan's first disciples (likely referring to Freudian followers) attempted to restore the yoke but ultimately did not follow through with it.
+
+
+This passage discusses the idea of a "journey" being used metaphorically to describe various processes occurring within an egg. These phenomena include morphogenetic movements, cellular displacements, stretching, folding, migrations, and local variations in potentials. In the context of schizophrenia, the subject perceives their upcoming journey as a "horrific journey."
+
+The subject mentioned here is believed to have existed since ancient times, ranging from the lowest forms of life to present times. The text also states that there should be no opposition between an inner journey (or voyage) and external realities such as Lenz's stroll or Nijinsky's stroll. These references likely refer to other figures or concepts related to artistic expression or philosophical thought.
+
+Overall, the passage highlights the abstract concept of a "journey" applied to various biological processes within an egg while also touching upon schizophrenia and its connection with broader existential themes.
+
+In this passage, different beliefs are presented regarding transformation and identity. Szondi believes he is a schizo and participates in history. Worm suggests that by trying to be like Worm, Szondi will eventually become Mahood through emulating Jones. This implies a notion of evolution or transition from one state to another.
+
+Furthermore, the passage mentions an intense order involving time-dwelling entities, countries, races, families, parental roles, divine appellations, geographical locations, and historical events. These elements seem to be interconnected in some way related to time's chaotic nature and its impact on various identities or concepts.
+
+Overall, the text discusses different paths of transformation and how individuals relate to history through diverse perspectives and connections with other entities.
+
+
+
+In this passage, Artaud's theory revolves around the concept of thresholds representing fields of forces defined by intense vibrations. Individuals move from one field to another by crossing these thresholds while also transforming into different identities and sexes in the process. Destruction occurs when migrating civilizations along these thresholds lead to their demise, as exemplified by significant migrants whose cultures are destroyed after passing through them. Artain's account of his journey toward Mexico in his book "PSYCHOANALYSIS" is described as "a season in hell," connecting it to the battle against mainstream culture, encounters with different races, and feelings of admiration for convicts.
+
+
+Zarate, representing someone outside of good birth people but not Christian, considering himself a beast and a Negro; Zarathusta related to "grand politics" of races and individuals influenced by these races; Nietzsche identified as non-German but Polish in the narrative.
+
+
+This passage discusses a theoretical framework centered around identifying races, cultures, gods, and entities through fields of intensity and their associated states. It suggests that there is no ego involved in representing these identities. Instead, proper names are used to identify races, nations, and people with specific regions or thresholds related to intensive quantities production.
+
+The theory connects proper names to a class of effects determined by occupation of a domain and operation of sign systems. It mentions examples from physics such as the Joule effect and Seebeck effect to illustrate these concepts.
+
+
+The given paragraph discusses Jacques Besse's theory regarding the concept of "real" and its evolution from indivisible abstract quantity to enveloping intensive quantities with individisable distances. It also mentions how identities like Mahood, Worm, and Jones can only be recognized by their respective names or forms. In Jacques's book, he delves into the dual journey of a schizo while exploring geographic aspects through nondecomposable distances in a geographic voyage.
+
+is a unique perspective on engaging with history and nature through intense imagination and extraction."
+
+In this passage, Nellye Reich introduces several concepts related to his understanding of histrionism as a form of historical plundering. This process involves drawing intensely real elements from various aspects of the world such as nature, history, Roman Empire, Mexican cities, Greek gods, and discovered continents. Reich considers schizophrenic individuals closest to this beating heart of reality, where they engage with these intense points of production for the real.
+
+
+The enigmatic statement above refers to a complex narrative involving several characters and their connections to an alleged historical event known as the "Louis XVII affair." This affair centers around claims that Louis XVII was a different impostor pretending to be the actual king, Louis XV II. Multiple individuals have come forward claiming to be Louis XVII, including Richemont (who may not be directly related), Hervagault, and Mathurin Bruneau.
+
+The plot includes various elements such as desire machines or celibate machines, horses with short jointed paws (likely symbolic representations), the Dauphin (referring to the title held by a member of the French royal family), agents of production and antiproduction (possibly representing opposing forces), organizers of the escape (likely referring to those planning a getaway), allied sovereigns (supportive rulers), revolutionary enemies (opponents), and uncles (likely symbolizing familial connections).
+
+In summary, Richemont acknowledges other pretenders who claimed to be Louis XVII but maintains his own connection with the historical figure despite not explicitly identifying as him.
+
+
+This passage seems to be discussing abstract concepts related to philosophy or theory rather than concrete situations. It talks about conjunctive synthesis as a series of singular or intense states within a disjunctive network, where a subject moves through transformative stages and emerges victorious over some while others fall short. This concept appears to involve elements of competition and evaluation.
+
+Furthermore, the passage mentions all delirium possessing world-historical, political, and racial connotations. It implies that these concepts have far-reaching implications in history, politics, and race relations. The mixing of races, cultures, continents, and kingdoms indicates a fusion or integration of diverse elements from various walks of life.
+
+Finally, the residual subject represents an ongoing process that completes a self through its oscillations or cycles. It seems to imply a continuous evolution whereby the subject gains strength and clarity by going through these transformative stages.
+
+
+This passage discusses how Judge Schreber's memoirs present an unusual take on race, history, and religion compared to other authors. It highlights Schreber's transformations into various characters experiencing different conflicts throughout his writings. The statement also implies that these changes trigger a collective delusion involving historical events, geography, and racial groups.
+
+has experienced a traumatic event related to Oedipus.[/)
+We can piece together the given passage by understanding its different parts:
+
+1. Maud Mannoni is experiencing paranoiac delirium that revolves around Oedipus and psychoanalytic interpretation related to it.
+2. Her analysis leads to the conclusion that her delirious thoughts are centered on OEDipus (with capitalization indicating a connection to Sophoclean tragedy).
+3. Freud's analysis is not mentioned in Maud's case, suggesting she has taken an alternative approach to understanding her condition.
+4. The internal familial determination seems to be replaced with external events and cultural associations for the man from Martinique.
+5. He identifies himself with various historical incidents like Algerian War, Arabs, whites, and May '68 events.
+6. According to Maud's perspective (likely derived from her analysis), this individual has experienced a traumatic event related to Oedipus.
+
+The overall context seems to be about analyzing psychological conditions through the lens of Oedipal themes while comparing different approaches and perspectives in understanding human experiences.
+
+This sentence can be summarized as discussing Maud Mannoni's perspective on the root cause of broken familial ties and the connection between seemingly disparate themes being linked back to an initial absence or lack of recognition in regards to the father's role or symbolic representation (paternal name). In this context, she aims to establish a scientific understanding of her name's significance to create a controlled environment (harem).
+
+
+The given text discusses a psychological phenomenon called "Oedipal characters" within a play setting where different roles are assigned. It talks about Georges trying to take control of his desires but being pulled back into an imaginary situation where he is captivated by maternal images instead of the father figure. This leads him to remain trapped in the Oedical triangle, which refers to Sigmund Freud's theory of Oedipus Complex - a psychological conflict wherein children experience sexual feelings towards their parents, particularly towards the parent of opposite gender.
+
+Mannoni mentions an impossible identification process involving the destruction of one or both partners when discussing the location of maternal images in relation to the father figure being rejected from the empty place within the play of permutations. This suggests that the traditional roles are being disrupted and replaced by a different dynamic where Georges is drawn towards maternal figures instead of the conventional father figure.
+
+This fragment discusses how certain concepts in biology were revised through experiments involving eggs. Initially, it was thought that "organizers" determined the fate of parts within an egg during development. However, researchers discovered other substances with similar capabilities to induce development. Through experiments on grafting, they found out that these stimuli are merely inductors rather than organizing agents. This implies that parts can develop independently without any external trigger. Different materials exhibiting the same effect after processing suggests a broader understanding of developmental processes.\
+
+This seemingly complex passage can be simplified by breaking down its main ideas. Freud's theory suggests that children often imagine fictitious parental figures in their lives instead of their actual parents. In the context of Sophocles' play Oedipus, these imagined parental figures act as triggers for unconscious processes within the story. Additionally, according to this theory, any object or thing is judged poorly when it tries to assume different structural states and becomes a symbol or representation of something else.\
+
+In simpler terms: Kids might imagine pretend parents instead of their real ones; in Oedipus' story, these imagined figures are like hidden triggers for unconscious thoughts. Anything trying to act differently may be judged poorly because it represents something else while doing so.\
+
+Key takeaway materials include Freud's theory on children imagining fictitious parental figures, the connection between Oedipus' story and imaginary triggers, and how objects or things are judged poorly when they assume multiple roles or states.
+
+
+In Lacan's theory, the idea of a father represents an emptiness or lack of a genuine paternal presence. His perspective on parental figures as impersonal inductors implies that the true unconscious organizer lies elsewhere rather than with either the inductor or the induced party. Lacan denies any attempt to restore the concept of an inherent "terrain," whether it takes form as a phylogenetic innate trait or a culturally symbolic predetermination linked to prematuration.

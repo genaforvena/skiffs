@@ -58,6 +58,7 @@ class Summarizer:
         self.hallucination_times = hallucination_times
         self.ask_persianmind = ask_persianmind
         self.russian = russian
+        self.hallucination_memories = []
         nltk.download("punkt")
 
     def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
@@ -123,7 +124,10 @@ class Summarizer:
                 if model_to_hallucinate.endswith("gguf"):
                     from talk_to import ask
 
-                    summary = ask(model_to_hallucinate, summary, [], 1024)[0]
+                    summary = ask(
+                        model_to_hallucinate, summary, self.hallucination_memories, 1024
+                    )[0]
+                    self.hallucination_memories += [summary]
 
                 else:
                     summary = pipeline(
