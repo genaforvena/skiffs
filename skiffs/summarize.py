@@ -199,7 +199,12 @@ class Summarizer:
         while len(texts) > summary_min_length:
             merged_texts = []
             self._print_out(
-                "\n\n\n\nIteration " + str(iteration) + "\n\n",
+                "\n\n\n\nIteration "
+                + str(iteration)
+                + "\n\n"
+                + "Hallucinaion times: "
+                + str(self.hallucination_times)
+                + "\n\n"
             )
             for i in range(checkpoint.current_chunk_index, len(texts), 2):
                 combined_text = texts[i]
