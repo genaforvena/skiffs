@@ -12,6 +12,7 @@ from typing import List
 from transformers import AutoTokenizer
 
 from models import models_to_consider, picked_models
+from talk_to import ask
 from util.text_utils import calculate_entropy
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
@@ -40,7 +41,7 @@ class Summarizer:
     def __init__(
         self,
         summarization_model_names: list[str],
-        keyword_extraction_model_names: list[str],
+        keyword_extraction_model_names: list[str] = [],
         hallucination_models: list[str] = [],
         narration_on: bool = False,
         convert_to_headline: bool = False,
@@ -50,7 +51,10 @@ class Summarizer:
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self._summarizer_model = summarization_model_names[0]
-        self.keyword_extraction_model_name = keyword_extraction_model_names[0]
+        if len(keyword_extraction_model_names) > 0:
+            self.keyword_extraction_model_name = keyword_extraction_model_names[0]
+        else:
+            self.keyword_extraction_model_name = None
         self.hallucination_models = hallucination_models
         self.narration_on = narration_on
         self.creation_time = datetime.now()
@@ -59,6 +63,7 @@ class Summarizer:
         self.ask_persianmind = ask_persianmind
         self.russian = russian
         self.hallucination_memories = []
+        self.summary_memories = []
         nltk.download("punkt")
 
     def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
@@ -68,16 +73,12 @@ class Summarizer:
         )
         chunks = self._divide_text(txt)
         final_summary = self._merge_summarize(name, chunks, min_length)
+        self.summary_memories += [final_summary]
         return final_summary
 
     def _call_summarizer_model(self, text: str) -> str:
         if self._summarizer_model.endswith("gguf"):
-            from llama_cpp import Llama
-
-            llm = Llama(
-                model_path=self._summarizer_model,  # Download the model file first
-            )
-            summary = llm("Summarize this text: " + text)["choices"][0]["text"]
+            summary = ask(self._summarizer_model, text, self.summary_memories)[0]
             self._log(
                 "Summary by the model "
                 + self._summarizer_model
@@ -101,7 +102,7 @@ class Summarizer:
 
     def _call_summarizer(self, text: str) -> str:
         summary = self._call_summarizer_model(text)
-        if self.russian:
+        if self.russian or self.keyword_extraction_model_name is None:
             keywords = ""
         else:
             keywords_extractor = pipeline(
@@ -122,10 +123,11 @@ class Summarizer:
             model_to_hallucinate = random.choice(self.hallucination_models)
             while times > 0:
                 if model_to_hallucinate.endswith("gguf"):
-                    from talk_to import ask
-
                     summary = ask(
-                        model_to_hallucinate, summary, self.hallucination_memories, 1024
+                        model_to_hallucinate,
+                        "Could you please summarize this: " + summary,
+                        self.hallucination_memories,
+                        1024,
                     )[0]
                     self.hallucination_memories += [summary]
 
@@ -229,6 +231,7 @@ class Summarizer:
         return nltk.tokenize.sent_tokenize(text)
 
     def _divide_text(self, text: str) -> List[str]:
+        # TODO: Use the tokenizer from the model
         tokenizer = AutoTokenizer.from_pretrained(self.summarization_model_name)
         max_token_length = tokenizer.model_max_length / 4.5
         paragraphs = text.split("\n\n")
@@ -435,7 +438,8 @@ if __name__ == "__main__":
     else:
         hallucination_models = models_to_consider.hallucinators
 
-    keywords_extraction_model_name = picked_models.keyword_extraction_models
+    # keywords_extraction_model_name = picked_models.keyword_extraction_models
+    keywords_extraction_model_name = []
     min_summary_length = args.parse_args().min_length
     print("Summarizing text from path: " + src)
     summary = open(
