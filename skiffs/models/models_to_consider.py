@@ -56,12 +56,12 @@ hallucinators = [
     # "adityavelusamy/quest-v3",
     "/home/ilyahome/Developer/my_robots/llama.cpp/models/laser-mistral-xs.gguf",
     # "/home/ilyahome/Developer/my_robots/llama.cpp/models/phi-2.Q4_K_M.guf",
-    # "/home/ilyahome/Developer/my_robots/llama.cpp/models/WestLake-7B-v2-laser-truthy-dpo.q4_k_m.gguf",
-    # "/home/ilyahome/Developer/my_robots/llama.cpp/models/stablelm-2-zephyr-1_6b.guf", # Returns emptz string for me all the time. It looks that it requires different input format.
+    "/home/ilyahome/Developer/my_robots/llama.cpp/models/WestLake-7B-v2-laser-truthy-dpo.q4_k_m.gguf",
+    # "/home/ilyahome/Developer/my_robots/llama.cpp/models/stablelm-2-zephyr-1_6b.gguf", # Returns emptz string for me all the time. It looks that it requires different input format.
     "/home/ilyahome/Developer/my_robots/llama.cpp/models/llama-2-7b-chat.Q2_K.gguf",
     # "/home/ilyahome/Developer/my_robots/llama.cpp/models/ShoriRP.v063.q6_k.gguf",  # this one is verz naughy thez say
-    "/home/ilyahome/Developer/my_robots/llama.cpp/models/openhermes-2.5-mistral-7b.Q4_K_M.gguf",
-    # "/home/ilyahome/Developer/my_robots/llama.cpp/models/llava-v1.6-mistral-7b.Q5_K_M.gguf",
+    # "/home/ilyahome/Developer/my_robots/llama.cpp/models/openhermes-2.5-mistral-7b.Q4_K_M.gguf",
+    "/home/ilyahome/Developer/my_robots/llama.cpp/models/llava-v1.6-mistral-7b.Q5_K_M.gguf",
     # "ashwinR/CodeExplainer",
     # "model-attribution-challenge/distilgpt2",
 ]

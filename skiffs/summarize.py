@@ -48,6 +48,8 @@ class Summarizer:
         hallucination_times: int = 0,
         ask_persianmind: bool = False,
         russian: bool = False,
+        use_deprecated: bool = False,
+        summarization_rounds: int = 1,
     ) -> None:
         self.summarization_model_name = summarization_model_names[0]
         self._summarizer_model = summarization_model_names[0]
@@ -64,6 +66,8 @@ class Summarizer:
         self.russian = russian
         self.hallucination_memories = []
         self.summary_memories = []
+        self.use_deprecated = use_deprecated
+        self.summarization_rounds = summarization_rounds
         nltk.download("punkt")
 
     def summarize(self, name: str, txt: str, min_length: int = 1) -> str:
@@ -76,7 +80,7 @@ class Summarizer:
         self.summary_memories += [final_summary]
         return final_summary
 
-    def _call_summarizer_model(self, text: str) -> str:
+    def _call_summarizer_model_deprecated(self, text: str) -> str:
         if self._summarizer_model.endswith("gguf"):
             summary = ask(self._summarizer_model, text, self.summary_memories)[0]
             self._log(
@@ -100,56 +104,71 @@ class Summarizer:
             )
         return summary
 
-    def _call_summarizer(self, text: str) -> str:
-        summary = self._call_summarizer_model(text)
-        if self.russian or self.keyword_extraction_model_name is None:
-            keywords = ""
-        else:
-            keywords_extractor = pipeline(
-                "summarization", model=self.keyword_extraction_model_name
-            )
-            keywords = keywords_extractor(text)[0]["summary_text"]
-            self._log("Keywords extractor summary: \n" + keywords + "\n")
+    def _call_summarizer_deprecated(self, text: str) -> str:
+        summary = ""
+        if self.use_deprecated:
+            summary = self._call_summarizer_model_deprecated(text)
+            if self.russian or self.keyword_extraction_model_name is None:
+                keywords = ""
+            else:
+                keywords_extractor = pipeline(
+                    "summarization", model=self.keyword_extraction_model_name
+                )
+                keywords = keywords_extractor(text)[0]["summary_text"]
+                self._log("Keywords extractor summary: \n" + keywords + "\n")
 
-        if keywords == "":
-            pass
-        else:
-            summary = self._call_summarizer_model(summary + "\n" + keywords)
-            self._log("Summary with keywords: \n" + summary + "\n")
-        if self.hallucination_times > 0:
-            times = self.hallucination_times
-            old_summary = summary
-            # Pick one model randomly for all hallucinations as it is quite expensive to change the model
-            model_to_hallucinate = random.choice(self.hallucination_models)
-            while times > 0:
-                if model_to_hallucinate.endswith("gguf"):
-                    summary = ask(
-                        model_to_hallucinate,
-                        "Could you please summarize this: " + summary,
-                        self.hallucination_memories,
-                        1024,
-                    )[0]
-                    self.hallucination_memories += [summary]
+            if keywords == "":
+                pass
+            else:
+                summary = self._call_summarizer_model_deprecated(
+                    summary + "\n" + keywords
+                )
+                self._log("Summary with keywords: \n" + summary + "\n")
+            if self.hallucination_times > 0:
+                times = self.hallucination_times
+                old_summary = summary
+                while times > 0:
+                    model_to_hallucinate = random.choice(self.hallucination_models)
+                    if model_to_hallucinate.endswith("gguf"):
+                        summary = ask(
+                            model_to_hallucinate,
+                            "Could you please summarize this: " + summary,
+                            self.hallucination_memories,
+                            1024,
+                        )[0]
+                        self.hallucination_memories += [summary]
 
-                else:
-                    summary = pipeline(
-                        "text-generation",
-                        trust_remote_code=True,
-                        model=model_to_hallucinate,
-                    )(summary, max_length=summarizator_max_length / (6 + times))[0][
-                        "generated_text"
-                    ]
-                entropy = calculate_entropy(summary.replace(old_summary, ""))
-                if entropy < 0.5:
+                    else:
+                        summary = pipeline(
+                            "text-generation",
+                            trust_remote_code=True,
+                            model=model_to_hallucinate,
+                        )(summary, max_length=summarizator_max_length / (6 + times))[0][
+                            "generated_text"
+                        ]
+                    entropy = calculate_entropy(summary.replace(old_summary, ""))
+                    if entropy < 0.5:
+                        self._log(
+                            "Rejected summary: \n"
+                            + "by the model "
+                            + model_to_hallucinate
+                            + "\n"
+                            + "because the entropy is "
+                            + str(entropy)
+                            + "\n"
+                            + "Hallucinated summary: \n"
+                            + "by the model "
+                            + model_to_hallucinate
+                            + "\n"
+                            + summary
+                            + " \n + after "
+                            + str(times)
+                            + " times \n"
+                        )
+                        model_to_hallucinate = random.choice(self.hallucination_models)
+                        continue
                     self._log(
-                        "Rejected summary: \n"
-                        + "by the model "
-                        + model_to_hallucinate
-                        + "\n"
-                        + "because the entropy is "
-                        + str(entropy)
-                        + "\n"
-                        + "Hallucinated summary: \n"
+                        "Hallucinated summary: \n"
                         + "by the model "
                         + model_to_hallucinate
                         + "\n"
@@ -158,37 +177,27 @@ class Summarizer:
                         + str(times)
                         + " times \n"
                     )
-                    model_to_hallucinate = random.choice(self.hallucination_models)
-                    continue
-                self._log(
-                    "Hallucinated summary: \n"
-                    + "by the model "
-                    + model_to_hallucinate
-                    + "\n"
-                    + summary
-                    + " \n + after "
-                    + str(times)
-                    + " times \n"
+                    times -= 1
+                    old_summary = summary
+                # Lets keep the original summary still
+                # hallucinated_summary = hallucinated_summary.replace(summary, "")
+            if self.convert_to_headline is True:
+                headline_pipeline = pipeline(
+                    "text-generation",
+                    trust_remote_code=True,
+                    model=models_to_consider.story_tellers[0],
                 )
-                times -= 1
-                old_summary = summary
-            # Lets keep the original summary still
-            # hallucinated_summary = hallucinated_summary.replace(summary, "")
-        if self.convert_to_headline is True:
-            headline_pipeline = pipeline(
-                "text-generation",
-                trust_remote_code=True,
-                model=models_to_consider.story_tellers[0],
-            )
-            headline_max_length = math.floor(
-                headline_pipeline.tokenizer.model_max_length
-            )
-            # this 9 is quite arbitrary number to avoid overflow
-            summary = headline_pipeline(summary, max_length=headline_max_length - 9)[0][
-                "generated_text"
-            ]
-        if self.ask_persianmind:
-            summary = ask_persianmind(summary)
+                headline_max_length = math.floor(
+                    headline_pipeline.tokenizer.model_max_length
+                )
+                # this 9 is quite arbitrary number to avoid overflow
+                summary = headline_pipeline(
+                    summary, max_length=headline_max_length - 9
+                )[0]["generated_text"]
+            if self.ask_persianmind:
+                summary = ask_persianmind(summary)
+        else:
+            summary = self._call_summarizer(text)
         return summary
 
     def _merge_summarize(
@@ -213,7 +222,7 @@ class Summarizer:
                 if i + 1 < len(texts):
                     combined_text += "\n\n" + texts[i + 1]
                 self._log("Merging and summarizing: \n" + combined_text)
-                merged_summary = self._call_summarizer(combined_text)
+                merged_summary = self._call_summarizer_deprecated(combined_text)
                 merged_texts.append(merged_summary)
                 self._log("\n\nMerged Summary: \n" + merged_summary + "\n\n\n\n")
                 self._print_out("\n" + merged_summary + "\n")
@@ -410,6 +419,18 @@ if __name__ == "__main__":
         help="Use russian models",
         default=False,
     )
+    args.add_argument(
+        "--use-deprecated",
+        type=bool,
+        help="Use deprecated logic for summarization. In process of re-write the whole thing.",
+        default=False,
+    )
+    args.add_argument(
+        "--summarization-rounds",
+        type=int,
+        help="Number of rounds of summarization per chunk, default 1",
+        default=1,
+    )
 
     src = args.parse_args().src
     src = os.path.abspath(src)
@@ -455,6 +476,8 @@ if __name__ == "__main__":
         convert_to_headline=args.parse_args().convert_to_headline,
         ask_persianmind=args.parse_args().ask_persianmind,
         russian=args.parse_args().russian,
+        use_deprecated=args.parse_args().use_deprecated,
+        summarization_rounds=args.parse_args().summarization_rounds,
     )
     summary = summarizator.summarize(
         src.split("/")[-1].split(".")[0].lower(), summary, min_summary_length
