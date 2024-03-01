@@ -222,7 +222,10 @@ class Summarizer:
                 if i + 1 < len(texts):
                     combined_text += "\n\n" + texts[i + 1]
                 self._log("Merging and summarizing: \n" + combined_text)
-                merged_summary = self._call_summarizer_deprecated(combined_text)
+                if self.use_deprecated:
+                    merged_summary = self._call_summarizer_deprecated(combined_text)
+                else:
+                    merged_summary = self._call_summarizer(combined_text)
                 merged_texts.append(merged_summary)
                 self._log("\n\nMerged Summary: \n" + merged_summary + "\n\n\n\n")
                 self._print_out("\n" + merged_summary + "\n")
