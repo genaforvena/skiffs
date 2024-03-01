@@ -1,7 +1,8 @@
+from typing import List, Tuple
 from llama_cpp import Llama
 
 
-def ask(llama_path, text, history, max_tokens=1024):
+def ask(llama_path, text, history, max_tokens=1024) -> Tuple[str, List[str]]:
     llama = Llama(
         llama_path,
         chat_format="llama-2",

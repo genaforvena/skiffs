@@ -51,8 +51,11 @@ class Summarizer:
         use_deprecated: bool = False,
         summarization_rounds: int = 1,
     ) -> None:
-        self.summarization_model_name = summarization_model_names[0]
-        self._summarizer_model = summarization_model_names[0]
+        if use_deprecated:
+            self.summarization_model_name = summarization_model_names[0]
+            self._summarizer_model = summarization_model_names[0]
+
+        self._summarization_model_names = summarization_model_names
         if len(keyword_extraction_model_names) > 0:
             self.keyword_extraction_model_name = keyword_extraction_model_names[0]
         else:
@@ -197,7 +200,7 @@ class Summarizer:
             if self.ask_persianmind:
                 summary = ask_persianmind(summary)
         else:
-            summary = self._call_summarizer(text)
+            summary = self._summarize_chunk(text)
         return summary
 
     def _merge_summarize(
@@ -225,7 +228,7 @@ class Summarizer:
                 if self.use_deprecated:
                     merged_summary = self._call_summarizer_deprecated(combined_text)
                 else:
-                    merged_summary = self._call_summarizer(combined_text)
+                    merged_summary = self._summarize_chunk(combined_text)
                 merged_texts.append(merged_summary)
                 self._log("\n\nMerged Summary: \n" + merged_summary + "\n\n\n\n")
                 self._print_out("\n" + merged_summary + "\n")
@@ -239,13 +242,53 @@ class Summarizer:
             iteration += 1
         return texts[0]
 
+    def _summarize_chunk(self, text: str) -> str:
+        summary = ""
+        for round in range(self.summarization_rounds):
+            if self._summarization_model_names != []:
+                summarization_model_name = random.choice(
+                    self._summarization_model_names
+                )
+            else:  # If the model is not set, use the default one
+                summarization_model_name = "gemma.cpp"
+            self._log(
+                "Summarizing: \n"
+                + text
+                + "\n current round: "
+                + str(round)
+                + "\n model: "
+                + summarization_model_name
+            )
+            summary = self._call_summarizer(summarization_model_name, text)
+            self._log("Summary after round " + str(round) + ": \n" + summary)
+
+        return summary
+
+    def _call_summarizer(self, summarizer_model: str, text: str) -> str:
+        if summarizer_model.endswith("gguf"):
+            summary = ask(self._summarizer_model, text, self.summary_memories)[0]
+        else:
+            import nodes.gemma_bridge as gemma
+
+            # TODO Handle history
+            summary = gemma.summarize(text, [])
+        self._log("Summary by the model " + summarizer_model + ": \n" + summary + "\n")
+        return summary
+
     def _sentence_tokenizer(self, text: str) -> List[str]:
         return nltk.tokenize.sent_tokenize(text)
 
     def _divide_text(self, text: str) -> List[str]:
         # TODO: Use the tokenizer from the model
-        tokenizer = AutoTokenizer.from_pretrained(self.summarization_model_name)
-        max_token_length = tokenizer.model_max_length / 4.5
+        if self.use_deprecated:
+            tokenizer = AutoTokenizer.from_pretrained(self.summarization_model_name)
+            max_token_length = tokenizer.model_max_length / 4.5
+        else:
+            tokenizer = AutoTokenizer.from_pretrained(
+                "Cohee/bart-factbook-summarization"
+            )
+            max_token_length = 1024
+
         paragraphs = text.split("\n\n")
         chunks = []
         current_chunk_tokens = []
@@ -446,21 +489,26 @@ if __name__ == "__main__":
                 if os.path.getsize(os.path.join(root, file)) < 100000:
                     summary += open(os.path.join(root, file), "r").read()
 
-    if args.parse_args().code_summarization:
-        models_for_summarization = models_to_consider.code_explanation_models
-    else:
-        models_for_summarization = picked_models.summarization_models
+    if args.parse_args().use_deprecated:
+        if args.parse_args().code_summarization:
+            summarization_models = models_to_consider.code_explanation_models
+        else:
+            summarization_models = picked_models.summarization_models
 
-    if args.parse_args().russian:
-        models_for_summarization = ["IlyaGusev/mbart_ru_sum_gazeta"]
-        keywords_extraction_model_name = []
-        hallucination_models = [
-            "Mary222/MADE_AI_Dungeon_model_RUS",
-            "igorktech/rugpt3-joker-150k",
-            "Nehc/gpt2_lovecraft_ru",
-        ]
+        if args.parse_args().russian:
+            summarization_models = ["IlyaGusev/mbart_ru_sum_gazeta"]
+            keywords_extraction_model_name = []
+            hallucination_models = [
+                "Mary222/MADE_AI_Dungeon_model_RUS",
+                "igorktech/rugpt3-joker-150k",
+                "Nehc/gpt2_lovecraft_ru",
+            ]
+        else:
+            hallucination_models = models_to_consider.hallucinators
     else:
-        hallucination_models = models_to_consider.hallucinators
+        # TODO: Fix this all, it's a mess for now. Passing empty to use only gemma.cpp
+        summarization_models = []
+        hallucination_models = []
 
     # keywords_extraction_model_name = picked_models.keyword_extraction_models
     keywords_extraction_model_name = []
@@ -471,7 +519,7 @@ if __name__ == "__main__":
         "r",
     ).read()
     summarizator = Summarizer(
-        models_for_summarization,
+        summarization_models,
         keywords_extraction_model_name,
         hallucination_models=hallucination_models,
         hallucination_times=args.parse_args().hallucination_times,
