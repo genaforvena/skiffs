@@ -260,7 +260,14 @@ class Summarizer:
                 + summarization_model_name
             )
             summary = self._call_summarizer(summarization_model_name, text)
-            self._log("Summary after round " + str(round) + ": \n" + summary)
+            self._log(
+                "Summary after round "
+                + str(round)
+                + " by model "
+                + summarization_model_name
+                + ": \n"
+                + summary
+            )
 
         return summary
 
@@ -271,8 +278,7 @@ class Summarizer:
             import nodes.gemma_bridge as gemma
 
             # TODO Handle history
-            summary = gemma.summarize(text, [])
-        self._log("Summary by the model " + summarizer_model + ": \n" + summary + "\n")
+            summary = gemma.summarize(text, [])[0]
         return summary
 
     def _sentence_tokenizer(self, text: str) -> List[str]:
