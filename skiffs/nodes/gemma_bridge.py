@@ -6,16 +6,33 @@ MAX_TOKENS = 7000
 GEMMA_HOME = os.environ.get("GEMMA_HOME")
 
 
-def summarize(text: str, history: List[str]) -> Tuple[str, List[str]]:
-    response = ""
-    # TODO: use take history into account
+def summarize(
+    text: str, style: str = "", history: List[str] = []
+) -> Tuple[str, List[str]]:
+    summary = _ask_gemma("Summary of the following text " + style, text)
+    updated_history = history + ["User: " + text, "System: " + summary]
+    tokens = sum(len(entry.split()) for entry in updated_history)
+    while tokens > MAX_TOKENS and len(updated_history) > 2:
+        # Remove the oldest entries (2 at a time)
+        updated_history = updated_history[2:]
+        tokens = sum(len(entry.split()) for entry in updated_history)
+    return summary, updated_history
+
+
+def hallucinate(text: str, style: str = "") -> str:
+    hallucination = _ask_gemma(
+        "The least probable and offputting continuation of the following text " + style,
+        text,
+    )
+    return hallucination
+
+
+def _ask_gemma(command_for: str, text: str) -> str:
     if GEMMA_HOME is None:
         raise ValueError("GEMMA_HOME not set")
     command = [
         "echo",
-        "'Summarize the following text in style of an unholy rite for 5 year old: "
-        + text
-        + "'",
+        "'" + command_for + ": " + text + "'",
         "|",
         GEMMA_HOME
         + "/build/gemma -- --tokenizer "
@@ -33,10 +50,4 @@ def summarize(text: str, history: List[str]) -> Tuple[str, List[str]]:
     print("\n\nRaw ggema response: " + response)
     # Remove first line as it is always "Sure, blah blah blah"
     _, summary = response.split("\n", 1)
-    updated_history = history + ["User: " + text, "System: " + summary]
-    tokens = sum(len(entry.split()) for entry in updated_history)
-    while tokens > MAX_TOKENS and len(updated_history) > 2:
-        # Remove the oldest entries (2 at a time)
-        updated_history = updated_history[2:]
-        tokens = sum(len(entry.split()) for entry in updated_history)
-    return summary, updated_history
+    return summary

@@ -50,14 +50,22 @@ class Summarizer:
     def __init__(
         self,
         summarizer_model_names: list[str],
+        summary_style: str,
+        summarization_rounds_per_chunk: int,
+        hallucinator_model_names: list[str],
+        hallucination_style: str,
+        hallucination_rounds_per_chunk: int,
         narration_on: bool = False,
-        summarization_rounds_per_chunk: int = 1,
     ) -> None:
         self._summarizer_model_names = summarizer_model_names
+        self._summary_style = summary_style
+        self._summarization_rounds_per_chunk = summarization_rounds_per_chunk
+        self._summary_memories = []
+        self._hallucinator_model_names = hallucinator_model_names
+        self._hallucination_style = hallucination_style
+        self._hallucination_rounds_per_chunk = hallucination_rounds_per_chunk
         self._narration_on = narration_on
         self._creation_time = datetime.now()
-        self._summary_memories = []
-        self._summarization_rounds_per_chunk = summarization_rounds_per_chunk
 
     def summarize(self, src_file_path: str, txt: str, min_length: int = 1) -> str:
         nltk.download("punkt")
@@ -147,13 +155,56 @@ class Summarizer:
 
     def _call_summarizer(self, summarizer_model: str, text: str) -> str:
         if summarizer_model.endswith("gguf"):
+            # TODO handle style
             summary, memories = llama.ask(
                 summarizer_model, text, self._summary_memories
             )
         else:
-            summary, memories = gemma.summarize(text, self._summary_memories)
+            summary, memories = gemma.summarize(
+                text, self._summary_style, self._summary_memories
+            )
         self._summary_memories += memories
         return summary
+
+    def _hallucinate_chunk(self, text: str, model: str) -> str:
+        chunk_summary = text
+        for i in range(self._hallucination_rounds_per_chunk):
+            _write_to_log(
+                self._log_file_name,
+                "Hallucinating current round: "
+                + str(i)
+                + " model: "
+                + model
+                + "\n\n"
+                + "Text: "
+                + text,
+            )
+            if self._hallucinator_model_names != []:
+                hallucinator_model_name = random.choice(self._hallucinator_model_names)
+            else:
+                hallucinator_model_name = "gemma.cpp"
+            hallucinated_continuation = self._hallucinate_chunk(
+                chunk_summary, hallucinator_model_name
+            )
+            _write_to_log(
+                self._log_file_name,
+                "\n\n\n----------------->Hallucination after round "
+                + str(i)
+                + " by model "
+                + hallucinator_model_name
+                + ": \n\n"
+                + hallucinated_continuation,
+            )
+            chunk_summary = text + " " + hallucinated_continuation
+        return chunk_summary
+
+    def _call_hallucinator(self, text: str, model: str) -> str:
+        if model.endswith("gguf"):
+            # TODO handle style
+            hallucination = llama.ask(model, text, [])[0]
+        else:
+            hallucination = gemma.hallucinate(text, self._hallucination_style)
+        return hallucination
 
     def _sentence_tokenizer(self, text: str) -> List[str]:
         return nltk.tokenize.sent_tokenize(text)
@@ -245,10 +296,34 @@ if __name__ == "__main__":
         default=1,
     )
     args.add_argument(
+        "--hallucination-rounds-per-chunk",
+        type=int,
+        help="Number of times hallucinator models, if passed will continue each summarized chunk, default 0",
+        default=0,
+    )
+    args.add_argument(
         "--summarizer-models",
         type=list,
         help="List of models to use for summarization. If empty gemma.cpp is used",
         default=[],
+    )
+    args.add_argument(
+        "--hallucinator-models",
+        type=list,
+        help="List of models to use for continuation of the summary. If empty gemma.cpp is used",
+        default=[],
+    )
+    args.add_argument(
+        "--summary-style",
+        type=str,
+        help="Style of summary",
+        default="in style of the source text",
+    )
+    args.add_argument(
+        "--hallucination-style",
+        type=str,
+        help="Style of hallucinated continuation of the text",
+        default="",
     )
     args.add_argument(
         "--narration-on",
@@ -260,17 +335,28 @@ if __name__ == "__main__":
     src_file_path = args.parse_args().src_file_path
     src_file_path = os.path.abspath(src_file_path)
 
-    summarizer_models = args.parse_args().summarizer_models
-
     print("Summarizing text from path: " + src_file_path)
+
+    summarizer_models = args.parse_args().summarizer_models
+    hallucinator_models = args.parse_args().hallucinator_models
+    hallucination_rounds_per_chunk = args.parse_args().hallucination_rounds_per_chunk
+    summary_style = args.parse_args().summary_style
+    hallucination_style = args.parse_args().hallucination_style
+
+    narration_on = args.parse_args().narration_on
+    summarization_rounds_per_chunk = args.parse_args().summarization_rounds_per_chunk
     src_file = open(
         src_file_path,
         "r",
     ).read()
     summarizator = Summarizer(
         summarizer_models,
-        narration_on=args.parse_args().narration_on,
-        summarization_rounds_per_chunk=args.parse_args().summarization_rounds_per_chunk,
+        summary_style,
+        summarization_rounds_per_chunk,
+        hallucinator_models,
+        hallucination_style,
+        hallucination_rounds_per_chunk,
+        narration_on,
     )
     summarizator.summarize(
         src_file_path.split("/")[-1].split(".")[0].lower(),
