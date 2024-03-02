@@ -21,8 +21,8 @@ def summarize(
 
 def hallucinate(text: str, style: str = "") -> str:
     hallucination = _ask_gemma(
-        "The least probable and offputting continuation of the following text " + style,
         text,
+        " and then the abstract black whole laughing after you said " + style + ":",
     )
     return hallucination
 
