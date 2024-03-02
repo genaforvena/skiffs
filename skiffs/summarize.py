@@ -10,8 +10,8 @@ from typing import List
 from transformers import AutoTokenizer
 
 from models import picked_models
-import skiffs.nodes.gemma_bridge as gemma
-import skiffs.talk_to as llama
+import nodes.gemma_bridge as gemma
+import talk_to as llama
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
 
@@ -236,7 +236,6 @@ if __name__ == "__main__":
     args.add_argument(
         "src_file_path",
         type=str,
-        required=True,
         help="Source file",
     )
     args.add_argument(
@@ -271,7 +270,7 @@ if __name__ == "__main__":
     summarizator = Summarizer(
         summarizer_models,
         narration_on=args.parse_args().narration_on,
-        summarization_rounds_per_chunk=args.parse_args().summarizer_rounds,
+        summarization_rounds_per_chunk=args.parse_args().summarization_rounds_per_chunk,
     )
     summarizator.summarize(
         src_file_path.split("/")[-1].split(".")[0].lower(),
