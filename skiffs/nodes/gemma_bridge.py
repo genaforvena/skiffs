@@ -13,7 +13,7 @@ def summarize(text: str, history: List[str]) -> Tuple[str, List[str]]:
         raise ValueError("GEMMA_HOME not set")
     command = [
         "echo",
-        "'Summarize the following text if I am 5 years old: " + text + "'",
+        "'Summarize the following text in style of Lil Ugly Mane: " + text + "'",
         "|",
         GEMMA_HOME
         + "/build/gemma -- --tokenizer "
