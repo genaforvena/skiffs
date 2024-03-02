@@ -28,10 +28,13 @@ def summarize(text: str, history: List[str]) -> Tuple[str, List[str]]:
         shell=True,
         text=True,
     ).stdout
-    updated_history = history + ["User: " + text, "System: " + response]
+    print("\n\nRaw ggema response: " + response)
+    # Remove first line as it is always "Sure, blah blah blah"
+    _, summary = response.split("\n", 1)
+    updated_history = history + ["User: " + text, "System: " + summary]
     tokens = sum(len(entry.split()) for entry in updated_history)
     while tokens > MAX_TOKENS and len(updated_history) > 2:
         # Remove the oldest entries (2 at a time)
         updated_history = updated_history[2:]
         tokens = sum(len(entry.split()) for entry in updated_history)
-    return response, updated_history
+    return summary, updated_history

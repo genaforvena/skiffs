@@ -11,7 +11,7 @@ from transformers import AutoTokenizer
 
 from models import picked_models
 import skiffs.nodes.gemma_bridge as gemma
-from talk_to import ask
+import skiffs.talk_to as llama
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
 
@@ -147,7 +147,9 @@ class Summarizer:
 
     def _call_summarizer(self, summarizer_model: str, text: str) -> str:
         if summarizer_model.endswith("gguf"):
-            summary, memories = ask(summarizer_model, text, self._summary_memories)
+            summary, memories = llama.ask(
+                summarizer_model, text, self._summary_memories
+            )
         else:
             summary, memories = gemma.summarize(text, self._summary_memories)
         self._summary_memories += memories
