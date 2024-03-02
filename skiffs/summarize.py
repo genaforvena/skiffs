@@ -10,6 +10,7 @@ from typing import List
 from transformers import AutoTokenizer
 
 from models import picked_models
+from util.finneganniser import finnegannise
 import nodes.gemma_bridge as gemma
 import talk_to as llama
 
@@ -187,7 +188,7 @@ class Summarizer:
             else:
                 hallucinator_model_name = "gemma.cpp"
             hallucinated_continuation = self._call_hallucinator(
-                chunk_summary, hallucinator_model_name
+                finnegannise(chunk_summary), hallucinator_model_name
             )
             _write_to_log(
                 self._log_file_name,
@@ -198,7 +199,7 @@ class Summarizer:
                 + ": \n\n"
                 + hallucinated_continuation,
             )
-            chunk_summary = text + " " + hallucinated_continuation
+            chunk_summary = chunk_summary + " " + hallucinated_continuation
         return chunk_summary
 
     def _call_hallucinator(self, text: str, model: str) -> str:
