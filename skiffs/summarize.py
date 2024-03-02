@@ -200,7 +200,7 @@ class Summarizer:
                 + hallucinated_continuation,
             )
             result = result + " " + hallucinated_continuation
-            if "max_tokens(" in hallucinated_continuation:
+            if "max_tokens (" in hallucinated_continuation:
                 break
         return result
 
