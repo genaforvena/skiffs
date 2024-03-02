@@ -104,7 +104,7 @@ class Summarizer:
             for i in range(checkpoint.current_chunk_index, len(text_chunks)):
                 current_chunk = text_chunks[i]
                 chunk_summary = self._summarize_chunk(current_chunk)
-                chunk_summary = self._hallucinate_chunk(
+                chunk_summary = self._add_hallucinations_to_chunk(
                     chunk_summary, self._hallucination_style
                 )
                 chunk_summaries.append(chunk_summary)
@@ -170,8 +170,8 @@ class Summarizer:
         self._summary_memories += memories
         return summary
 
-    def _hallucinate_chunk(self, text: str, model: str) -> str:
-        chunk_summary = text
+    def _add_hallucinations_to_chunk(self, text: str, model: str) -> str:
+        result = text
         for i in range(self._hallucination_rounds_per_chunk):
             _write_to_log(
                 self._log_file_name,
@@ -188,7 +188,7 @@ class Summarizer:
             else:
                 hallucinator_model_name = "gemma.cpp"
             hallucinated_continuation = self._call_hallucinator(
-                finnegannise(chunk_summary), hallucinator_model_name
+                finnegannise(result), hallucinator_model_name
             )
             _write_to_log(
                 self._log_file_name,
@@ -199,8 +199,10 @@ class Summarizer:
                 + ": \n\n"
                 + hallucinated_continuation,
             )
-            chunk_summary = chunk_summary + " " + hallucinated_continuation
-        return chunk_summary
+            result = result + " " + hallucinated_continuation
+            if "max_tokens(" in hallucinated_continuation:
+                break
+        return result
 
     def _call_hallucinator(self, text: str, model: str) -> str:
         if model.endswith("gguf"):
