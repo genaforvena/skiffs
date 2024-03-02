@@ -2,28 +2,31 @@ import os
 import random
 import json
 import pathlib
-import math
 import nltk
 import argparse
-from transformers import pipeline
 from datetime import datetime
 from typing import List
 
 from transformers import AutoTokenizer
 
-from models import models_to_consider, picked_models
+from models import picked_models
+import skiffs.nodes.gemma_bridge as gemma
 from talk_to import ask
-from util.text_utils import calculate_entropy
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
 
 
 class Checkpoint:
     def __init__(
-        self, result_file_name: str, current_chunk_index=0, processed_chunks=[]
+        self,
+        result_file_name: str,
+        checkpoint_file_path: str,
+        current_chunk_index=0,
+        processed_chunks=[],
     ):
         self.current_chunk_index = current_chunk_index
         self.processed_chunks = processed_chunks
+        self.checkpoint_file_path = checkpoint_file_path
         self.result_file_name = result_file_name
 
     def save(self, file_path):
@@ -37,195 +40,71 @@ class Checkpoint:
                 data = json.load(file)
                 return Checkpoint(**data)
         except FileNotFoundError:
-            return Checkpoint(result_file_name=result_file_name)
+            return Checkpoint(
+                result_file_name=result_file_name,
+                checkpoint_file_path=checkpoint_file_path,
+            )
 
 
 class Summarizer:
     def __init__(
         self,
         summarizer_model_names: list[str],
-        keyword_extraction_model_names: list[str] = [],
-        hallucination_models: list[str] = [],
         narration_on: bool = False,
-        convert_to_headline: bool = False,
-        hallucination_times: int = 0,
-        ask_persianmind: bool = False,
-        russian: bool = False,
-        use_deprecated: bool = False,
-        summarizer_rounds: int = 1,
+        summarization_rounds_per_chunk: int = 1,
     ) -> None:
-        if use_deprecated:
-            self.summarizer_model_name = summarizer_model_names[0]
-            self._summarizer_model = summarizer_model_names[0]
-
         self._summarizer_model_names = summarizer_model_names
-        if len(keyword_extraction_model_names) > 0:
-            self.keyword_extraction_model_name = keyword_extraction_model_names[0]
-        else:
-            self.keyword_extraction_model_name = None
-        self.hallucination_models = hallucination_models
-        self.narration_on = narration_on
-        self.creation_time = datetime.now()
-        self.convert_to_headline = convert_to_headline
-        self.hallucination_times = hallucination_times
-        self.ask_persianmind = ask_persianmind
-        self.russian = russian
-        self.hallucination_memories = []
-        self.summary_memories = []
-        self.use_deprecated = use_deprecated
-        self.summarizer_rounds = summarizer_rounds
-        nltk.download("punkt")
+        self._narration_on = narration_on
+        self._creation_time = datetime.now()
+        self._summary_memories = []
+        self._summarization_rounds_per_chunk = summarization_rounds_per_chunk
 
     def summarize(self, src_file_path: str, txt: str, min_length: int = 1) -> str:
-        self.log_name = self._create_out_filename(src_file_path, "log")
-        self.merged_summary_file_name = self._create_out_filename(
+        nltk.download("punkt")
+        self._log_file_name = self._create_out_filename(src_file_path, "log")
+        self._result_file_name = self._create_out_filename(
             src_file_path, format="md", postfix="result_using_merge"
         )
         chunks = self._divide_text(txt)
-        final_summary = self._merge_summarize(chunks, min_length)
-        return final_summary
-
-    def _call_summarizer_model_deprecated(self, text: str) -> str:
-        if self._summarizer_model.endswith("gguf"):
-            summary = ask(self._summarizer_model, text, self.summary_memories)[0]
-            self._log(
-                "Summary by the model "
-                + self._summarizer_model
-                + ": \n"
-                + summary
-                + "\n"
-            )
-        else:
-            summarizator = pipeline("summarizer", model=self.summarizer_model_name)
-            summary = summarizator(text, max_length=150)[0]["summary_text"]
-            self._log(
-                "Summary by the model "
-                + self.summarizer_model_name
-                + ": \n"
-                + summary
-                + "\n"
-            )
+        summary = self._merge_summarize(chunks, min_length)
         return summary
 
-    def _summarize_chunk_deprecated(self, text: str) -> str:
-        summary = ""
-        summary = self._call_summarizer_model_deprecated(text)
-        if self.russian or self.keyword_extraction_model_name is None:
-            keywords = ""
-        else:
-            keywords_extractor = pipeline(
-                "summarizer", model=self.keyword_extraction_model_name
-            )
-            keywords = keywords_extractor(text)[0]["summary_text"]
-            self._log("Keywords extractor summary: \n" + keywords + "\n")
-
-        if keywords == "":
-            pass
-        else:
-            summary = self._call_summarizer_model_deprecated(summary + "\n" + keywords)
-            self._log("Summary with keywords: \n" + summary + "\n")
-        if self.hallucination_times > 0:
-            times = self.hallucination_times
-            old_summary = summary
-            while times > 0:
-                model_to_hallucinate = random.choice(self.hallucination_models)
-                if model_to_hallucinate.endswith("gguf"):
-                    summary = ask(
-                        model_to_hallucinate,
-                        "Could you please summarize this: " + summary,
-                        self.hallucination_memories,
-                        1024,
-                    )[0]
-                    self.hallucination_memories += [summary]
-
-                else:
-                    summary = pipeline(
-                        "text-generation",
-                        trust_remote_code=True,
-                        model=model_to_hallucinate,
-                    )(summary, max_length=summarizator_max_length / (6 + times))[0][
-                        "generated_text"
-                    ]
-                entropy = calculate_entropy(summary.replace(old_summary, ""))
-                if entropy < 0.5:
-                    self._log(
-                        "Rejected summary: \n"
-                        + "by the model "
-                        + model_to_hallucinate
-                        + "\n"
-                        + "because the entropy is "
-                        + str(entropy)
-                        + "\n"
-                        + "Hallucinated summary: \n"
-                        + "by the model "
-                        + model_to_hallucinate
-                        + "\n"
-                        + summary
-                        + " \n + after "
-                        + str(times)
-                        + " times \n"
-                    )
-                    model_to_hallucinate = random.choice(self.hallucination_models)
-                    continue
-                self._log(
-                    "Hallucinated summary: \n"
-                    + "by the model "
-                    + model_to_hallucinate
-                    + "\n"
-                    + summary
-                    + " \n + after "
-                    + str(times)
-                    + " times \n"
-                )
-                times -= 1
-                old_summary = summary
-            # Lets keep the original summary still
-            # hallucinated_summary = hallucinated_summary.replace(summary, "")
-        if self.convert_to_headline is True:
-            headline_pipeline = pipeline(
-                "text-generation",
-                trust_remote_code=True,
-                model=models_to_consider.story_tellers[0],
-            )
-            headline_max_length = math.floor(
-                headline_pipeline.tokenizer.model_max_length
-            )
-            # this 9 is quite arbitrary number to avoid overflow
-            summary = headline_pipeline(summary, max_length=headline_max_length - 9)[0][
-                "generated_text"
-            ]
-        if self.ask_persianmind:
-            summary = ask_persianmind(summary)
-        return summary
+    def _restore_or_create_checkpoint(self) -> Checkpoint:
+        checkpoint_file = "checkpoint.json"
+        checkpoint = Checkpoint.load(self._result_file_name, checkpoint_file)
+        if checkpoint.result_file_name is not None:
+            self._result_file_name = checkpoint.result_file_name
+        return checkpoint
 
     def _merge_summarize(self, text_chunks: List[str], summary_min_length: int) -> str:
-        checkpoint_file = "checkpoint.json"
-        checkpoint = Checkpoint.load(self.merged_summary_file_name, checkpoint_file)
-        if checkpoint.result_file_name is not None:
-            self.merged_summary_file_name = checkpoint.result_file_name
-
+        checkpoint = self._restore_or_create_checkpoint()
+        checkpoint_file = checkpoint.checkpoint_file_path
         iteration = 0
         while len(text_chunks) > summary_min_length:
             chunk_summaries = []
-            self._print_out(
+            _write_to_result(
+                self._log_file_name,
+                self._result_file_name,
                 "\n\n\n\nIteration "
                 + str(iteration)
                 + "\n\n"
-                + "Hallucinaion times: "
-                + str(self.hallucination_times)
-                + "\n\n"
                 + "summarizer rounds: "
-                + str(self.summarizer_rounds)
-                + "\n\n"
+                + str(self._summarization_rounds_per_chunk)
+                + "\n\n",
             )
             for i in range(checkpoint.current_chunk_index, len(text_chunks)):
                 current_chunk = text_chunks[i]
-                if self.use_deprecated:
-                    chunk_summary = self._summarize_chunk_deprecated(current_chunk)
-                else:
-                    chunk_summary = self._summarize_chunk(current_chunk)
+                chunk_summary = self._summarize_chunk(current_chunk)
                 chunk_summaries.append(chunk_summary)
-                self._print_out("\n" + chunk_summary + "\n")
+                _write_to_result(
+                    self._log_file_name,
+                    self._result_file_name,
+                    "\n" + chunk_summary + "\n",
+                )
+                if self._narration_on is True:
+                    from skiffs.util.voice import narrate
+
+                    narrate(chunk_summary)
 
                 checkpoint.current_chunk_index = i + 1
                 checkpoint.processed_chunks.append(chunk_summary)
@@ -238,40 +117,40 @@ class Summarizer:
 
     def _summarize_chunk(self, text: str) -> str:
         summary = ""
-        for round in range(self.summarizer_rounds):
+        for round in range(self._summarization_rounds_per_chunk):
             if self._summarizer_model_names != []:
                 summarizer_model_name = random.choice(self._summarizer_model_names)
             else:  # If the model is not set, use gemma.cpp
                 summarizer_model_name = "gemma.cpp"
-            self._log(
+            _write_to_log(
+                self._log_file_name,
                 "\n\n\n\nSummarizing current round: "
                 + str(round)
                 + " model: "
                 + summarizer_model_name
                 + "\n\n"
                 + "Text: "
-                + text
+                + text,
             )
             summary = self._call_summarizer(summarizer_model_name, text)
-            self._log(
+            _write_to_log(
+                self._log_file_name,
                 "\n\n\n----------------->Summary after round "
                 + str(round)
                 + " by model "
                 + summarizer_model_name
                 + ": \n\n"
-                + summary
+                + summary,
             )
 
         return summary
 
     def _call_summarizer(self, summarizer_model: str, text: str) -> str:
         if summarizer_model.endswith("gguf"):
-            summary, memories = ask(self._summarizer_model, text, self.summary_memories)
+            summary, memories = ask(summarizer_model, text, self._summary_memories)
         else:
-            import nodes.gemma_bridge as gemma
-
-            summary, memories = gemma.summarize(text, self.summary_memories)
-        self.summary_memories += memories
+            summary, memories = gemma.summarize(text, self._summary_memories)
+        self._summary_memories += memories
         return summary
 
     def _sentence_tokenizer(self, text: str) -> List[str]:
@@ -279,14 +158,8 @@ class Summarizer:
 
     def _divide_text(self, text: str) -> List[str]:
         # TODO: Use the tokenizer from the model
-        if self.use_deprecated:
-            tokenizer = AutoTokenizer.from_pretrained(self.summarizer_model_name)
-            max_token_length = tokenizer.model_max_length / 4.5
-        else:
-            tokenizer = AutoTokenizer.from_pretrained(
-                picked_models.summarization_models[0]
-            )
-            max_token_length = 1024
+        tokenizer = AutoTokenizer.from_pretrained(picked_models.summarization_models[0])
+        max_token_length = 1024
 
         paragraphs = text.split("\n\n")
         chunks = []
@@ -322,18 +195,6 @@ class Summarizer:
 
         return chunks
 
-    def _log(self, msg: str) -> None:
-        with open(self.log_name, "a+") as f:
-            f.write(msg)
-        print(msg)
-
-    def _print_out(self, msg: str) -> None:
-        self._log(msg)
-        with open(self.merged_summary_file_name, "a+") as f:
-            f.write(msg)
-        if self.narration_on is True:
-            fb_speaks(msg)
-
     def _create_out_filename(
         self, source_name: str, format: str = "txt", postfix: str = ""
     ) -> str:
@@ -343,7 +204,7 @@ class Summarizer:
             + "_"
             + postfix
             + "_at_"
-            + str(self.creation_time)
+            + str(self._creation_time)
         )
         output_filename = output_filename.replace(" ", "_").replace("/", "_")
         output_filename = (
@@ -356,89 +217,37 @@ class Summarizer:
         return output_filename
 
 
-def ask_persianmind(prompt: str) -> str:
-    from transformers import LlamaTokenizer, LlamaForCausalLM
-    import torch
-
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    model = LlamaForCausalLM.from_pretrained(
-        "universitytehran/PersianMind-v1.0",
-        torch_dtype=torch.bfloat16,
-        low_cpu_mem_usage=True,
-        device_map={"": device},
-    )
-    tokenizer = LlamaTokenizer.from_pretrained(
-        "universitytehran/PersianMind-v1.0",
-    )
-
-    TEMPLATE = "{context}\nYou: {prompt}\nPersianMind: "
-    CONTEXT = (
-        "This is a conversation with PersianMind. It is an artificial intelligence model designed by a team of "
-        "NLP experts at the University of Tehran to help you with various tasks such as answering questions, "
-        "providing recommendations, and helping with decision making. You can ask it anything you want and "
-        "it will do its best to give you accurate and relevant information."
-    )
-
-    model_input = TEMPLATE.format(context=CONTEXT, prompt=prompt)
-    input_tokens = tokenizer(model_input, return_tensors="pt")
-    input_tokens = input_tokens.to(device)
-    generate_ids = model.generate(
-        **input_tokens, max_new_tokens=512, do_sample=False, repetition_penalty=1.1
-    )
-    model_output = tokenizer.batch_decode(
-        generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
-    )[0]
-
-    return model_output[len(model_input) :].replace(prompt, "")
+def _write_to_log(file_name, msg: str) -> None:
+    with open(file_name, "a+") as f:
+        f.write(msg)
+    print(msg)
 
 
-def fb_speaks(msg: str) -> None:
-    import simpleaudio as sa
-    from transformers import VitsModel, AutoTokenizer
-    import torch
-
-    model = VitsModel.from_pretrained("facebook/mms-tts-eng")
-    tokenizer = AutoTokenizer.from_pretrained("facebook/mms-tts-eng")
-
-    inputs = tokenizer(msg, return_tensors="pt")
-
-    with torch.no_grad():
-        output = model(**inputs).waveform
-
-    # Convert the waveform to a numpy array
-    waveform = output.squeeze().numpy()
-    # Normalize the waveform to 16-bit signed integers
-    waveform_int16 = (waveform * 32767).astype("int16")
-
-    # Play the audio
-    play_obj = sa.play_buffer(waveform_int16, 1, 2, 22050)
-    play_obj.wait_done()  # Adjust the rate if necessary
+def _write_to_result(log_file_name: str, result_file_name: str, msg: str) -> None:
+    _write_to_log(log_file_name, msg)
+    with open(result_file_name, "a+") as f:
+        f.write(msg)
 
 
 if __name__ == "__main__":
     args = argparse.ArgumentParser()
     args.add_argument(
-        "src",
+        "src_file_path",
         type=str,
-        help="Source file or directory to summarize. If directory, all files less than 100kb will be summarized.",
+        required=True,
+        help="Source file",
     )
     args.add_argument(
-        "--code-summarizer",
-        type=bool,
-        help="Summarize code instead of text",
-        default=False,
-    )
-    args.add_argument(
-        "--min-length",
+        "--summarization-rounds-per-chunk",
         type=int,
-        help="Minimum length of summary",
-        default=DEFAULT_SUMMARY_MIN_LENGTH,
+        help="Number of rounds of summarizer per chunk, default 1",
+        default=1,
     )
     args.add_argument(
-        "--hallucination-times",
-        type=int,
-        help="How many times after completing the summary should we hallucinate, default 0",
-        default=0,
+        "--summarizer-models",
+        type=list,
+        help="List of models to use for summarization. If empty gemma.cpp is used",
+        default=[],
     )
     args.add_argument(
         "--narration-on",
@@ -446,89 +255,23 @@ if __name__ == "__main__":
         help="Narrate the summary",
         default=False,
     )
-    args.add_argument(
-        "--ask-persianmind",
-        type=bool,
-        help="Ask persianmind for help",
-        default=False,
-    )
-    args.add_argument(
-        "--convert-to-headline",
-        type=str,
-        help="Name of the model to write headline",
-        default="",
-    )
-    args.add_argument(
-        "--russian",
-        type=bool,
-        help="Use russian models",
-        default=False,
-    )
-    args.add_argument(
-        "--use-deprecated",
-        type=bool,
-        help="Use deprecated logic for summarizer. In process of re-write the whole thing.",
-        default=False,
-    )
-    args.add_argument(
-        "--summarizer-rounds",
-        type=int,
-        help="Number of rounds of summarizer per chunk, default 1",
-        default=1,
-    )
 
-    src = args.parse_args().src
-    src = os.path.abspath(src)
-    if os.path.isdir(src):
-        # Read all files less than 100kb in the directory recoursevly and make a huge text out of them without any order
-        print("Compressing directory " + src)
-        summary = ""
-        for root, dirs, files in os.walk(src):
-            for file in files:
-                if os.path.getsize(os.path.join(root, file)) < 100000:
-                    summary += open(os.path.join(root, file), "r").read()
+    src_file_path = args.parse_args().src_file_path
+    src_file_path = os.path.abspath(src_file_path)
 
-    if args.parse_args().use_deprecated:
-        if args.parse_args().code_summarizer:
-            summarizer_models = models_to_consider.code_explanation_models
-        else:
-            summarizer_models = picked_models.summarization_models
+    summarizer_models = args.parse_args().summarizer_models
 
-        if args.parse_args().russian:
-            summarizer_models = ["IlyaGusev/mbart_ru_sum_gazeta"]
-            keywords_extraction_model_name = []
-            hallucination_models = [
-                "Mary222/MADE_AI_Dungeon_model_RUS",
-                "igorktech/rugpt3-joker-150k",
-                "Nehc/gpt2_lovecraft_ru",
-            ]
-        else:
-            hallucination_models = models_to_consider.hallucinators
-    else:
-        # TODO: Fix this all, it's a mess for now. Passing empty to use only gemma.cpp
-        summarizer_models = []
-        hallucination_models = []
-
-    # keywords_extraction_model_name = picked_models.keyword_extraction_models
-    keywords_extraction_model_name = []
-    min_summary_length = args.parse_args().min_length
-    print("Summarizing text from path: " + src)
-    summary = open(
-        src,
+    print("Summarizing text from path: " + src_file_path)
+    src_file = open(
+        src_file_path,
         "r",
     ).read()
     summarizator = Summarizer(
         summarizer_models,
-        keywords_extraction_model_name,
-        hallucination_models=hallucination_models,
-        hallucination_times=args.parse_args().hallucination_times,
         narration_on=args.parse_args().narration_on,
-        convert_to_headline=args.parse_args().convert_to_headline,
-        ask_persianmind=args.parse_args().ask_persianmind,
-        russian=args.parse_args().russian,
-        use_deprecated=args.parse_args().use_deprecated,
-        summarizer_rounds=args.parse_args().summarizer_rounds,
+        summarization_rounds_per_chunk=args.parse_args().summarizer_rounds,
     )
-    summary = summarizator.summarize(
-        src.split("/")[-1].split(".")[0].lower(), summary, min_summary_length
+    summarizator.summarize(
+        src_file_path.split("/")[-1].split(".")[0].lower(),
+        src_file,
     )
