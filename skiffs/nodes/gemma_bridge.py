@@ -47,7 +47,4 @@ def _ask_gemma(command_for: str, text: str) -> str:
         shell=True,
         text=True,
     ).stdout
-    print("\n\nRaw ggema response: " + response)
-    # Remove first line as it is always "Sure, blah blah blah"
-    _, summary = response.split("\n", 1)
-    return summary
+    return response
