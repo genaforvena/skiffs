@@ -103,10 +103,9 @@ class Summarizer:
             for i in range(checkpoint.current_chunk_index, len(text_chunks)):
                 current_chunk = text_chunks[i]
                 chunk_summary = self._summarize_chunk(current_chunk)
-                if self._hallucination_rounds_per_chunk > 0:
-                    chunk_summary = self._hallucinate_chunk(
-                        chunk_summary, self._hallucination_style
-                    )
+                chunk_summary = self._hallucinate_chunk(
+                    chunk_summary, self._hallucination_style
+                )
                 chunk_summaries.append(chunk_summary)
                 _write_to_result(
                     self._log_file_name,
@@ -187,7 +186,7 @@ class Summarizer:
                 hallucinator_model_name = random.choice(self._hallucinator_model_names)
             else:
                 hallucinator_model_name = "gemma.cpp"
-            hallucinated_continuation = self._hallucinate_chunk(
+            hallucinated_continuation = self._call_hallucinator(
                 chunk_summary, hallucinator_model_name
             )
             _write_to_log(
