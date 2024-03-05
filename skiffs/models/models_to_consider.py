@@ -104,9 +104,15 @@ key_word_extractors = [
 summarization_models = [
     # "laser-mistral-xs.gguf",
     # "stablelm-2-zephyr-1_6b-Q4_0.gguf",
-    # "WestLake-7B-v2-laser-truthy-dpo.q4_k_m.gguf",
-    # "phi-2.Q4_K_M.gguf",
-    "ggml-model-q4_0.gguf",  # TinyLlama-1.1B-Chat-v0.6
+    "WestLake-7B-v2-laser-truthy-dpo.q4_k_m.gguf",
+    "phi-2.Q4_K_M.gguf",
+    #     "ggml-model-q4_0.gguf",  # TinyLlama-1.1B-Chat-v0.6
+    "TinyLlama-3T-Cinder-v1.2.Q8_0.gguf",
+    "gemma-2b-it-q4_k_m.gguf",
+    "palmer-002.5.gguf",
+    "LWM-Text-256K.Q2_K.gguf",
+    "openhermes-2.5-mistral-7b.Q2_K.gguf",
+    "Sensei-7B-V1.Q2_K.gguf",
     # "stablelm-2-zephyr-1_6b.gguf",
     "llama-2-7b-chat.Q2_K.gguf",
     "ShoriRP.v063.q6_k.gguf",

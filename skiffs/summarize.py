@@ -106,9 +106,7 @@ class Summarizer:
             for i in range(checkpoint.current_chunk_index, len(text_chunks)):
                 chunk_summary = text_chunks[i]
                 chunk_summary = self._summarize_chunk(chunk_summary)
-                chunk_summary = self._add_hallucinations_to_chunk(
-                    chunk_summary, self._hallucination_style
-                )
+                chunk_summary = self._add_chunk_hallucinations_if_needed(chunk_summary)
                 chunk_summaries.append(chunk_summary)
                 _write_to_result(
                     self._log_file_name,
@@ -156,35 +154,36 @@ class Summarizer:
 
         return summary
 
-    def _call_summarizer(self, summarizer_model: str, text: str) -> str:
-        llm_bridge = bridge.Bridge.create(summarizer_model)
+    def _call_summarizer(self, model: str, text: str) -> str:
+        llm_bridge = bridge.Bridge.create(model)
         summary, memories = llm_bridge.summarize(text, self._summary_style)
         self._summary_memories += memories
         return summary
 
-    def _add_hallucinations_to_chunk(self, text: str, model: str) -> str:
+    def _add_chunk_hallucinations_if_needed(self, text: str) -> str:
         result = text
         for i in range(self._hallucination_rounds_per_chunk):
+            hallucinator = random.choice(self._hallucinator_model_names)
             _write_to_log(
                 self._log_file_name,
                 "Hallucinating current round: "
                 + str(i)
                 + " model: "
-                + model
+                + hallucinator
                 + "\n\n"
                 + "Text: "
                 + text,
             )
-            hallucinator_model_name = random.choice(self._hallucinator_model_names)
             hallucinated_continuation = self._call_hallucinator(
-                result, hallucinator_model_name
+                hallucinator,
+                result,
             )
             _write_to_log(
                 self._log_file_name,
                 "\n\n\n----------------->Hallucination after round "
                 + str(i)
                 + " by model "
-                + hallucinator_model_name
+                + hallucinator
                 + ": \n\n"
                 + hallucinated_continuation,
             )
@@ -193,9 +192,9 @@ class Summarizer:
                 break
         return result
 
-    def _call_hallucinator(self, text: str, model: str) -> str:
+    def _call_hallucinator(self, model: str, text: str) -> str:
         llm_bridge = bridge.Bridge.create(model)
-        hallucination = llm_bridge.hallucinate(text)
+        hallucination = llm_bridge.hallucinate(text, self._hallucination_style)
         return hallucination
 
     def _sentence_tokenizer(self, text: str) -> List[str]:

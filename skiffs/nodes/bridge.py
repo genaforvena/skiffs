@@ -24,7 +24,7 @@ class Bridge:
             tokens = sum(len(entry.split()) for entry in updated_history)
         return summary, updated_history
 
-    def hallucinate(self, text: str, style: str = "") -> str:
+    def hallucinate(self, text: str, style: str) -> str:
         hallucination = self._ask(
             finnegannise(text),
             " and then the abstract black whole laughing after you said " + style + ":",
