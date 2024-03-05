@@ -5,14 +5,13 @@ import pathlib
 import nltk
 import argparse
 from datetime import datetime
-from typing import List
+from typing import List, Tuple
 
 from transformers import AutoTokenizer
 
+from models import models_to_consider
 from models import picked_models
-from util.finneganniser import finnegannise
-import nodes.gemma_bridge as gemma
-import talk_to as llama
+from nodes import bridge
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
 
@@ -78,32 +77,35 @@ class Summarizer:
         summary = self._merge_summarize(chunks, min_length)
         return summary
 
-    def _restore_or_create_checkpoint(self) -> Checkpoint:
+    def _restore_or_create_checkpoint(self) -> Tuple[Checkpoint, bool]:
         checkpoint_file = "checkpoint.json"
         checkpoint = Checkpoint.load(self._result_file_name, checkpoint_file)
+        is_new_checkpoint = True
         if checkpoint.result_file_name is not None:
+            is_new_checkpoint = False
             self._result_file_name = checkpoint.result_file_name
-        return checkpoint
+        return checkpoint, is_new_checkpoint
 
     def _merge_summarize(self, text_chunks: List[str], summary_min_length: int) -> str:
-        checkpoint = self._restore_or_create_checkpoint()
+        checkpoint, is_new_checkpoint = self._restore_or_create_checkpoint()
         checkpoint_file = checkpoint.checkpoint_file_path
         iteration = 0
         while len(text_chunks) > summary_min_length:
             chunk_summaries = []
-            _write_to_result(
-                self._log_file_name,
-                self._result_file_name,
-                "\n\n\n\nIteration "
-                + str(iteration)
-                + "\n\n"
-                + "summarizer rounds: "
-                + str(self._summarization_rounds_per_chunk)
-                + "\n\n",
-            )
+            if is_new_checkpoint:
+                _write_to_result(
+                    self._log_file_name,
+                    self._result_file_name,
+                    "\n\n\n\nIteration "
+                    + str(iteration)
+                    + "\n\n"
+                    + "summarizer rounds: "
+                    + str(self._summarization_rounds_per_chunk)
+                    + "\n\n",
+                )
             for i in range(checkpoint.current_chunk_index, len(text_chunks)):
-                current_chunk = text_chunks[i]
-                chunk_summary = self._summarize_chunk(current_chunk)
+                chunk_summary = text_chunks[i]
+                chunk_summary = self._summarize_chunk(chunk_summary)
                 chunk_summary = self._add_hallucinations_to_chunk(
                     chunk_summary, self._hallucination_style
                 )
@@ -111,7 +113,7 @@ class Summarizer:
                 _write_to_result(
                     self._log_file_name,
                     self._result_file_name,
-                    "\n" + chunk_summary + "\n",
+                    chunk_summary,
                 )
                 if self._narration_on is True:
                     from skiffs.util.voice import narrate
@@ -130,10 +132,7 @@ class Summarizer:
     def _summarize_chunk(self, text: str) -> str:
         summary = ""
         for round in range(self._summarization_rounds_per_chunk):
-            if self._summarizer_model_names != []:
-                summarizer_model_name = random.choice(self._summarizer_model_names)
-            else:  # If the model is not set, use gemma.cpp
-                summarizer_model_name = "gemma.cpp"
+            summarizer_model_name = random.choice(self._summarizer_model_names)
             _write_to_log(
                 self._log_file_name,
                 "\n\n\n\nSummarizing current round: "
@@ -158,15 +157,8 @@ class Summarizer:
         return summary
 
     def _call_summarizer(self, summarizer_model: str, text: str) -> str:
-        if summarizer_model.endswith("gguf"):
-            # TODO handle style
-            summary, memories = llama.ask(
-                summarizer_model, text, self._summary_memories
-            )
-        else:
-            summary, memories = gemma.summarize(
-                text, self._summary_style, self._summary_memories
-            )
+        llm_bridge = bridge.Bridge.create(summarizer_model)
+        summary, memories = llm_bridge.summarize(text)
         self._summary_memories += memories
         return summary
 
@@ -183,12 +175,9 @@ class Summarizer:
                 + "Text: "
                 + text,
             )
-            if self._hallucinator_model_names != []:
-                hallucinator_model_name = random.choice(self._hallucinator_model_names)
-            else:
-                hallucinator_model_name = "gemma.cpp"
+            hallucinator_model_name = random.choice(self._hallucinator_model_names)
             hallucinated_continuation = self._call_hallucinator(
-                finnegannise(result), hallucinator_model_name
+                result, hallucinator_model_name
             )
             _write_to_log(
                 self._log_file_name,
@@ -200,16 +189,13 @@ class Summarizer:
                 + hallucinated_continuation,
             )
             result = result + " " + hallucinated_continuation
-            if "max_tokens (" in hallucinated_continuation:
+            if "max_tokens" in hallucinated_continuation:
                 break
         return result
 
     def _call_hallucinator(self, text: str, model: str) -> str:
-        if model.endswith("gguf"):
-            # TODO handle style
-            hallucination = llama.ask(model, text, [])[0]
-        else:
-            hallucination = gemma.hallucinate(text, self._hallucination_style)
+        llm_bridge = bridge.Bridge.create(model)
+        hallucination = llm_bridge.hallucinate(text)
         return hallucination
 
     def _sentence_tokenizer(self, text: str) -> List[str]:
@@ -218,7 +204,7 @@ class Summarizer:
     def _divide_text(self, text: str) -> List[str]:
         # TODO: Use the tokenizer from the model
         tokenizer = AutoTokenizer.from_pretrained(picked_models.summarization_models[0])
-        max_token_length = 1024
+        max_token_length = 256
 
         paragraphs = text.split("\n\n")
         chunks = []
@@ -341,10 +327,12 @@ if __name__ == "__main__":
     src_file_path = args.parse_args().src_file_path
     src_file_path = os.path.abspath(src_file_path)
 
-    print("Summarizing text from path: " + src_file_path)
-
     summarizer_models = args.parse_args().summarizer_models
+    if summarizer_models == []:
+        summarizer_models = models_to_consider.summarization_models
     hallucinator_models = args.parse_args().hallucinator_models
+    if hallucinator_models == []:
+        hallucinator_models = models_to_consider.hallucinators
     hallucination_rounds_per_chunk = args.parse_args().hallucination_rounds_per_chunk
     summary_style = args.parse_args().summary_style
     hallucination_style = args.parse_args().hallucination_style
@@ -355,6 +343,24 @@ if __name__ == "__main__":
         src_file_path,
         "r",
     ).read()
+    print(
+        "\n\nSummarizing file: "
+        + src_file_path
+        + " using style: "
+        + summary_style
+        + " and hallucination style: "
+        + hallucination_style
+        + " with summarizer models: "
+        + str(summarizer_models)
+        + " and hallucinator models: "
+        + str(hallucinator_models)
+        + " with summarization rounds per chunk: "
+        + str(summarization_rounds_per_chunk)
+        + " and hallucination rounds per chunk: "
+        + str(hallucination_rounds_per_chunk)
+        + " and narration on: "
+        + str(narration_on)
+    )
     summarizator = Summarizer(
         summarizer_models,
         summary_style,

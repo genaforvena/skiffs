@@ -102,8 +102,15 @@ key_word_extractors = [
 ]
 
 summarization_models = [
-    "0-hero/led-large-legal-summary",
-    "yukiarimo/Gen-AI",
+    # "laser-mistral-xs.gguf",
+    # "stablelm-2-zephyr-1_6b-Q4_0.gguf",
+    "WestLake-7B-v2-laser-truthy-dpo.q4_k_m.gguf",
+    #    "llama-2-7b-chat.Q2_K.gguf",
+    #    "llava-v1.6-mistral-7b.Q5_K_M.gguf",
+    #    "ggema.cpp",
+    # "0-hero/led-large-legal-summary",
+    # "gpt2",
+    # "facebook/bart-large-cnn",
 ]
 
 reward_models = [
