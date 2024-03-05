@@ -158,7 +158,7 @@ class Summarizer:
 
     def _call_summarizer(self, summarizer_model: str, text: str) -> str:
         llm_bridge = bridge.Bridge.create(summarizer_model)
-        summary, memories = llm_bridge.summarize(text)
+        summary, memories = llm_bridge.summarize(text, self._summary_style)
         self._summary_memories += memories
         return summary
 

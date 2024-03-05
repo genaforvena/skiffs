@@ -13,7 +13,7 @@ LLAMA_HOME: str = os.environ.get("LLAMA_HOME")
 
 class Bridge:
     def summarize(
-        self, text: str, style: str = "", history: List[str] = []
+        self, text: str, style: str, history: List[str] = []
     ) -> Tuple[str, List[str]]:
         summary = self._ask("Summary of the following text " + style, text)
         updated_history = history + ["User: " + text, "System: " + summary]
