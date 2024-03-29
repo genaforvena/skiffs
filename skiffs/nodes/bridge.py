@@ -2,7 +2,6 @@ import os
 import subprocess
 from typing import List, Tuple
 
-from llama_cpp import Llama
 from transformers import pipeline
 from util.finneganniser import finnegannise
 
@@ -15,7 +14,7 @@ class Bridge:
     def summarize(
         self, text: str, style: str, history: List[str] = []
     ) -> Tuple[str, List[str]]:
-        summary = self._ask("Summary of the following text " + style, text)
+        summary = self._ask("Please continue the following text " + style, text)
         updated_history = history + ["User: " + text, "System: " + summary]
         tokens = sum(len(entry.split()) for entry in updated_history)
         while tokens > MAX_TOKENS and len(updated_history) > 2:
@@ -72,6 +71,7 @@ class GemmaBridge(Bridge):
 class LlamaBridge(Bridge):
     def __init__(self, model: str):
         self._model = model
+        from llama_cpp import Llama
 
     def _ask(self, command_for: str, text: str) -> str:
         llama = Llama(
@@ -92,4 +92,15 @@ class PipepileBridge(Bridge):
         self._model = model
 
     def _ask(self, command_for: str, text: str) -> str:
-        raise NotImplementedError
+        pipe = pipeline(
+            "text-generation",
+            model=self._model,
+        )
+        tokenizer_kwargs = {
+            "max_length": 600,
+            "truncation": True,
+        }
+        response = pipe(command_for + " " + text, **tokenizer_kwargs)[0][
+            "generated_text"
+        ]
+        return response
