@@ -14,7 +14,7 @@ class Bridge:
     def summarize(
         self, text: str, style: str, history: List[str] = []
     ) -> Tuple[str, List[str]]:
-        summary = self._ask("Please continue the following text " + style, text)
+        summary = self._ask("Summarize the following text " + style, text)
         updated_history = history + ["User: " + text, "System: " + summary]
         tokens = sum(len(entry.split()) for entry in updated_history)
         while tokens > MAX_TOKENS and len(updated_history) > 2:
@@ -71,9 +71,10 @@ class GemmaBridge(Bridge):
 class LlamaBridge(Bridge):
     def __init__(self, model: str):
         self._model = model
-        from llama_cpp import Llama
 
     def _ask(self, command_for: str, text: str) -> str:
+        from llama_cpp import Llama
+
         llama = Llama(
             LLAMA_HOME + "/models/" + self._model,
             chat_format="llama-2",
@@ -103,4 +104,8 @@ class PipepileBridge(Bridge):
         response = pipe(command_for + " " + text, **tokenizer_kwargs)[0][
             "generated_text"
         ]
+        if text in response:
+            response = response.replace(text, "")
+        if command_for in response:
+            response = response.replace(command_for, "")
         return response
