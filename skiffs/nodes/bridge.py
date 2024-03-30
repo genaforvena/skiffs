@@ -14,7 +14,13 @@ class Bridge:
     def summarize(
         self, text: str, style: str, history: List[str] = []
     ) -> Tuple[str, List[str]]:
-        summary = self._ask("Summarize the following text " + style, text)
+        try:
+            summary = self._ask("Summarize the following text " + style, text)
+        except Exception:
+            print("Could not summarize", text)
+            # print stacktrace
+            print("Stacktrace", Exception)
+            return text, history
         updated_history = history + ["User: " + text, "System: " + summary]
         tokens = sum(len(entry.split()) for entry in updated_history)
         while tokens > MAX_TOKENS and len(updated_history) > 2:
