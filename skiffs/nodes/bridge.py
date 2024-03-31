@@ -107,9 +107,12 @@ class PipepileBridge(Bridge):
             "max_length": 600,
             "truncation": True,
         }
-        response = pipe(command_for + " " + text, **tokenizer_kwargs)[0][
-            "generated_text"
-        ]
+        try:
+            response = pipe(command_for + " " + text, **tokenizer_kwargs)[0][
+                "generated_text"
+            ]
+        except Exception:
+            return ""
         if text in response:
             response = response.replace(text, "")
         if command_for in response:
