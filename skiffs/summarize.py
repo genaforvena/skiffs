@@ -243,12 +243,11 @@ class Summarizer:
         self, source_name: str, format: str = "txt", postfix: str = ""
     ) -> str:
         output_filename = (
-            "summary_of_"
+            str(self._creation_time)
+            + "summary_of_"
             + source_name.split("/")[-1]
             + "_"
             + postfix
-            + "_at_"
-            + str(self._creation_time)
         )
         output_filename = output_filename.replace(" ", "_").replace("/", "_")
         output_filename = (

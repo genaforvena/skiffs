@@ -32,7 +32,7 @@ class Bridge:
     def hallucinate(self, text: str, style: str) -> str:
         hallucination = self._ask(
             finnegannise(text),
-            " and then the abstract black whole laughing after you said " + style + ":",
+            style + ":",
         )
         return hallucination
 

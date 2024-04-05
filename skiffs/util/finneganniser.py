@@ -8,8 +8,9 @@ def finnegannise(text):
 
     transformed_words = []
     for word in words:
-        if random.random() < 0.85:
+        if random.random() < 0.98:
             continue
+
 
         if len(word) > 3:
             new_word = word[:2] + random.choice(["ish", "esque", "ian"]) + word[2:]
