@@ -1,6 +1,7 @@
 import os
 import subprocess
 from typing import List, Tuple
+from nltk import pr
 
 from transformers import pipeline
 from util.finneganniser import finnegannise
@@ -15,10 +16,15 @@ class Bridge:
         self, text: str, style: str, history: List[str] = []
     ) -> Tuple[str, List[str]]:
         try:
-            summary = self._ask("Summarize the following text " + style, text)
+            prompt = "Summarize the following text " + style + ":"
+            summary = self._ask(prompt, text)
+            if text in summary:
+                summary = summary.replace(text, "")
+            if prompt in summary:
+                summary = summary.replace(prompt, "")
+            summary = summary + "\n\n"
         except Exception:
             print("Could not summarize", text)
-            # print stacktrace
             print("Stacktrace", Exception)
             return text, history
         updated_history = history + ["User: " + text, "System: " + summary]
@@ -113,8 +119,4 @@ class PipepileBridge(Bridge):
             ]
         except Exception:
             return ""
-        if text in response:
-            response = response.replace(text, "")
-        if command_for in response:
-            response = response.replace(command_for, "")
         return response

@@ -128,7 +128,7 @@ class Summarizer:
         return text_chunks[0]
 
     def _summarize_chunk(self, text: str) -> str:
-        summary = ""
+        summary = text
         for round in range(self._summarization_rounds_per_chunk):
             summarizer_model_name = random.choice(self._summarizer_model_names)
             _write_to_log(
@@ -141,7 +141,7 @@ class Summarizer:
                 + "Text: "
                 + text,
             )
-            summary = self._call_summarizer(summarizer_model_name, text)
+            summary = self._call_summarizer(summarizer_model_name, summary)
             _write_to_log(
                 self._log_file_name,
                 "\n\n\n----------------->Summary after round "
