@@ -23,9 +23,9 @@ class Bridge:
             if prompt in summary:
                 summary = summary.replace(prompt, "")
             summary = summary + "\n\n"
-        except Exception:
+        except Exception as e:
             print("Could not summarize", text)
-            print("Stacktrace", Exception)
+            print(e)
             return text, history
         updated_history = history + ["User: " + text, "System: " + summary]
         tokens = sum(len(entry.split()) for entry in updated_history)
