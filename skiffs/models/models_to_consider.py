@@ -54,7 +54,7 @@ hallucinators = [
     # "DarwinAnim8or/GPT-DMV-125m",
     #    "DarwinAnim8or/GPT-NoSleep-355m",
     "google/reformer-crime-and-punishment",
-    # "gpt2",
+    "gpt2",
     #    "distilbert/distilgpt2",
     # "gpt2-large",
     # "gpt2-medium",
