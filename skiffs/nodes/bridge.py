@@ -36,11 +36,14 @@ class Bridge:
         return summary, updated_history
 
     def hallucinate(self, text: str, style: str) -> str:
+        finnagannised_text = finnegannise(text)
         hallucination = self._ask(
-            finnegannise(text),
+            finnagannised_text,
             style + ":",
             30,
         )
+        if finnagannised_text in hallucination:
+            hallucination = hallucination.replace(finnagannised_text, text)
         return hallucination
 
     def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
