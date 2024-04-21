@@ -17,7 +17,7 @@ class Bridge:
     ) -> Tuple[str, List[str]]:
         try:
             prompt = "Summarize the following text " + style + ":"
-            summary = self._ask(prompt, text)
+            summary = self._ask(prompt, text, 300)
             if text in summary:
                 summary = summary.replace(text, "")
             if prompt in summary:
@@ -39,10 +39,11 @@ class Bridge:
         hallucination = self._ask(
             finnegannise(text),
             style + ":",
+            30,
         )
         return hallucination
 
-    def _ask(self, command_for: str, text: str) -> str:
+    def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
         raise NotImplementedError
 
     @staticmethod
@@ -56,7 +57,7 @@ class Bridge:
 
 
 class GemmaBridge(Bridge):
-    def _ask(self, command_for: str, text: str) -> str:
+    def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
         if GEMMA_HOME is None:
             raise ValueError("GEMMA_HOME not set")
         command = [
@@ -84,7 +85,7 @@ class LlamaBridge(Bridge):
     def __init__(self, model: str):
         self._model = model
 
-    def _ask(self, command_for: str, text: str) -> str:
+    def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
         from llama_cpp import Llama
 
         llama = Llama(
@@ -104,14 +105,14 @@ class PipepileBridge(Bridge):
     def __init__(self, model):
         self._model = model
 
-    def _ask(self, command_for: str, text: str) -> str:
+    def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
         pipe = pipeline(
             "text-generation",
             model=self._model,
         )
         tokenizer_kwargs = {
-            "max_length": 600,
-            "truncation": True,
+            "max_new_tokens": max_new_tokens,
+            "truncation": False,
         }
         try:
             response = pipe(command_for + " " + text, **tokenizer_kwargs)[0][

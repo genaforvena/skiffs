@@ -53,10 +53,11 @@ hallucinators = [
     #    "DarwinAnim8or/DailyChat-350M,
     # "DarwinAnim8or/GPT-DMV-125m",
     #    "DarwinAnim8or/GPT-NoSleep-355m",
-    "gpt2",
+    "google/reformer-crime-and-punishment",
+    # "gpt2",
     #    "distilbert/distilgpt2",
-    "gpt2-large",
-    "gpt2-medium",
+    # "gpt2-large",
+    # "gpt2-medium",
     #    "EleutherAI/pythia-14m",
     #    "EleutherAI/pythia-70m-deduped",
     #    "facebook/opt-350m",
@@ -131,15 +132,15 @@ summarization_models = [
     # "0-hero/led-large-legal-summary",
     "gpt2",
     #    "distilbert/distilgpt2",
-    "gpt2-large",
-    "gpt2-medium",
+    # "gpt2-large",
+    # "gpt2-medium",
     #   "EleutherAI/pythia-14m",
     #   "EleutherAI/pythia-70m-deduped",
     #   "facebook/opt-350m",
     #   "facebook/opt-125m",
     # "facebook/bart-large-cnn",
-    #    "microsoft/phi-2"
-    #    "google/reformer-crime-and-punishment",
+    # "microsoft/phi-2"
+    # "google/reformer-crime-and-punishment",
 ]
 
 reward_models = [
