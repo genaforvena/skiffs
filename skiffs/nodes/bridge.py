@@ -43,7 +43,7 @@ class Bridge:
             30,
         )
         if finnagannised_text in hallucination:
-            hallucination = hallucination.replace(finnagannised_text, text)
+            hallucination = hallucination.replace(finnagannised_text, "")
         return hallucination
 
     def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
