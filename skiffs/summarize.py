@@ -2,7 +2,6 @@ import os
 import random
 import json
 import pathlib
-import nltk
 import argparse
 from datetime import datetime
 from typing import List, Tuple
@@ -195,9 +194,6 @@ class Summarizer:
         hallucination = llm_bridge.hallucinate(text, self._hallucination_style)
         return hallucination
 
-    def _sentence_tokenizer(self, text: str) -> List[str]:
-        return nltk.tokenize.sent_tokenize(text)
-
     def _divide_text(self, text: str) -> List[str]:
         tokenizer = AutoTokenizer.from_pretrained(self._summarizer_model_names[0])
         # To make sure that style and command fits into the model
@@ -208,25 +204,23 @@ class Summarizer:
         current_chunk_tokens = []
 
         for paragraph in paragraphs:
-            sentences = self._sentence_tokenizer(paragraph)
-            for sentence in sentences:
-                sentence_tokens = tokenizer.tokenize(sentence)
+            sentence_tokens = tokenizer.tokenize(paragraph)
 
-                if len(current_chunk_tokens) + len(sentence_tokens) <= max_token_length:
-                    current_chunk_tokens.extend(sentence_tokens)
+            if len(current_chunk_tokens) + len(sentence_tokens) <= max_token_length:
+                current_chunk_tokens.extend(sentence_tokens)
+            else:
+                if current_chunk_tokens:
+                    chunks.append(
+                        tokenizer.convert_tokens_to_string(current_chunk_tokens)
+                    )
+                    current_chunk_tokens = sentence_tokens
                 else:
-                    if current_chunk_tokens:
-                        chunks.append(
-                            tokenizer.convert_tokens_to_string(current_chunk_tokens)
+                    chunks.append(
+                        tokenizer.convert_tokens_to_string(
+                            sentence_tokens[:max_token_length]
                         )
-                        current_chunk_tokens = sentence_tokens
-                    else:
-                        chunks.append(
-                            tokenizer.convert_tokens_to_string(
-                                sentence_tokens[:max_token_length]
-                            )
-                        )
-                        current_chunk_tokens = sentence_tokens[max_token_length:]
+                    )
+                    current_chunk_tokens = sentence_tokens[max_token_length:]
 
         if current_chunk_tokens:
             chunks.append(tokenizer.convert_tokens_to_string(current_chunk_tokens))
