@@ -10,8 +10,8 @@ from typing import List, Tuple
 from transformers import AutoTokenizer
 
 from models import models_to_consider
-from models import picked_models
 from nodes import bridge
+from util.voice import narrate
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
 
@@ -114,8 +114,6 @@ class Summarizer:
                     chunk_summary,
                 )
                 if self._narration_on is True:
-                    from skiffs.util.voice import narrate
-
                     narrate(chunk_summary)
 
                 checkpoint.current_chunk_index = i + 1
@@ -202,7 +200,8 @@ class Summarizer:
 
     def _divide_text(self, text: str) -> List[str]:
         tokenizer = AutoTokenizer.from_pretrained(self._summarizer_model_names[0])
-        max_token_length = tokenizer.model_max_length
+        # To make sure that style and command fits into the model
+        max_token_length = tokenizer.model_max_length / 2
 
         paragraphs = text.split("\n\n")
         chunks = []
