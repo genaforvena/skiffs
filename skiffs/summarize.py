@@ -67,7 +67,6 @@ class Summarizer:
         self._creation_time = datetime.now()
 
     def summarize(self, src_file_path: str, txt: str, min_length: int = 1) -> str:
-        nltk.download("punkt")
         self._log_file_name = self._create_out_filename(src_file_path, "log")
         self._result_file_name = self._create_out_filename(
             src_file_path, format="md", postfix="result_using_merge"
