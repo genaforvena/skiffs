@@ -116,11 +116,20 @@ class PipepileBridge(Bridge):
         tokenizer_kwargs = {
             "max_new_tokens": max_new_tokens,
             "truncation": False,
+            "do_sample": True,
+            "temperature": 0.3,
+            "return_full_text": True,
         }
         try:
-            response = pipe(command_for + " " + text, **tokenizer_kwargs)[0][
-                "generated_text"
-            ]
+            if "phi" in self._model:
+                prefix = "Exercise: "
+                postfix = '"\nAnswer:'
+            else:
+                prefix = ""
+                postfix = ""
+            response = pipe(
+                prefix + command_for + '\n\n"' + text + postfix, **tokenizer_kwargs
+            )[0]["generated_text"]
         except Exception:
             return ""
         return response
