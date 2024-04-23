@@ -53,8 +53,8 @@ hallucinators = [
     #    "DarwinAnim8or/DailyChat-350M,
     # "DarwinAnim8or/GPT-DMV-125m",
     #    "DarwinAnim8or/GPT-NoSleep-355m",
-    "google/reformer-crime-and-punishment",
-    "gpt2",
+    #    "google/reformer-crime-and-punishment",
+    #   "gpt2",
     #    "distilbert/distilgpt2",
     # "gpt2-large",
     # "gpt2-medium",
@@ -73,7 +73,7 @@ hallucinators = [
     #    "/home/ilyahome/Developer/my_robots/llama.cpp/models/llava-v1.6-mistral-7b.Q5_K_M.gguf",
     # "ashwinR/CodeExplainer",
     # "model-attribution-challenge/distilgpt2",
-    #    "microsoft/phi-1",
+    "microsoft/phi-1.5",
 ]
 
 text_continuators = [
@@ -130,7 +130,7 @@ summarization_models = [
     #    "llava-v1.6-mistral-7b.Q5_K_M.gguf",
     #    "ggema.cpp",
     # "0-hero/led-large-legal-summary",
-    "gpt2",
+    # "gpt2",
     #    "distilbert/distilgpt2",
     # "gpt2-large",
     # "gpt2-medium",
@@ -140,6 +140,7 @@ summarization_models = [
     #   "facebook/opt-125m",
     # "facebook/bart-large-cnn",
     # "microsoft/phi-2"
+    "microsoft/phi-1.5",
     # "google/reformer-crime-and-punishment",
 ]
 

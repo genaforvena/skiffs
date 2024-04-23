@@ -201,9 +201,8 @@ class Summarizer:
         return nltk.tokenize.sent_tokenize(text)
 
     def _divide_text(self, text: str) -> List[str]:
-        # TODO: Use the tokenizer from the model
-        tokenizer = AutoTokenizer.from_pretrained(picked_models.summarization_models[0])
-        max_token_length = 256
+        tokenizer = AutoTokenizer.from_pretrained(self._summarizer_model_names[0])
+        max_token_length = tokenizer.model_max_length
 
         paragraphs = text.split("\n\n")
         chunks = []
@@ -214,18 +213,15 @@ class Summarizer:
             for sentence in sentences:
                 sentence_tokens = tokenizer.tokenize(sentence)
 
-                # Check if adding this sentence exceeds the max token length
                 if len(current_chunk_tokens) + len(sentence_tokens) <= max_token_length:
                     current_chunk_tokens.extend(sentence_tokens)
                 else:
-                    # Add the current chunk to chunks
                     if current_chunk_tokens:
                         chunks.append(
                             tokenizer.convert_tokens_to_string(current_chunk_tokens)
                         )
                         current_chunk_tokens = sentence_tokens
                     else:
-                        # Handle very long sentences
                         chunks.append(
                             tokenizer.convert_tokens_to_string(
                                 sentence_tokens[:max_token_length]
@@ -233,7 +229,6 @@ class Summarizer:
                         )
                         current_chunk_tokens = sentence_tokens[max_token_length:]
 
-        # Add the last chunk if it exists
         if current_chunk_tokens:
             chunks.append(tokenizer.convert_tokens_to_string(current_chunk_tokens))
 
