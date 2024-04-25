@@ -194,9 +194,12 @@ class Summarizer:
         return hallucination
 
     def _divide_text(self, text: str) -> List[str]:
-        tokenizer = AutoTokenizer.from_pretrained(self._summarizer_model_names[0])
+        if self._summarizer_model_names[0].endswith(".gguf"):
+            tokenizer = AutoTokenizer.from_pretrained("gpt2")
+        else:
+            tokenizer = AutoTokenizer.from_pretrained(self._summarizer_model_names[0])
         # To make sure that style and command fits into the model
-        max_token_length = tokenizer.model_max_length / 2
+        max_token_length = tokenizer.model_max_length / 6
 
         paragraphs = text.split("\n\n")
         chunks = []

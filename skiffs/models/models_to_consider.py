@@ -140,7 +140,9 @@ summarization_models = [
     #   "facebook/opt-125m",
     # "facebook/bart-large-cnn",
     # "microsoft/phi-2"
-    "microsoft/phi-1.5",
+    #    "microsoft/phi-1.5",
+    #    "microsoft/Phi-3-mini-4k-instruct",
+    "Phi-3-mini-4k-instruct-q4.gguf",
     # "google/reformer-crime-and-punishment",
 ]
 

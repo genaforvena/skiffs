@@ -1,7 +1,6 @@
 import os
 import subprocess
 from typing import List, Tuple
-from nltk import pr
 
 from transformers import pipeline
 from util.finneganniser import finnegannise
@@ -15,18 +14,13 @@ class Bridge:
     def summarize(
         self, text: str, style: str, history: List[str] = []
     ) -> Tuple[str, List[str]]:
-        try:
-            prompt = "Summarize the following text " + style + ":"
-            summary = self._ask(prompt, text, 300)
-            if text in summary:
-                summary = summary.replace(text, "")
-            if prompt in summary:
-                summary = summary.replace(prompt, "")
-            summary = summary + "\n\n"
-        except Exception as e:
-            print("Could not summarize", text)
-            print(e)
-            return text, history
+        prompt = "Summarize the following text " + style + ":"
+        summary = self._ask(prompt, text, 300)
+        if text in summary:
+            summary = summary.replace(text, "")
+        if prompt in summary:
+            summary = summary.replace(prompt, "")
+        summary = summary + "\n\n"
         updated_history = history + ["User: " + text, "System: " + summary]
         tokens = sum(len(entry.split()) for entry in updated_history)
         while tokens > MAX_TOKENS and len(updated_history) > 2:
@@ -118,7 +112,7 @@ class PipepileBridge(Bridge):
             "truncation": False,
             "do_sample": True,
             "temperature": 0.3,
-            "return_full_text": True,
+            "return_full_text": False,
         }
         try:
             if "phi" in self._model:
