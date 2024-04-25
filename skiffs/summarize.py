@@ -199,7 +199,7 @@ class Summarizer:
         else:
             tokenizer = AutoTokenizer.from_pretrained(self._summarizer_model_names[0])
         # To make sure that style and command fits into the model
-        max_token_length = tokenizer.model_max_length / 6
+        max_token_length = tokenizer.model_max_length / 4
 
         paragraphs = text.split("\n\n")
         chunks = []
