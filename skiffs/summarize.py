@@ -65,6 +65,7 @@ class Summarizer:
         self._hallucination_rounds_per_chunk = hallucination_rounds_per_chunk
         self._narration_on = narration_on
         self._creation_time = datetime.now()
+        self._chunk_tokens_length = 0
 
     def summarize(self, src_file_path: str, txt: str, min_length: int = 1) -> str:
         self._log_file_name = self._create_out_filename(src_file_path, "log")
@@ -151,7 +152,7 @@ class Summarizer:
         return summary
 
     def _call_summarizer(self, model: str, text: str) -> str:
-        llm_bridge = bridge.Bridge.create(model)
+        llm_bridge = bridge.Bridge.create(model, self._chunk_tokens_length)
         summary, memories = llm_bridge.summarize(text, self._summary_style)
         self._summary_memories += memories
         return summary
@@ -189,7 +190,7 @@ class Summarizer:
         return result
 
     def _call_hallucinator(self, model: str, text: str) -> str:
-        llm_bridge = bridge.Bridge.create(model)
+        llm_bridge = bridge.Bridge.create(model, self._chunk_tokens_length)
         hallucination = llm_bridge.hallucinate(text, self._hallucination_style)
         return hallucination
 
@@ -204,8 +205,9 @@ class Summarizer:
                 self._summarizer_model_names[0], trust_remote_code=True
             )
         # To make sure that style and command fits into the model
-        max_token_length = tokenizer.model_max_length / 4
+        self._chunk_tokens_length = tokenizer.model_max_length / 4
 
+        max_token_length = self._chunk_tokens_length
         paragraphs = text.split("\n\n")
         chunks = []
         current_chunk_tokens = []

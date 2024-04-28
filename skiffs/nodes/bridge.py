@@ -12,11 +12,14 @@ LLAMA_HOME: str = os.environ.get("LLAMA_HOME")
 
 
 class Bridge:
+    def __init__(self, summary_tokens: int):
+        self._summary_tokens = summary_tokens
+
     def summarize(
         self, text: str, style: str, history: List[str] = []
     ) -> Tuple[str, List[str]]:
         prompt = "Summarize the following text " + style + ":"
-        summary = self._ask(prompt, text, 300)
+        summary = self._ask(prompt, text, self._summary_tokens)
         if text in summary:
             summary = summary.replace(text, "")
         if prompt in summary:
@@ -45,13 +48,14 @@ class Bridge:
         raise NotImplementedError
 
     @staticmethod
-    def create(model: str) -> "Bridge":
+    def create(model: str, chunk_tokens: int) -> "Bridge":
+        summary_tokens = int(chunk_tokens * 0.5)
         if model.endswith("gguf"):
-            return LlamaBridge(model)
+            return LlamaBridge(model, summary_tokens)
         elif model == "gemma.cpp":
-            return GemmaBridge()
+            return GemmaBridge(summary_tokens)
         else:
-            return PipepileBridge(model)
+            return PipepileBridge(model, summary_tokens)
 
 
 class GemmaBridge(Bridge):
@@ -80,8 +84,9 @@ class GemmaBridge(Bridge):
 
 
 class LlamaBridge(Bridge):
-    def __init__(self, model: str):
+    def __init__(self, model: str, summary_tokens: int):
         self._model = model
+        self._summary_tokens = summary_tokens
 
     def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
         from llama_cpp import Llama
@@ -101,8 +106,9 @@ class LlamaBridge(Bridge):
 
 
 class PipepileBridge(Bridge):
-    def __init__(self, model):
+    def __init__(self, model: str, summary_tokens: int):
         self._model = model
+        self._summary_tokens = summary_tokens
 
     def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
         if "OpenELM" in self._model:
@@ -110,14 +116,14 @@ class PipepileBridge(Bridge):
                 self._model, trust_remote_code=True
             )
             tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
-            tokenized_prompt = tokenizer(command_for + '\n\n"' + text)
+            tokenized_prompt = tokenizer(command_for + text)
             tokenized_prompt = torch.tensor(tokenized_prompt["input_ids"], device="cpu")
 
             tokenized_prompt = tokenized_prompt.unsqueeze(0)
 
             output_ids = model.generate(
                 tokenized_prompt,
-                max_length=max_new_tokens,
+                max_new_tokens=max_new_tokens,
                 pad_token_id=0,
             )
 

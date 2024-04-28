@@ -148,8 +148,9 @@ summarization_models = [
     # "Phi-3-mini-4k-instruct-q4.gguf",
     #    "apple/OpenELM-450M",
     "apple/OpenELM-270M",
-    #    "apple/OpenELM-450M-instruct",
-    # "apple/OpenELM-1_1B",
+    # "apple/OpenELM-270M-instruct",
+    # "apple/OpenELM-450M-instruct",
+    #    "apple/OpenELM-1_1B",
     # "google/reformer-crime-and-punishment",
 ]
 
