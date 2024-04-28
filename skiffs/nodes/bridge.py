@@ -91,6 +91,7 @@ history = []
 
 class OllamaBridge(Bridge):
     def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
+        print()
         message = {"role": "user", "content": command_for + " " + text}
         history.append(message)
         resp = ollama.chat(model="phi3mini", messages=history, stream=True)
