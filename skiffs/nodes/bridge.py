@@ -93,8 +93,13 @@ class OllamaBridge(Bridge):
     def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
         message = {"role": "user", "content": command_for + " " + text}
         history.append(message)
-        resp = ollama.chat(model="phi3mini", messages=history)
-        history.append(resp["message"])
+        resp = ollama.chat(model="phi3mini", messages=history, stream=True)
+        msg = ""
+        for chunk in resp:
+            p = chunk["message"]["content"]
+            print(p, end="", flush=True)
+            msg += p
+        history.append({"role": "assistant", "content": msg})
         return history[-1]["content"]
 
 
