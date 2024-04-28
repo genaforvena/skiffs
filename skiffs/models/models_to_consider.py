@@ -73,7 +73,10 @@ hallucinators = [
     #    "/home/ilyahome/Developer/my_robots/llama.cpp/models/llava-v1.6-mistral-7b.Q5_K_M.gguf",
     # "ashwinR/CodeExplainer",
     # "model-attribution-challenge/distilgpt2",
-    "microsoft/phi-1.5",
+    # "microsoft/phi-1.5",
+    #    "Phi-3-mini-4k-instruct-q4.gguf",
+    "apple/OpenELM-450M",
+    "apple/OpenELM-1_1B",
 ]
 
 text_continuators = [
@@ -142,7 +145,11 @@ summarization_models = [
     # "microsoft/phi-2"
     #    "microsoft/phi-1.5",
     #    "microsoft/Phi-3-mini-4k-instruct",
-    "Phi-3-mini-4k-instruct-q4.gguf",
+    # "Phi-3-mini-4k-instruct-q4.gguf",
+    #    "apple/OpenELM-450M",
+    "apple/OpenELM-270M",
+    #    "apple/OpenELM-450M-instruct",
+    # "apple/OpenELM-1_1B",
     # "google/reformer-crime-and-punishment",
 ]
 

@@ -1,8 +1,9 @@
 import os
 import subprocess
+import torch
 from typing import List, Tuple
 
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 from util.finneganniser import finnegannise
 
 MAX_TOKENS = 7000
@@ -92,7 +93,8 @@ class LlamaBridge(Bridge):
         )
         response = ""
         response = llama.create_chat_completion(
-            messages=[{"role": "user", "content": command_for + " " + text}]
+            messages=[{"role": "user", "content": command_for + " " + text}],
+            max_tokens=max_new_tokens,
         )["choices"][0]["message"]["content"]
 
         return response
@@ -103,27 +105,49 @@ class PipepileBridge(Bridge):
         self._model = model
 
     def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
-        pipe = pipeline(
-            "text-generation",
-            model=self._model,
-        )
-        tokenizer_kwargs = {
-            "max_new_tokens": max_new_tokens,
-            "truncation": False,
-            "do_sample": True,
-            "temperature": 0.3,
-            "return_full_text": False,
-        }
-        try:
-            if "phi" in self._model:
-                prefix = "Exercise: "
-                postfix = '"\nAnswer:'
-            else:
-                prefix = ""
-                postfix = ""
-            response = pipe(
-                prefix + command_for + '\n\n"' + text + postfix, **tokenizer_kwargs
-            )[0]["generated_text"]
-        except Exception:
-            return ""
-        return response
+        if "OpenELM" in self._model:
+            model = AutoModelForCausalLM.from_pretrained(
+                self._model, trust_remote_code=True
+            )
+            tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
+            tokenized_prompt = tokenizer(command_for + '\n\n"' + text)
+            tokenized_prompt = torch.tensor(tokenized_prompt["input_ids"], device="cpu")
+
+            tokenized_prompt = tokenized_prompt.unsqueeze(0)
+
+            output_ids = model.generate(
+                tokenized_prompt,
+                max_length=max_new_tokens,
+                pad_token_id=0,
+            )
+
+            output_text = tokenizer.decode(
+                output_ids[0].tolist(), skip_special_tokens=True
+            )
+            return output_text
+        else:
+            pipe = pipeline(
+                "text-generation",
+                model=self._model,
+                trust_remote_code=True,
+            )
+            tokenizer_kwargs = {
+                "max_new_tokens": max_new_tokens,
+                "truncation": False,
+                "do_sample": True,
+                "temperature": 0.3,
+                "return_full_text": False,
+            }
+            try:
+                if "phi" in self._model:
+                    prefix = "Exercise: "
+                    postfix = '"\nAnswer:'
+                else:
+                    prefix = ""
+                    postfix = ""
+                response = pipe(
+                    prefix + command_for + '\n\n"' + text + postfix, **tokenizer_kwargs
+                )[0]["generated_text"]
+            except Exception:
+                return ""
+            return response
