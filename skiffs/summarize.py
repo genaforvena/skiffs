@@ -197,8 +197,10 @@ class Summarizer:
     def _divide_text(self, text: str) -> List[str]:
         if self._summarizer_model_names[0].endswith(".gguf"):
             tokenizer = AutoTokenizer.from_pretrained("gpt2")
-        if "OpenELM" in self._summarizer_model_names[0]:
+        elif "OpenELM" in self._summarizer_model_names[0]:
             # 'meta-llama/Llama-2-7b-hf' does not work on my machine
+            tokenizer = AutoTokenizer.from_pretrained("gpt2")
+        elif "Octopus" in self._summarizer_model_names[0]:
             tokenizer = AutoTokenizer.from_pretrained("gpt2")
         else:
             tokenizer = AutoTokenizer.from_pretrained(

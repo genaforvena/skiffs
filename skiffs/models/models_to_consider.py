@@ -145,12 +145,15 @@ summarization_models = [
     # "microsoft/phi-2"
     #    "microsoft/phi-1.5",
     #    "microsoft/Phi-3-mini-4k-instruct",
-    # "Phi-3-mini-4k-instruct-q4.gguf",
+    "Phi-3-mini-4k-instruct-q4.gguf",
     #    "apple/OpenELM-450M",
-    "apple/OpenELM-270M",
-    # "apple/OpenELM-270M-instruct",
-    # "apple/OpenELM-450M-instruct",
-    #    "apple/OpenELM-1_1B",
+    # "apple/OpenELM-270M",
+    #    "apple/OpenELM-270M-instruct",
+    #    "apple/OpenELM-450M-instruct",
+    # "NexaAIDev/Octopus-v2",
+    #    "mlx-community/Octopus-v2-4bit",
+    # "apple/OpenELM-1_1B",
+    #    "apple/OpenELM-1_1B-instruct",
     # "google/reformer-crime-and-punishment",
 ]
 

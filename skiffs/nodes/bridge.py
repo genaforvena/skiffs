@@ -1,6 +1,7 @@
 import os
 import subprocess
 import torch
+import ollama
 from typing import List, Tuple
 
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
@@ -50,6 +51,8 @@ class Bridge:
     @staticmethod
     def create(model: str, chunk_tokens: int) -> "Bridge":
         summary_tokens = int(chunk_tokens * 0.5)
+        if "Phi" in model:
+            return OllamaBridge(summary_tokens)
         if model.endswith("gguf"):
             return LlamaBridge(model, summary_tokens)
         elif model == "gemma.cpp":
@@ -81,6 +84,18 @@ class GemmaBridge(Bridge):
         ).stdout
 
         return response
+
+
+history = []
+
+
+class OllamaBridge(Bridge):
+    def _ask(self, command_for: str, text: str, max_new_tokens: int) -> str:
+        message = {"role": "user", "content": command_for + " " + text}
+        history.append(message)
+        resp = ollama.chat(model="phi3mini", messages=history)
+        history.append(resp["message"])
+        return history[-1]["content"]
 
 
 class LlamaBridge(Bridge):
