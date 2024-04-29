@@ -74,9 +74,9 @@ hallucinators = [
     # "ashwinR/CodeExplainer",
     # "model-attribution-challenge/distilgpt2",
     # "microsoft/phi-1.5",
-    #    "Phi-3-mini-4k-instruct-q4.gguf",
-    "apple/OpenELM-450M",
-    "apple/OpenELM-1_1B",
+    "Phi-3-mini-4k-instruct-q4.gguf",
+    # "apple/OpenELM-450M",
+    # "apple/OpenELM-1_1B",
 ]
 
 text_continuators = [
