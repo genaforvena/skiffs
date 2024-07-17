@@ -80,7 +80,7 @@ def clean_and_organize_text(input_file, output_file, n_clusters=5):
     organized_narrative = organize_narrative(clusters)
 
     with open(output_file, "w", encoding="utf-8") as file:
-        file.write(" ".join(organized_narrative))
+        file.write("\n".join(organized_narrative))
 
 
 def clean_text(input_file, output_file):
