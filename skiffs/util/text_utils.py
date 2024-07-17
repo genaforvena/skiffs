@@ -30,7 +30,7 @@ def clean_text(input_file, output_file):
 
     unique_sentences = list(dict.fromkeys(valid_sentences))
 
-    cleaned_text = " ".join(unique_sentences)
+    cleaned_text = "\n".join(unique_sentences)
     with open(output_file, "w", encoding="utf-8") as file:
         file.write(cleaned_text)
 
