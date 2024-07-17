@@ -134,6 +134,9 @@ summarization_models = [
     #    "ggema.cpp",
     # "0-hero/led-large-legal-summary",
     # "gpt2",
+    "HuggingFaceTB/SmolLM-135M",
+    #    "HuggingFaceTB/SmolLM-360M",
+    #    "HuggingFaceTB/SmolLM-1.7B",
     #    "distilbert/distilgpt2",
     # "gpt2-large",
     # "gpt2-medium",
@@ -145,7 +148,7 @@ summarization_models = [
     # "microsoft/phi-2"
     #    "microsoft/phi-1.5",
     #    "microsoft/Phi-3-mini-4k-instruct",
-    "Phi-3-mini-4k-instruct-q4.gguf",
+    #    "Phi-3-mini-4k-instruct-q4.gguf",
     #    "apple/OpenELM-450M",
     # "apple/OpenELM-270M",
     #    "apple/OpenELM-270M-instruct",

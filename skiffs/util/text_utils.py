@@ -7,6 +7,33 @@ import os
 
 SUMMARIZE_CHUNK_SIZE = 300
 
+import re
+import nltk
+from nltk.tokenize import sent_tokenize
+
+nltk.download("punkt", quiet=True)
+
+
+def clean_text(input_file, output_file):
+    with open(input_file, "r", encoding="utf-8") as file:
+        text = file.read()
+
+    text = re.sub(r"\s+", " ", text).strip()
+
+    sentences = sent_tokenize(text)
+
+    valid_sentences = [
+        sent
+        for sent in sentences
+        if len(sent.split()) > 3 and any(c.isalpha() for c in sent)
+    ]
+
+    unique_sentences = list(dict.fromkeys(valid_sentences))
+
+    cleaned_text = " ".join(unique_sentences)
+    with open(output_file, "w", encoding="utf-8") as file:
+        file.write(cleaned_text)
+
 
 def calculate_entropy(text: str) -> float:
     words = text.split()

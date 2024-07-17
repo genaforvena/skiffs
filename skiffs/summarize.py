@@ -10,7 +10,8 @@ from transformers import AutoTokenizer
 
 from models import models_to_consider
 from nodes import bridge
-from util.voice import narrate
+
+# from util.voice import narrate
 
 DEFAULT_SUMMARY_MIN_LENGTH = 1
 
@@ -112,8 +113,8 @@ class Summarizer:
                     self._result_file_name,
                     chunk_summary,
                 )
-                if self._narration_on is True:
-                    narrate(chunk_summary)
+                #                if self._narration_on is True:
+                #                    narrate(chunk_summary)
 
                 checkpoint.current_chunk_index = i + 1
                 checkpoint.processed_chunks.append(chunk_summary)
@@ -201,6 +202,8 @@ class Summarizer:
             # 'meta-llama/Llama-2-7b-hf' does not work on my machine
             tokenizer = AutoTokenizer.from_pretrained("gpt2")
         elif "Octopus" in self._summarizer_model_names[0]:
+            tokenizer = AutoTokenizer.from_pretrained("gpt2")
+        elif "Smol" in self._summarizer_model_names[0]:
             tokenizer = AutoTokenizer.from_pretrained("gpt2")
         else:
             tokenizer = AutoTokenizer.from_pretrained(
