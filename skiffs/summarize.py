@@ -203,6 +203,8 @@ class Summarizer:
             tokenizer = AutoTokenizer.from_pretrained("gpt2")
         elif "Octopus" in self._summarizer_model_names[0]:
             tokenizer = AutoTokenizer.from_pretrained("gpt2")
+        elif "Oute" in self._summarizer_model_names[0]:
+            tokenizer = AutoTokenizer.from_pretrained("gpt2")
         elif "Smol" in self._summarizer_model_names[0]:
             tokenizer = AutoTokenizer.from_pretrained("gpt2")
         else:
